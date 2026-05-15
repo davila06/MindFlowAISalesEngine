@@ -1,0 +1,99 @@
+
+          /\      |ΓÇ╛ΓÇ╛| /ΓÇ╛ΓÇ╛/   /ΓÇ╛ΓÇ╛/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ΓÇ╛ΓÇ╛\  
+   /          \   |  |\  \ |  (ΓÇ╛)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+     execution: local
+        script: .\analytics-advanced-load.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 5 max VUs, 25s max duration (incl. graceful stop):
+              * smoke: 5 looping VUs for 20s (exec: smokeSuite, gracefulStop: 5s)
+
+
+running (01.0s), 5/5 VUs, 0 complete and 0 interrupted iterations
+smoke   [   5% ] 5 VUs  01.0s/20s
+
+running (02.0s), 5/5 VUs, 5 complete and 0 interrupted iterations
+smoke   [  10% ] 5 VUs  02.0s/20s
+
+running (03.0s), 5/5 VUs, 10 complete and 0 interrupted iterations
+smoke   [  15% ] 5 VUs  03.0s/20s
+
+running (04.0s), 5/5 VUs, 15 complete and 0 interrupted iterations
+smoke   [  20% ] 5 VUs  04.0s/20s
+
+running (05.0s), 5/5 VUs, 20 complete and 0 interrupted iterations
+smoke   [  25% ] 5 VUs  05.0s/20s
+
+running (06.0s), 5/5 VUs, 25 complete and 0 interrupted iterations
+smoke   [  30% ] 5 VUs  06.0s/20s
+
+running (07.0s), 5/5 VUs, 30 complete and 0 interrupted iterations
+smoke   [  35% ] 5 VUs  07.0s/20s
+
+running (08.0s), 5/5 VUs, 35 complete and 0 interrupted iterations
+smoke   [  40% ] 5 VUs  08.0s/20s
+
+running (09.0s), 5/5 VUs, 40 complete and 0 interrupted iterations
+smoke   [  45% ] 5 VUs  09.0s/20s
+
+running (10.0s), 5/5 VUs, 45 complete and 0 interrupted iterations
+smoke   [  50% ] 5 VUs  10.0s/20s
+
+running (11.0s), 5/5 VUs, 50 complete and 0 interrupted iterations
+smoke   [  55% ] 5 VUs  11.0s/20s
+
+running (12.0s), 5/5 VUs, 55 complete and 0 interrupted iterations
+smoke   [  60% ] 5 VUs  12.0s/20s
+
+running (13.0s), 5/5 VUs, 60 complete and 0 interrupted iterations
+smoke   [  65% ] 5 VUs  13.0s/20s
+
+running (14.0s), 5/5 VUs, 65 complete and 0 interrupted iterations
+smoke   [  70% ] 5 VUs  14.0s/20s
+
+running (15.0s), 5/5 VUs, 70 complete and 0 interrupted iterations
+smoke   [  75% ] 5 VUs  15.0s/20s
+
+running (16.0s), 5/5 VUs, 75 complete and 0 interrupted iterations
+smoke   [  80% ] 5 VUs  16.0s/20s
+
+running (17.0s), 5/5 VUs, 80 complete and 0 interrupted iterations
+smoke   [  85% ] 5 VUs  17.0s/20s
+
+running (18.0s), 5/5 VUs, 85 complete and 0 interrupted iterations
+smoke   [  90% ] 5 VUs  18.0s/20s
+
+running (19.0s), 5/5 VUs, 90 complete and 0 interrupted iterations
+smoke   [  95% ] 5 VUs  19.0s/20s
+
+running (20.0s), 5/5 VUs, 95 complete and 0 interrupted iterations
+smoke Γåô [ 100% ] 5 VUs  20s
+
+     Γ£ô status is 200 (trends)
+
+     checks.........................: 100.00% Γ£ô 100      Γ£ù 0  
+     data_received..................: 50 kB   2.5 kB/s
+     data_sent......................: 25 kB   1.2 kB/s
+   Γ£ô failures.......................: 0.00%   Γ£ô 0        Γ£ù 100
+     http_req_blocked...............: avg=706.85┬╡s min=0s     med=0s     max=18.21ms p(90)=0s       p(95)=634.11┬╡s
+     http_req_connecting............: avg=78.1┬╡s   min=0s     med=0s     max=5.52ms  p(90)=0s       p(95)=28.55┬╡s 
+   Γ£ô http_req_duration..............: avg=6.57ms   min=1.27ms med=3.22ms max=67.31ms p(90)=7.68ms   p(95)=18.85ms 
+       { expected_response:true }...: avg=6.57ms   min=1.27ms med=3.22ms max=67.31ms p(90)=7.68ms   p(95)=18.85ms 
+   Γ£ô http_req_failed................: 0.00%   Γ£ô 0        Γ£ù 100
+     http_req_receiving.............: avg=201┬╡s    min=0s     med=0s     max=2.3ms   p(90)=868.78┬╡s p(95)=996.91┬╡s
+     http_req_sending...............: avg=67.09┬╡s  min=0s     med=0s     max=4.95ms  p(90)=0s       p(95)=0s      
+     http_req_tls_handshaking.......: avg=0s       min=0s     med=0s     max=0s      p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=6.3ms    min=1.15ms med=2.76ms max=66.73ms p(90)=7.68ms   p(95)=18.26ms 
+     http_reqs......................: 100     4.910861/s
+     iteration_duration.............: avg=1.01s    min=1s     med=1.01s  max=1.09s   p(90)=1.01s    p(95)=1.03s   
+     iterations.....................: 100     4.910861/s
+     vus............................: 5       min=5      max=5
+     vus_max........................: 5       min=5      max=5
+
+
+running (20.4s), 0/5 VUs, 100 complete and 0 interrupted iterations
+smoke Γ£ô [ 100% ] 5 VUs  20s

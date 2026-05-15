@@ -1,0 +1,56 @@
+name: Docs Coherence Audit
+
+on:
+  schedule:
+    - cron: "0 9 1 * *"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    name: Monthly documentation coherence audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate required documentation artifacts exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            "docs/api/v1/openapi.json"
+            "docs/operations/runbooks-by-module.md"
+            "docs/operations/incident-severity-playbook.md"
+            "docs/architecture/domain-event-catalog.md"
+            "docs/architecture/data-dictionary.md"
+            "docs/operations/rbac-matrix.md"
+            "CONTRIBUTING.md"
+            "docs/engineering/coding-standards.md"
+            "CHANGELOG.md"
+            "docs/product/kpi-dashboard.md"
+            "docs/product/definition-of-done.md"
+            "docs/operations/doc-code-coherence-audit.md"
+          )
+          for f in "${required[@]}"; do
+            if [[ ! -f "$f" ]]; then
+              echo "Missing required docs file: $f"
+              exit 1
+            fi
+          done
+          echo "All required documentation artifacts found"
+
+      - name: Upload audit manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-coherence-audit-${{ github.run_number }}
+          path: |
+            docs/api/v1/openapi.json
+            docs/operations/runbooks-by-module.md
+            docs/operations/incident-severity-playbook.md
+            docs/architecture/domain-event-catalog.md
+            docs/architecture/data-dictionary.md
+            docs/operations/rbac-matrix.md
+            docs/product/kpi-dashboard.md
+            docs/product/definition-of-done.md
+            docs/operations/doc-code-coherence-audit.md
+            CHANGELOG.md
+          retention-days: 90

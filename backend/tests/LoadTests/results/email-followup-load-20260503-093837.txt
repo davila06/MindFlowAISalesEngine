@@ -1,0 +1,151 @@
+
+          /\      |ΓÇ╛ΓÇ╛| /ΓÇ╛ΓÇ╛/   /ΓÇ╛ΓÇ╛/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ΓÇ╛ΓÇ╛\  
+   /          \   |  |\  \ |  (ΓÇ╛)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+     execution: local
+        script: .\email-followup-load.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 1 max VUs, 40s max duration (incl. graceful stop):
+              * smoke: 1 looping VUs for 35s (exec: smokeSuite, gracefulStop: 5s)
+
+
+running (01.0s), 1/1 VUs, 0 complete and 0 interrupted iterations
+smoke   [   2% ] 1 VUs  00.8s/35s
+
+running (02.0s), 1/1 VUs, 0 complete and 0 interrupted iterations
+smoke   [   5% ] 1 VUs  01.8s/35s
+
+running (03.0s), 1/1 VUs, 1 complete and 0 interrupted iterations
+smoke   [   8% ] 1 VUs  02.8s/35s
+
+running (04.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+smoke   [  11% ] 1 VUs  03.8s/35s
+
+running (05.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+smoke   [  14% ] 1 VUs  04.8s/35s
+
+running (06.0s), 1/1 VUs, 3 complete and 0 interrupted iterations
+smoke   [  17% ] 1 VUs  05.8s/35s
+
+running (07.0s), 1/1 VUs, 4 complete and 0 interrupted iterations
+smoke   [  19% ] 1 VUs  06.8s/35s
+
+running (08.0s), 1/1 VUs, 4 complete and 0 interrupted iterations
+smoke   [  22% ] 1 VUs  07.8s/35s
+
+running (09.0s), 1/1 VUs, 5 complete and 0 interrupted iterations
+smoke   [  25% ] 1 VUs  08.8s/35s
+
+running (10.0s), 1/1 VUs, 6 complete and 0 interrupted iterations
+smoke   [  28% ] 1 VUs  09.8s/35s
+
+running (11.0s), 1/1 VUs, 7 complete and 0 interrupted iterations
+smoke   [  31% ] 1 VUs  10.8s/35s
+
+running (12.0s), 1/1 VUs, 7 complete and 0 interrupted iterations
+smoke   [  34% ] 1 VUs  11.8s/35s
+
+running (13.0s), 1/1 VUs, 8 complete and 0 interrupted iterations
+smoke   [  37% ] 1 VUs  12.8s/35s
+
+running (14.1s), 1/1 VUs, 9 complete and 0 interrupted iterations
+smoke   [  40% ] 1 VUs  13.9s/35s
+
+running (15.0s), 1/1 VUs, 9 complete and 0 interrupted iterations
+smoke   [  42% ] 1 VUs  14.8s/35s
+
+running (16.0s), 1/1 VUs, 10 complete and 0 interrupted iterations
+smoke   [  45% ] 1 VUs  15.8s/35s
+
+running (17.0s), 1/1 VUs, 11 complete and 0 interrupted iterations
+smoke   [  48% ] 1 VUs  16.8s/35s
+
+running (18.0s), 1/1 VUs, 11 complete and 0 interrupted iterations
+smoke   [  51% ] 1 VUs  17.8s/35s
+
+running (19.0s), 1/1 VUs, 12 complete and 0 interrupted iterations
+smoke   [  54% ] 1 VUs  18.8s/35s
+
+running (20.0s), 1/1 VUs, 13 complete and 0 interrupted iterations
+smoke   [  57% ] 1 VUs  19.8s/35s
+
+running (21.0s), 1/1 VUs, 13 complete and 0 interrupted iterations
+smoke   [  59% ] 1 VUs  20.8s/35s
+
+running (22.0s), 1/1 VUs, 14 complete and 0 interrupted iterations
+smoke   [  62% ] 1 VUs  21.8s/35s
+
+running (23.0s), 1/1 VUs, 15 complete and 0 interrupted iterations
+smoke   [  65% ] 1 VUs  22.8s/35s
+
+running (24.0s), 1/1 VUs, 15 complete and 0 interrupted iterations
+smoke   [  68% ] 1 VUs  23.8s/35s
+
+running (25.0s), 1/1 VUs, 16 complete and 0 interrupted iterations
+smoke   [  71% ] 1 VUs  24.8s/35s
+
+running (26.0s), 1/1 VUs, 17 complete and 0 interrupted iterations
+smoke   [  74% ] 1 VUs  25.8s/35s
+
+running (27.0s), 1/1 VUs, 18 complete and 0 interrupted iterations
+smoke   [  77% ] 1 VUs  26.8s/35s
+
+running (28.0s), 1/1 VUs, 18 complete and 0 interrupted iterations
+smoke   [  79% ] 1 VUs  27.8s/35s
+
+running (29.0s), 1/1 VUs, 19 complete and 0 interrupted iterations
+smoke   [  82% ] 1 VUs  28.8s/35s
+
+running (30.0s), 1/1 VUs, 20 complete and 0 interrupted iterations
+smoke   [  85% ] 1 VUs  29.8s/35s
+
+running (31.0s), 1/1 VUs, 20 complete and 0 interrupted iterations
+smoke   [  88% ] 1 VUs  30.8s/35s
+
+running (32.0s), 1/1 VUs, 21 complete and 0 interrupted iterations
+smoke   [  91% ] 1 VUs  31.8s/35s
+
+running (33.0s), 1/1 VUs, 22 complete and 0 interrupted iterations
+smoke   [  94% ] 1 VUs  32.8s/35s
+
+running (34.0s), 1/1 VUs, 22 complete and 0 interrupted iterations
+smoke   [  97% ] 1 VUs  33.8s/35s
+
+running (35.0s), 1/1 VUs, 23 complete and 0 interrupted iterations
+smoke   [  99% ] 1 VUs  34.8s/35s
+
+     Γ£ô status valid (lead-intake)
+     Γ£ô status valid (dispatch-execute-due)
+     Γ£ô status is 200 (email-kpis)
+     Γ£ô status is 200 (followup-jobs)
+
+     Γûê setup
+
+       Γ£ô setup smtp settings is 200
+
+     checks.........................: 100.00% Γ£ô 46       Γ£ù 0  
+     data_received..................: 57 kB   1.6 kB/s
+     data_sent......................: 11 kB   296 B/s
+   Γ£ô failures.......................: 0.00%   Γ£ô 0        Γ£ù 45 
+     http_req_blocked...............: avg=401.07┬╡s min=0s       med=0s      max=17.88ms  p(90)=0s      p(95)=0s      
+     http_req_connecting............: avg=24.77┬╡s  min=0s       med=0s      max=573┬╡s    p(90)=0s      p(95)=0s      
+   Γ£ô http_req_duration..............: avg=39.47ms  min=1.52ms   med=32.19ms max=489.86ms p(90)=59.03ms p(95)=84.89ms 
+       { expected_response:true }...: avg=39.47ms  min=1.52ms   med=32.19ms max=489.86ms p(90)=59.03ms p(95)=84.89ms 
+   Γ£ô http_req_failed................: 0.00%   Γ£ô 0        Γ£ù 46 
+     http_req_receiving.............: avg=431.18┬╡s min=0s       med=466.8┬╡s max=1.51ms   p(90)=939.1┬╡s p(95)=1ms     
+     http_req_sending...............: avg=71.2┬╡s   min=0s       med=0s      max=1.95ms   p(90)=0s      p(95)=418.27┬╡s
+     http_req_tls_handshaking.......: avg=0s       min=0s       med=0s      max=0s       p(90)=0s      p(95)=0s      
+     http_req_waiting...............: avg=38.97ms  min=1.52ms   med=31.46ms max=489ms    p(90)=59.03ms p(95)=84.68ms 
+     http_reqs......................: 46      1.291775/s
+     iteration_duration.............: avg=1.42s    min=202.89ms med=1.45s   max=2s       p(90)=1.48s   p(95)=1.49s   
+     iterations.....................: 24      0.673969/s
+     vus............................: 1       min=1      max=1
+     vus_max........................: 1       min=1      max=1
+
+
+running (35.6s), 0/1 VUs, 24 complete and 0 interrupted iterations
+smoke Γ£ô [ 100% ] 1 VUs  35s

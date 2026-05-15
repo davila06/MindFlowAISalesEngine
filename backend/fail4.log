@@ -1,0 +1,18 @@
+  Determinando los proyectos que se van a restaurar...
+  Todos los proyectos est├ín actualizados para la restauraci├│n.
+  Api -> C:\NovaMind - MindFlow AI sales engine\backend\src\Api\bin\Debug\net9.0\Api.dll
+  Api.Tests -> C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\bin\Debug\net9.0\Api.Tests.dll
+Serie de pruebas para C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\bin\Debug\net9.0\Api.Tests.dll (.NETCoreApp,Version=v9.0)
+1 archivos de prueba en total coincidieron con el patr├│n especificado.
+[xUnit.net 00:00:04.55]     Api.Tests.QaConcurrencyPipelineTests.ConcurrentIdempotentIntake_SameKey_OnlyOneRecordCreated [FAIL]
+  Con error Api.Tests.QaConcurrencyPipelineTests.ConcurrentIdempotentIntake_SameKey_OnlyOneRecordCreated [3 s]
+  Mensaje de error:
+   Assert.Single() Failure: The collection contained 5 items
+Collection: [09ef3cec-6017-46a6-99a8-d6f2883fd1dc, 5a2e6899-1713-457a-ab38-36308d67b3de, 7acc2aff-8c51-42ef-b014-363b641e3a3d, aa599a31-a6b9-423d-86dd-2df6dab3b879, 5797acfc-b8d1-469b-99ce-ba37b2f4ccb5]
+  Seguimiento de la pila:
+     at Api.Tests.QaConcurrencyPipelineTests.ConcurrentIdempotentIntake_SameKey_OnlyOneRecordCreated() in C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\QaConcurrencyAndIsolationTests.cs:line 120
+--- End of stack trace from previous location ---
+
+Con error! - Con error:     1, Superado:     0, Omitido:     0, Total:     1, Duraci├│n: 3 s - Api.Tests.dll (net9.0)
+
+Hay actualizaciones de carga de trabajo disponibles. Ejecute "dotnet workload list" para obtener m├ís informaci├│n.

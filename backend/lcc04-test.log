@@ -1,0 +1,476 @@
+Compilaci├│n iniciada a las 3/5/2026 07:58:10.
+     1>Proyecto "C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\Api.Tests.csproj" en el nodo 1 (Restore destinos).
+     1>_GetAllRestoreProjectPathItems:
+         Determinando los proyectos que se van a restaurar...
+       Restore:
+         La validaci├│n de la cadena de certificados X.509 utilizar├í el almac├⌐n de confianza predeterminado seleccionado por .NET para la firma de c├│digo.
+         La validaci├│n de la cadena de certificados X.509 utilizar├í el almac├⌐n de confianza predeterminado seleccionado por .NET para la marca de tiempo.
+         El archivo de recursos no ha cambiado, as├¡ que se omitir├í su escritura. Ruta de acceso: C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\obj\project.assets.json
+         El archivo de recursos no ha cambiado, as├¡ que se omitir├í su escritura. Ruta de acceso: C:\NovaMind - MindFlow AI sales engine\backend\src\Api\obj\project.assets.json
+         Se ha restaurado C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\Api.Tests.csproj (en 96 ms).
+         Se ha restaurado C:\NovaMind - MindFlow AI sales engine\backend\src\Api\Api.csproj (en 96 ms).
+         
+         Archivos de NuGet Config usados:
+             C:\Users\DenisAvilaUma├▒a\AppData\Roaming\NuGet\NuGet.Config
+             C:\Program Files (x86)\NuGet\Config\Microsoft.VisualStudio.FallbackLocation.config
+             C:\Program Files (x86)\NuGet\Config\Microsoft.VisualStudio.Offline.config
+         
+         Fuentes usadas:
+             https://api.nuget.org/v3/index.json
+             C:\Program Files (x86)\Microsoft SDKs\NuGetPackages\
+             C:\Program Files\dotnet\library-packs
+         Todos los proyectos est├ín actualizados para la restauraci├│n.
+     1>Compilaci├│n del proyecto terminada "C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\Api.Tests.csproj" (Restore destinos).
+   1:7>Proyecto "C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\Api.Tests.csproj" en el nodo 1 (VSTest destinos).
+     1>BuildProject:
+         Compilaci├│n iniciada, espere...
+   1:7>El proyecto "C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\Api.Tests.csproj" (1:7) est├í compilando "C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\Api.Tests.csproj" (1:8) en el nodo 1 (destinos predeterminados).
+   1:8>El proyecto "C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\Api.Tests.csproj" (1:8) est├í compilando "C:\NovaMind - MindFlow AI sales engine\backend\src\Api\Api.csproj" (2:6) en el nodo 1 (destinos predeterminados).
+     2>GenerateTargetFrameworkMonikerAttribute:
+       Se omitir├í el destino "GenerateTargetFrameworkMonikerAttribute" porque todos los archivos de salida est├ín actualizados respecto a los archivos de entrada.
+       CoreGenerateAssemblyInfo:
+       Se omitir├í el destino "CoreGenerateAssemblyInfo" porque todos los archivos de salida est├ín actualizados respecto a los archivos de entrada.
+       _DiscoverMvcApplicationParts:
+       Se omitir├í el destino "_DiscoverMvcApplicationParts" porque todos los archivos de salida est├ín actualizados respecto a los archivos de entrada.
+       _GenerateSourceLinkFile:
+         El v├¡nculo de origen est├í vac├¡o, el archivo 'obj\Debug\net9.0\Api.sourcelink.json' no existe.
+       CoreCompile:
+       Se omitir├í el destino "CoreCompile" porque todos los archivos de salida est├ín actualizados respecto a los archivos de entrada.
+       _CreateAppHost:
+       Se omitir├í el destino "_CreateAppHost" porque todos los archivos de salida est├ín actualizados respecto a los archivos de entrada.
+       _ProcessScopedCssFiles:
+       Se omitir├í el destino "_ProcessScopedCssFiles" porque no tiene salidas.
+       _ProcessScopedCssFiles:
+       Se omitir├í el destino "_ProcessScopedCssFiles" porque no tiene salidas.
+       _BuildCopyStaticWebAssetsPreserveNewest:
+       Se omitir├í el destino "_BuildCopyStaticWebAssetsPreserveNewest" porque no tiene salidas.
+       _CopyOutOfDateSourceItemsToOutputDirectory:
+       Se omitir├í el destino "_CopyOutOfDateSourceItemsToOutputDirectory" porque todos los archivos de salida est├ín actualizados respecto a los archivos de entrada.
+       GenerateBuildDependencyFile:
+       Se omitir├í el destino "GenerateBuildDependencyFile" porque todos los archivos de salida est├ín actualizados respecto a los archivos de entrada.
+       GenerateBuildRuntimeConfigurationFiles:
+       Se omitir├í el destino "GenerateBuildRuntimeConfigurationFiles" porque todos los archivos de salida est├ín actualizados respecto a los archivos de entrada.
+       CopyFilesToOutputDirectory:
+         Api -> C:\NovaMind - MindFlow AI sales engine\backend\src\Api\bin\Debug\net9.0\Api.dll
+     2>Compilaci├│n del proyecto terminada "C:\NovaMind - MindFlow AI sales engine\backend\src\Api\Api.csproj" (destinos predeterminados).
+     1>GenerateTargetFrameworkMonikerAttribute:
+       Se omitir├í el destino "GenerateTargetFrameworkMonikerAttribute" porque todos los archivos de salida est├ín actualizados respecto a los archivos de entrada.
+       CoreGenerateAssemblyInfo:
+       Se omitir├í el destino "CoreGenerateAssemblyInfo" porque todos los archivos de salida est├ín actualizados respecto a los archivos de entrada.
+       _GenerateSourceLinkFile:
+         El v├¡nculo de origen est├í vac├¡o, el archivo 'obj\Debug\net9.0\Api.Tests.sourcelink.json' no existe.
+       CoreCompile:
+       Se omitir├í el destino "CoreCompile" porque todos los archivos de salida est├ín actualizados respecto a los archivos de entrada.
+       _CopyOutOfDateSourceItemsToOutputDirectory:
+       Compilando parcialmente el destino "_CopyOutOfDateSourceItemsToOutputDirectory" porque algunos de los archivos de salida est├ín obsoletos respecto a los archivos de entrada.
+         Copiando el archivo de "C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\obj\Debug\net9.0\MvcTestingAppManifest.json" en "C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\bin\Debug\net9.0\MvcTestingAppManifest.json".
+       GenerateBuildDependencyFile:
+       Se omitir├í el destino "GenerateBuildDependencyFile" porque todos los archivos de salida est├ín actualizados respecto a los archivos de entrada.
+       GenerateBuildRuntimeConfigurationFiles:
+       Se omitir├í el destino "GenerateBuildRuntimeConfigurationFiles" porque todos los archivos de salida est├ín actualizados respecto a los archivos de entrada.
+       CopyFilesToOutputDirectory:
+         Api.Tests -> C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\bin\Debug\net9.0\Api.Tests.dll
+       _MvcCopyDependencyFiles:
+         Copiando el archivo de "C:\NovaMind - MindFlow AI sales engine\backend\src\Api\bin\Debug\net9.0\Api.deps.json" en "C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\bin\Debug\net9.0\Api.deps.json".
+     1>Compilaci├│n del proyecto terminada "C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\Api.Tests.csproj" (destinos predeterminados).
+     1>BuildProject:
+         Se complet├│ la compilaci├│n.
+         
+Serie de pruebas para C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\bin\Debug\net9.0\Api.Tests.dll (.NETCoreApp,Version=v9.0)
+Versi├│n 17.14.1 (x64) de VSTest
+
+Iniciando la ejecuci├│n de pruebas, espere...
+1 archivos de prueba en total coincidieron con el patr├│n especificado.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 9.0.9)
+[xUnit.net 00:00:00.21]   Discovering: Api.Tests
+[xUnit.net 00:00:00.28]   Discovered:  Api.Tests
+[xUnit.net 00:00:00.29]   Starting:    Api.Tests
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (16ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*) FROM "sqlite_master" WHERE "type" = 'table' AND "rootpage" IS NOT NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "Score" INTEGER NOT NULL DEFAULT 0;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "Priority" TEXT NOT NULL DEFAULT 'Low';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "Channel" TEXT NOT NULL DEFAULT 'inbound';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "Campaign" TEXT NOT NULL DEFAULT 'organic';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "Country" TEXT NOT NULL DEFAULT 'xx';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "ScoringVersion" TEXT NOT NULL DEFAULT 'unscored';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "ScoredAtUtc" TEXT NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Contacts" ADD COLUMN "IsDeleted" INTEGER NOT NULL DEFAULT 0;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Contacts" ADD COLUMN "DeletedAtUtc" TEXT NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Companies" ADD COLUMN "IsDeleted" INTEGER NOT NULL DEFAULT 0;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Companies" ADD COLUMN "DeletedAtUtc" TEXT NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Companies" ADD COLUMN "Industry" TEXT NOT NULL DEFAULT 'unknown';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Rules" ADD COLUMN "Version" INTEGER NOT NULL DEFAULT 1;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Rules" ADD COLUMN "Environment" TEXT NOT NULL DEFAULT 'dev';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Rules" ADD COLUMN "ApprovalStatus" TEXT NOT NULL DEFAULT 'approved';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Rules" ADD COLUMN "ApprovedBy" TEXT NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Rules" ADD COLUMN "ApprovedAtUtc" TEXT NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Contacts" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Companies" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "PipelineStages" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Opportunities" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "OpportunityStageHistory" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "SmtpSettings" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "EmailTemplates" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "EmailLogs" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "FollowUpJobs" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AssignmentUsers" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "LeadAssignments" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Rules" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "RuleConditions" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "RuleActions" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Proposals" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "ProposalReminderJobs" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Customers" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "OnboardingTasks" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "OnboardingWelcomeJobs" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertThresholds" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "PoisonQueueRemediationRuns" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AssignmentUsers" ADD COLUMN "PreferredCountry" TEXT NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AssignmentUsers" ADD COLUMN "PreferredIndustry" TEXT NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AssignmentUsers" ADD COLUMN "MaxActiveLeads" INTEGER NOT NULL DEFAULT 100;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AssignmentUsers" ADD COLUMN "MinScoreToAssign" INTEGER NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertThresholds" ADD COLUMN "WebhookUrl" TEXT NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "Status" TEXT NOT NULL DEFAULT 'open'
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "AcknowledgedBy" TEXT NULL
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "AcknowledgedAtUtc" TEXT NULL
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "SnoozedUntilUtc" TEXT NULL
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "ResolvedBy" TEXT NULL
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "ResolvedAtUtc" TEXT NULL
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "StatusNotes" TEXT NULL
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7), @__emailCutoff_0='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."ErrorMessage", "e"."LeadId", "e"."SentAtUtc", "e"."Status", "e"."Subject", "e"."Succeeded", "e"."TemplateName", "e"."TenantId", "e"."ToEmail"
+      FROM "EmailLogs" AS "e"
+      WHERE "e"."TenantId" = @__ef_filter__TenantId_0 AND "e"."SentAtUtc" < @__emailCutoff_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7), @__alertCutoff_0='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT "a"."Id", "a"."AcknowledgedAtUtc", "a"."AcknowledgedBy", "a"."EndpointName", "a"."MetricName", "a"."NotificationSent", "a"."ObservedValue", "a"."ResolvedAtUtc", "a"."ResolvedBy", "a"."SnoozedUntilUtc", "a"."Status", "a"."StatusNotes", "a"."TenantId", "a"."ThresholdId", "a"."ThresholdValue", "a"."TriggeredAtUtc"
+      FROM "AlertEvents" AS "a"
+      WHERE "a"."TenantId" = @__ef_filter__TenantId_0 AND "a"."TriggeredAtUtc" < @__alertCutoff_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__auditCutoff_0='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT "a"."Id", "a"."Action", "a"."CreatedAtUtc", "a"."Details", "a"."Target", "a"."TenantId", "a"."UserRole"
+      FROM "AdminAuditLogs" AS "a"
+      WHERE "a"."CreatedAtUtc" < @__auditCutoff_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (30ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Int32), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "DataRetentionRuns" ("Id", "AdminAuditLogsRemoved", "AlertEventsRemoved", "EmailLogsRemoved", "ExecutedAtUtc")
+      VALUES (@p0, @p1, @p2, @p3, @p4);
+info: Api.Infrastructure.Security.SensitiveDataRetentionService[0]
+      Sensitive data retention cleanup removed EmailLogs=0, AlertEvents=0, AdminAuditLogs=0.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7)], CommandType='Text', CommandTimeout='30']
+      SELECT "l"."Id", "l"."Campaign", "l"."Channel", "l"."Country", "l"."CreatedAtUtc", "l"."Email", "l"."Phone", "l"."Priority", "l"."Score", "l"."ScoredAtUtc", "l"."ScoringVersion", "l"."Source", "l"."TenantId"
+      FROM "Leads" AS "l"
+      WHERE "l"."TenantId" = @__ef_filter__TenantId_0
+      ORDER BY "l"."CreatedAtUtc" DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 7), @p2='?' (Size = 7), @p3='?' (Size = 2), @p4='?' (DbType = DateTime), @p5='?' (Size = 25), @p6='?' (Size = 10), @p7='?' (Size = 3), @p8='?' (DbType = DateTime), @p9='?' (Size = 8), @p10='?' (Size = 12), @p11='?' (Size = 7)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "Leads" ("Id", "Campaign", "Channel", "Country", "CreatedAtUtc", "Email", "Phone", "Priority", "ScoredAtUtc", "ScoringVersion", "Source", "TenantId")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11)
+      RETURNING "Score";
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (40ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 6), @p2='?' (DbType = DateTime), @p3='?' (Size = 19), @p4='?' (DbType = Guid), @p5='?' (Size = 138)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "LeadAuditSnapshots" ("Id", "Actor", "CreatedAtUtc", "EventType", "LeadId", "PayloadJson")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 6), @p2='?' (DbType = DateTime), @p3='?' (Size = 37), @p4='?' (DbType = Guid), @p5='?' (Size = 200)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "LeadAuditSnapshots" ("Id", "Actor", "CreatedAtUtc", "EventType", "LeadId", "PayloadJson")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+info: Api.Application.Leads.LeadIntakeService[0]
+      Lead intake persisted with id 1c6e54d3-a067-4fde-82ce-d6e33ce0d766 from source landing-page
+info: Api.Infrastructure.Events.LeadCreatedEventPublisher[0]
+      Domain event published: lead.created (LeadId: 1c6e54d3-a067-4fde-82ce-d6e33ce0d766, Source: landing-page)
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7)], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."EnableSsl", "s"."FromEmail", "s"."FromName", "s"."Host", "s"."IsActive", "s"."Password", "s"."Port", "s"."TenantId", "s"."UpdatedAtUtc", "s"."Username"
+      FROM "SmtpSettings" AS "s"
+      WHERE "s"."TenantId" = @__ef_filter__TenantId_0 AND "s"."IsActive"
+      ORDER BY "s"."UpdatedAtUtc" DESC
+      LIMIT 1
+warn: Api.Application.Email.EmailService[0]
+      No active SMTP settings configured. Skipping welcome email for lead 1c6e54d3-a067-4fde-82ce-d6e33ce0d766
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 16), @p2='?' (DbType = Guid), @p3='?' (DbType = DateTime), @p4='?' (Size = 7), @p5='?', @p6='?' (DbType = Boolean), @p7='?' (Size = 12), @p8='?' (Size = 7), @p9='?' (Size = 25)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "EmailLogs" ("Id", "ErrorMessage", "LeadId", "SentAtUtc", "Status", "Subject", "Succeeded", "TemplateName", "TenantId", "ToEmail")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9);
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Int32), @p2='?', @p3='?' (DbType = DateTime), @p4='?' (DbType = DateTime), @p5='?', @p6='?' (DbType = DateTime), @p7='?' (DbType = Guid), @p8='?' (DbType = DateTime), @p9='?' (Size = 9), @p10='?' (Size = 7), @p11='?' (Size = 25)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "FollowUpJobs" ("Id", "AttemptNumber", "CancelReason", "CancelledAtUtc", "DueAtUtc", "ErrorMessage", "ExecutedAtUtc", "LeadId", "ScheduledAtUtc", "Status", "TenantId", "ToEmail")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11);
+info: Api.Application.FollowUp.FollowUpService[0]
+      Follow-up job 9f221e43-28f5-46fe-9264-5115e2116cf1 scheduled for lead 1c6e54d3-a067-4fde-82ce-d6e33ce0d766, due at 2026-05-05T13:58:22.4119539Z
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7), @__leadId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+      SELECT "l"."Id", "l"."Campaign", "l"."Channel", "l"."Country", "l"."CreatedAtUtc", "l"."Email", "l"."Phone", "l"."Priority", "l"."Score", "l"."ScoredAtUtc", "l"."ScoringVersion", "l"."Source", "l"."TenantId"
+      FROM "Leads" AS "l"
+      WHERE "l"."TenantId" = @__ef_filter__TenantId_0 AND "l"."Id" = @__leadId_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p4='?' (DbType = Guid), @p0='?' (Size = 6), @p1='?' (DbType = Int32), @p2='?' (DbType = DateTime), @p3='?' (Size = 4)], CommandType='Text', CommandTimeout='30']
+      UPDATE "Leads" SET "Priority" = @p0, "Score" = @p1, "ScoredAtUtc" = @p2, "ScoringVersion" = @p3
+      WHERE "Id" = @p4
+      RETURNING 1;
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 14), @p2='?' (DbType = DateTime), @p3='?' (Size = 18), @p4='?' (DbType = Guid), @p5='?' (Size = 101)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "LeadAuditSnapshots" ("Id", "Actor", "CreatedAtUtc", "EventType", "LeadId", "PayloadJson")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7), @__leadId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+      SELECT "l"."Id", "l"."Campaign", "l"."Channel", "l"."Country", "l"."CreatedAtUtc", "l"."Email", "l"."Phone", "l"."Priority", "l"."Score", "l"."ScoredAtUtc", "l"."ScoringVersion", "l"."Source", "l"."TenantId"
+      FROM "Leads" AS "l"
+      WHERE "l"."TenantId" = @__ef_filter__TenantId_0 AND "l"."Id" = @__leadId_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7), @__leadId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."CreatedAtUtc", "c"."DeletedAtUtc", "c"."Industry", "c"."IsDeleted", "c"."LeadId", "c"."Name", "c"."TenantId", "c"."Website"
+      FROM "Companies" AS "c"
+      WHERE "c"."TenantId" = @__ef_filter__TenantId_0 AND NOT ("c"."IsDeleted") AND "c"."LeadId" = @__leadId_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7)], CommandType='Text', CommandTimeout='30']
+      SELECT "a"."Id", "a"."CreatedAtUtc", "a"."Email", "a"."FullName", "a"."IsActive", "a"."MaxActiveLeads", "a"."MinScoreToAssign", "a"."PreferredCountry", "a"."PreferredIndustry", "a"."TenantId"
+      FROM "AssignmentUsers" AS "a"
+      WHERE "a"."TenantId" = @__ef_filter__TenantId_0 AND "a"."IsActive"
+      ORDER BY "a"."CreatedAtUtc", "a"."Id"
+warn: Api.Application.Assignment.LeadAssignmentService[0]
+      No active assignment users available. Lead 1c6e54d3-a067-4fde-82ce-d6e33ce0d766 remains unassigned.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7), @__leadId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+      SELECT "l"."Id", "l"."Campaign", "l"."Channel", "l"."Country", "l"."CreatedAtUtc", "l"."Email", "l"."Phone", "l"."Priority", "l"."Score", "l"."ScoredAtUtc", "l"."ScoringVersion", "l"."Source", "l"."TenantId"
+      FROM "Leads" AS "l"
+      WHERE "l"."TenantId" = @__ef_filter__TenantId_0 AND "l"."Id" = @__leadId_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7), @__trigger_0='?' (Size = 12)], CommandType='Text', CommandTimeout='30']
+      SELECT "r"."Id", "r"."ApprovalStatus", "r"."ApprovedAtUtc", "r"."ApprovedBy", "r"."CreatedAtUtc", "r"."Environment", "r"."IsActive", "r"."Name", "r"."TenantId", "r"."Trigger", "r"."UpdatedAtUtc", "r"."Version"
+      FROM "Rules" AS "r"
+      WHERE "r"."TenantId" = @__ef_filter__TenantId_0 AND "r"."IsActive" AND "r"."Trigger" = @__trigger_0
+      ORDER BY "r"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7), @__leadId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+      SELECT "l"."Id", "l"."Campaign", "l"."Channel", "l"."Country", "l"."CreatedAtUtc", "l"."Email", "l"."Phone", "l"."Priority", "l"."Score", "l"."ScoredAtUtc", "l"."ScoringVersion", "l"."Source", "l"."TenantId"
+      FROM "Leads" AS "l"
+      WHERE "l"."TenantId" = @__ef_filter__TenantId_0 AND "l"."Id" = @__leadId_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7)], CommandType='Text', CommandTimeout='30']
+      SELECT "l"."Id", "l"."Campaign", "l"."Channel", "l"."Country", "l"."CreatedAtUtc", "l"."Email", "l"."Phone", "l"."Priority", "l"."Score", "l"."ScoredAtUtc", "l"."ScoringVersion", "l"."Source", "l"."TenantId"
+      FROM "Leads" AS "l"
+      WHERE "l"."TenantId" = @__ef_filter__TenantId_0
+      ORDER BY "l"."CreatedAtUtc" DESC
+  Correctas Api.Tests.LeadIntakeEndpointTests.PostLeadIntake_WithValidPhoneForCountry_ReturnsCreated [3 s]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 7), @p2='?' (Size = 7), @p3='?' (Size = 2), @p4='?' (DbType = DateTime), @p5='?' (Size = 17), @p6='?' (Size = 10), @p7='?' (Size = 3), @p8='?' (DbType = DateTime), @p9='?' (Size = 8), @p10='?' (Size = 12), @p11='?' (Size = 7)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "Leads" ("Id", "Campaign", "Channel", "Country", "CreatedAtUtc", "Email", "Phone", "Priority", "ScoredAtUtc", "ScoringVersion", "Source", "TenantId")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11)
+      RETURNING "Score";
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 6), @p2='?' (DbType = DateTime), @p3='?' (Size = 19), @p4='?' (DbType = Guid), @p5='?' (Size = 130)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "LeadAuditSnapshots" ("Id", "Actor", "CreatedAtUtc", "EventType", "LeadId", "PayloadJson")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 6), @p2='?' (DbType = DateTime), @p3='?' (Size = 37), @p4='?' (DbType = Guid), @p5='?' (Size = 184)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "LeadAuditSnapshots" ("Id", "Actor", "CreatedAtUtc", "EventType", "LeadId", "PayloadJson")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+info: Api.Application.Leads.LeadIntakeService[0]
+      Lead intake persisted with id 6f2faaf2-c0f5-4377-8d0a-b00fa01fd1f3 from source landing-page
+info: Api.Infrastructure.Events.LeadCreatedEventPublisher[0]
+      Domain event published: lead.created (LeadId: 6f2faaf2-c0f5-4377-8d0a-b00fa01fd1f3, Source: landing-page)
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7)], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."EnableSsl", "s"."FromEmail", "s"."FromName", "s"."Host", "s"."IsActive", "s"."Password", "s"."Port", "s"."TenantId", "s"."UpdatedAtUtc", "s"."Username"
+      FROM "SmtpSettings" AS "s"
+      WHERE "s"."TenantId" = @__ef_filter__TenantId_0 AND "s"."IsActive"
+      ORDER BY "s"."UpdatedAtUtc" DESC
+      LIMIT 1
+warn: Api.Application.Email.EmailService[0]
+      No active SMTP settings configured. Skipping welcome email for lead 6f2faaf2-c0f5-4377-8d0a-b00fa01fd1f3
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 16), @p2='?' (DbType = Guid), @p3='?' (DbType = DateTime), @p4='?' (Size = 7), @p5='?', @p6='?' (DbType = Boolean), @p7='?' (Size = 12), @p8='?' (Size = 7), @p9='?' (Size = 17)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "EmailLogs" ("Id", "ErrorMessage", "LeadId", "SentAtUtc", "Status", "Subject", "Succeeded", "TemplateName", "TenantId", "ToEmail")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9);
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Int32), @p2='?', @p3='?' (DbType = DateTime), @p4='?' (DbType = DateTime), @p5='?', @p6='?' (DbType = DateTime), @p7='?' (DbType = Guid), @p8='?' (DbType = DateTime), @p9='?' (Size = 9), @p10='?' (Size = 7), @p11='?' (Size = 17)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "FollowUpJobs" ("Id", "AttemptNumber", "CancelReason", "CancelledAtUtc", "DueAtUtc", "ErrorMessage", "ExecutedAtUtc", "LeadId", "ScheduledAtUtc", "Status", "TenantId", "ToEmail")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11);
+info: Api.Application.FollowUp.FollowUpService[0]
+      Follow-up job 123295a1-659b-4cdc-a675-1af596001c48 scheduled for lead 6f2faaf2-c0f5-4377-8d0a-b00fa01fd1f3, due at 2026-05-05T13:58:22.8395732Z
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7), @__leadId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+      SELECT "l"."Id", "l"."Campaign", "l"."Channel", "l"."Country", "l"."CreatedAtUtc", "l"."Email", "l"."Phone", "l"."Priority", "l"."Score", "l"."ScoredAtUtc", "l"."ScoringVersion", "l"."Source", "l"."TenantId"
+      FROM "Leads" AS "l"
+      WHERE "l"."TenantId" = @__ef_filter__TenantId_0 AND "l"."Id" = @__leadId_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p4='?' (DbType = Guid), @p0='?' (Size = 6), @p1='?' (DbType = Int32), @p2='?' (DbType = DateTime), @p3='?' (Size = 4)], CommandType='Text', CommandTimeout='30']
+      UPDATE "Leads" SET "Priority" = @p0, "Score" = @p1, "ScoredAtUtc" = @p2, "ScoringVersion" = @p3
+      WHERE "Id" = @p4
+      RETURNING 1;
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 14), @p2='?' (DbType = DateTime), @p3='?' (Size = 18), @p4='?' (DbType = Guid), @p5='?' (Size = 101)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "LeadAuditSnapshots" ("Id", "Actor", "CreatedAtUtc", "EventType", "LeadId", "PayloadJson")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7), @__leadId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+      SELECT "l"."Id", "l"."Campaign", "l"."Channel", "l"."Country", "l"."CreatedAtUtc", "l"."Email", "l"."Phone", "l"."Priority", "l"."Score", "l"."ScoredAtUtc", "l"."ScoringVersion", "l"."Source", "l"."TenantId"
+      FROM "Leads" AS "l"
+      WHERE "l"."TenantId" = @__ef_filter__TenantId_0 AND "l"."Id" = @__leadId_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7), @__leadId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."CreatedAtUtc", "c"."DeletedAtUtc", "c"."Industry", "c"."IsDeleted", "c"."LeadId", "c"."Name", "c"."TenantId", "c"."Website"
+      FROM "Companies" AS "c"
+      WHERE "c"."TenantId" = @__ef_filter__TenantId_0 AND NOT ("c"."IsDeleted") AND "c"."LeadId" = @__leadId_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7)], CommandType='Text', CommandTimeout='30']
+      SELECT "a"."Id", "a"."CreatedAtUtc", "a"."Email", "a"."FullName", "a"."IsActive", "a"."MaxActiveLeads", "a"."MinScoreToAssign", "a"."PreferredCountry", "a"."PreferredIndustry", "a"."TenantId"
+      FROM "AssignmentUsers" AS "a"
+      WHERE "a"."TenantId" = @__ef_filter__TenantId_0 AND "a"."IsActive"
+      ORDER BY "a"."CreatedAtUtc", "a"."Id"
+warn: Api.Application.Assignment.LeadAssignmentService[0]
+      No active assignment users available. Lead 6f2faaf2-c0f5-4377-8d0a-b00fa01fd1f3 remains unassigned.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7), @__leadId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+      SELECT "l"."Id", "l"."Campaign", "l"."Channel", "l"."Country", "l"."CreatedAtUtc", "l"."Email", "l"."Phone", "l"."Priority", "l"."Score", "l"."ScoredAtUtc", "l"."ScoringVersion", "l"."Source", "l"."TenantId"
+      FROM "Leads" AS "l"
+      WHERE "l"."TenantId" = @__ef_filter__TenantId_0 AND "l"."Id" = @__leadId_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7), @__trigger_0='?' (Size = 12)], CommandType='Text', CommandTimeout='30']
+      SELECT "r"."Id", "r"."ApprovalStatus", "r"."ApprovedAtUtc", "r"."ApprovedBy", "r"."CreatedAtUtc", "r"."Environment", "r"."IsActive", "r"."Name", "r"."TenantId", "r"."Trigger", "r"."UpdatedAtUtc", "r"."Version"
+      FROM "Rules" AS "r"
+      WHERE "r"."TenantId" = @__ef_filter__TenantId_0 AND "r"."IsActive" AND "r"."Trigger" = @__trigger_0
+      ORDER BY "r"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__ef_filter__TenantId_0='?' (Size = 7), @__leadId_0='?' (DbType = Guid)], CommandType='Text', CommandTimeout='30']
+      SELECT "l"."Id", "l"."Campaign", "l"."Channel", "l"."Country", "l"."CreatedAtUtc", "l"."Email", "l"."Phone", "l"."Priority", "l"."Score", "l"."ScoredAtUtc", "l"."ScoringVersion", "l"."Source", "l"."TenantId"
+      FROM "Leads" AS "l"
+      WHERE "l"."TenantId" = @__ef_filter__TenantId_0 AND "l"."Id" = @__leadId_0
+      LIMIT 1
+[xUnit.net 00:00:04.03]   Finished:    Api.Tests
+  Correctas Api.Tests.LeadIntakeEndpointTests.PostLeadIntake_WithValidPayload_ReturnsCreated [130 ms]
+  Correctas Api.Tests.LeadIntakeEndpointTests.PostLeadIntake_WithMissingContactFields_ReturnsBadRequest [28 ms]
+  Correctas Api.Tests.LeadIntakeEndpointTests.PostLeadIntake_WithInvalidPhoneForCountry_ReturnsBadRequest [3 ms]
+
+La serie de pruebas se ejecut├│ correctamente.
+Pruebas totales: 4
+     Correcto: 4
+ Tiempo total: 4,9170 Segundos
+     1>Compilaci├│n del proyecto terminada "C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\Api.Tests.csproj" (VSTest destinos).
+
+Compilaci├│n correcta.
+    0 Advertencia(s)
+    0 Errores
+
+Tiempo transcurrido 00:00:12.40
+
+Hay actualizaciones de carga de trabajo disponibles. Ejecute "dotnet workload list" para obtener m├ís informaci├│n.

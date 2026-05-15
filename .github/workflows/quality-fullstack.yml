@@ -1,0 +1,241 @@
+name: Quality Fullstack Gate
+
+on:
+  push:
+    branches: ["main", "develop"]
+  pull_request:
+    branches: ["main", "develop"]
+
+# Cancel superseded runs for the same branch/PR to save runner minutes.
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_VERSION: "9.0.x"
+  NODE_VERSION: "20"
+  COVERAGE_THRESHOLD: "80"          # minimum line-coverage percent gate
+  BACKEND_URL: "http://127.0.0.1:5165"
+  FRONTEND_PORT: "3100"
+
+jobs:
+  # ─────────────────────────────────────────────
+  # OPS-01 | Backend quality gate
+  # • Build (Release)
+  # • Test with code-coverage (Coverlet → Cobertura)
+  # • Gate: fail if line coverage < COVERAGE_THRESHOLD
+  # • Publish test results + coverage report as artifacts
+  # ─────────────────────────────────────────────
+  backend-quality:
+    name: "Backend · build + test + coverage"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build (Release)
+        run: dotnet build -c Release --no-restore
+
+      - name: Test with coverage
+        run: |
+          dotnet test tests/Api.Tests/Api.Tests.csproj \
+            -c Release --no-build \
+            --logger "trx;LogFileName=results.trx" \
+            --collect:"XPlat Code Coverage" \
+            --results-directory ./TestResults
+
+      - name: Coverage gate – enforce minimum line coverage
+        shell: bash
+        run: |
+          COVERAGE_FILE=$(find ./TestResults -name "coverage.cobertura.xml" | head -1)
+          if [ -z "$COVERAGE_FILE" ]; then
+            echo "::warning ::No coverage file produced – Coverlet may not be referenced. Skipping gate."
+            exit 0
+          fi
+          LINE_RATE=$(grep -oPm1 'line-rate="\K[^"]+' "$COVERAGE_FILE" || echo "0")
+          LINE_PCT=$(awk "BEGIN { printf \"%.0f\", $LINE_RATE * 100 }")
+          echo "Line coverage: ${LINE_PCT}%  (threshold: ${{ env.COVERAGE_THRESHOLD }}%)"
+          if [ "$LINE_PCT" -lt "${{ env.COVERAGE_THRESHOLD }}" ]; then
+            echo "::error ::Coverage ${LINE_PCT}% is below the required ${{ env.COVERAGE_THRESHOLD }}% gate."
+            exit 1
+          fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-results
+          path: backend/TestResults/
+
+      - name: Vulnerability scan (NuGet packages)
+        run: dotnet list package --vulnerable --include-transitive
+
+  # ─────────────────────────────────────────────
+  # OPS-01 | Frontend quality gate
+  # • Lint (ESLint strict)
+  # • Build (production)
+  # • Bundle-budget assertion
+  # • Type-check (tsc --noEmit)
+  # ─────────────────────────────────────────────
+  frontend-quality:
+    name: "Frontend · lint + typecheck + build + budget"
+    runs-on: ubuntu-latest
+    needs: backend-quality
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies (clean)
+        run: npm ci
+
+      - name: Type-check
+        run: npx tsc --noEmit
+
+      - name: Lint (ESLint)
+        run: npm run lint
+
+      - name: Build (production)
+        run: npm run build
+
+      - name: Bundle budget assertion
+        run: npm run check:bundle
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/.next/
+          retention-days: 3
+
+  # ─────────────────────────────────────────────
+  # OPS-01 / OPS-08 | E2E smoke gate
+  # Runs after both quality jobs pass.
+  # Spins up backend + frontend on isolated ports,
+  # then runs Playwright smoke suite.
+  # ─────────────────────────────────────────────
+  e2e-smoke:
+    name: "E2E · Playwright smoke"
+    runs-on: ubuntu-latest
+    needs: [backend-quality, frontend-quality]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Install Playwright browser (Chromium only)
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+
+      - name: Start backend API
+        run: |
+          dotnet run --project backend/src/Api/Api.csproj \
+            --urls ${{ env.BACKEND_URL }} \
+            -e ASPNETCORE_ENVIRONMENT=Development \
+            > backend.log 2>&1 &
+          echo "BACKEND_PID=$!" >> $GITHUB_ENV
+
+      - name: Wait for backend health
+        run: |
+          for i in $(seq 1 40); do
+            if curl -sSf ${{ env.BACKEND_URL }}/health/ready >/dev/null 2>&1; then
+              echo "Backend ready after ${i} attempts"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::error ::Backend failed to start within 80 s"
+          cat backend.log
+          exit 1
+
+      - name: Start frontend (dev server)
+        run: |
+          cd frontend
+          NEXT_PUBLIC_API_URL=${{ env.BACKEND_URL }} \
+            npm run dev -- --hostname 127.0.0.1 --port ${{ env.FRONTEND_PORT }} \
+            > ../frontend.log 2>&1 &
+          echo "FRONTEND_PID=$!" >> $GITHUB_ENV
+
+      - name: Wait for frontend
+        run: |
+          for i in $(seq 1 40); do
+            if curl -sSf http://127.0.0.1:${{ env.FRONTEND_PORT }} >/dev/null 2>&1; then
+              echo "Frontend ready after ${i} attempts"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::error ::Frontend failed to start within 80 s"
+          cat frontend.log
+          exit 1
+
+      - name: Run E2E smoke suite
+        working-directory: frontend
+        env:
+          FRONTEND_BASE_URL: http://127.0.0.1:${{ env.FRONTEND_PORT }}
+          API_BASE_URL: ${{ env.BACKEND_URL }}
+        run: npm run test:e2e
+
+      - name: Accessibility gate (critical routes)
+        working-directory: frontend
+        env:
+          FRONTEND_BASE_URL: http://127.0.0.1:${{ env.FRONTEND_PORT }}
+          API_BASE_URL: ${{ env.BACKEND_URL }}
+        run: npm run test:e2e:a11y
+
+      - name: FE-BE contract gate
+        working-directory: frontend
+        env:
+          FRONTEND_BASE_URL: http://127.0.0.1:${{ env.FRONTEND_PORT }}
+          API_BASE_URL: ${{ env.BACKEND_URL }}
+        run: npm run test:e2e:contracts
+
+      - name: Visual regression gate
+        working-directory: frontend
+        env:
+          FRONTEND_BASE_URL: http://127.0.0.1:${{ env.FRONTEND_PORT }}
+          API_BASE_URL: ${{ env.BACKEND_URL }}
+        run: npm run test:e2e:visual
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: frontend/playwright-report
+          retention-days: 7
+
+      - name: Stop servers
+        if: always()
+        run: |
+          [ -n "$BACKEND_PID" ] && kill $BACKEND_PID || true
+          [ -n "$FRONTEND_PID" ] && kill $FRONTEND_PID || true
+

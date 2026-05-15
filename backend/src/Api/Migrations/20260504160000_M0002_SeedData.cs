@@ -1,0 +1,86 @@
+using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace Api.Migrations
+{
+    /// <inheritdoc />
+    public partial class M0002_SeedData : Migration
+    {
+        // All GUIDs are fixed — never regenerate these values.
+        private const string WelcomeTemplateId          = "b1000001-0000-0000-0000-000000000001";
+        private const string ProposalTemplateId         = "b1000002-0000-0000-0000-000000000002";
+        private const string ProposalReminderTemplateId = "b1000003-0000-0000-0000-000000000003";
+        private const string CustomerWelcomeTemplateId  = "b1000004-0000-0000-0000-000000000004";
+        private const string AnalyticsAlertTemplateId   = "b1000005-0000-0000-0000-000000000005";
+
+        // Pipeline stage GUIDs must match DefaultPipelineStages exactly.
+        private const string StageNew       = "11111111-1111-1111-1111-111111111111";
+        private const string StageQualified = "22222222-2222-2222-2222-222222222222";
+        private const string StageProposal  = "33333333-3333-3333-3333-333333333333";
+        private const string StageWon       = "44444444-4444-4444-4444-444444444444";
+
+        private const string SeedDate = "2026-01-01T00:00:00.0000000Z";
+
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            // ── Email Templates ──────────────────────────────────────────────
+            migrationBuilder.Sql(
+                "INSERT INTO \"EmailTemplates\" (\"Id\", \"Name\", \"Version\", \"Subject\", \"BodyHtml\", \"RequiredVariablesSerialized\", \"IsActive\", \"IsCurrent\", \"CreatedAtUtc\", \"TenantId\") " +
+                "SELECT '" + WelcomeTemplateId.ToUpperInvariant() + "', 'lead.welcome', 1, 'We received your inquiry — MindFlow', '<p>Hello,</p><p>Thank you for reaching out. Our sales team will contact you shortly.</p><p>Best regards,<br/>The MindFlow Team</p>', '', 1, 1, '" + SeedDate + "', 'default' " +
+                "WHERE NOT EXISTS (SELECT 1 FROM \"EmailTemplates\" WHERE \"TenantId\" = 'default' AND \"Name\" = 'lead.welcome' AND \"Version\" = 1);");
+
+            migrationBuilder.Sql(
+                "INSERT INTO \"EmailTemplates\" (\"Id\", \"Name\", \"Version\", \"Subject\", \"BodyHtml\", \"RequiredVariablesSerialized\", \"IsActive\", \"IsCurrent\", \"CreatedAtUtc\", \"TenantId\") " +
+                "SELECT '" + ProposalTemplateId.ToUpperInvariant() + "', 'proposal.standard', 1, 'Your proposal is ready — MindFlow', '<p>Hello {{recipient_name}},</p><p>Your proposal <strong>{{proposal_title}}</strong> for {{amount}} {{currency}} is attached.</p><p>Track: <a href=''{{tracking_url}}''>open proposal</a></p>', '', 1, 1, '" + SeedDate + "', 'default' " +
+                "WHERE NOT EXISTS (SELECT 1 FROM \"EmailTemplates\" WHERE \"TenantId\" = 'default' AND \"Name\" = 'proposal.standard' AND \"Version\" = 1);");
+
+            migrationBuilder.Sql(
+                "INSERT INTO \"EmailTemplates\" (\"Id\", \"Name\", \"Version\", \"Subject\", \"BodyHtml\", \"RequiredVariablesSerialized\", \"IsActive\", \"IsCurrent\", \"CreatedAtUtc\", \"TenantId\") " +
+                "SELECT '" + ProposalReminderTemplateId.ToUpperInvariant() + "', 'proposal.reminder', 1, 'Reminder: your proposal is waiting — MindFlow', '<p>Hello {{recipient_name}},</p><p>Friendly reminder for proposal <strong>{{proposal_title}}</strong>.</p><p>Track: <a href=''{{tracking_url}}''>review proposal</a></p>', '', 1, 1, '" + SeedDate + "', 'default' " +
+                "WHERE NOT EXISTS (SELECT 1 FROM \"EmailTemplates\" WHERE \"TenantId\" = 'default' AND \"Name\" = 'proposal.reminder' AND \"Version\" = 1);");
+
+            migrationBuilder.Sql(
+                "INSERT INTO \"EmailTemplates\" (\"Id\", \"Name\", \"Version\", \"Subject\", \"BodyHtml\", \"RequiredVariablesSerialized\", \"IsActive\", \"IsCurrent\", \"CreatedAtUtc\", \"TenantId\") " +
+                "SELECT '" + CustomerWelcomeTemplateId.ToUpperInvariant() + "', 'customer.welcome', 1, 'Welcome to onboarding — MindFlow', '<p>Welcome to onboarding.</p><p>Track your onboarding: <a href=''{{tracking_url}}''>open tracking</a></p>', '', 1, 1, '" + SeedDate + "', 'default' " +
+                "WHERE NOT EXISTS (SELECT 1 FROM \"EmailTemplates\" WHERE \"TenantId\" = 'default' AND \"Name\" = 'customer.welcome' AND \"Version\" = 1);");
+
+            migrationBuilder.Sql(
+                "INSERT INTO \"EmailTemplates\" (\"Id\", \"Name\", \"Version\", \"Subject\", \"BodyHtml\", \"RequiredVariablesSerialized\", \"IsActive\", \"IsCurrent\", \"CreatedAtUtc\", \"TenantId\") " +
+                "SELECT '" + AnalyticsAlertTemplateId.ToUpperInvariant() + "', 'alert.analytics.degradation', 1, 'Analytics degradation detected — MindFlow', '<p>Analytics degradation alert.</p><p>Endpoint: <strong>{{endpoint_name}}</strong></p><p>Metric: <strong>{{metric_name}}</strong></p><p>Observed: {{observed_value}}</p><p>Threshold: {{threshold_value}}</p><p>TriggeredAtUtc: {{triggered_at_utc}}</p>', '', 1, 1, '" + SeedDate + "', 'default' " +
+                "WHERE NOT EXISTS (SELECT 1 FROM \"EmailTemplates\" WHERE \"TenantId\" = 'default' AND \"Name\" = 'alert.analytics.degradation' AND \"Version\" = 1);");
+
+            // ── Pipeline Stages ──────────────────────────────────────────────
+            // GUIDs must match DefaultPipelineStages constants exactly.
+            // INSERT OR IGNORE is idempotent on IX_PipelineStages_TenantId_Name (unique).
+            migrationBuilder.Sql(
+                "INSERT OR IGNORE INTO \"PipelineStages\" (\"Id\", \"Name\", \"Order\", \"Color\", \"CreatedAtUtc\", \"TenantId\") VALUES " +
+                "('" + StageNew       + "', 'new',       1, '#2563eb', '" + SeedDate + "', 'default')," +
+                "('" + StageQualified + "', 'qualified', 2, '#7c3aed', '" + SeedDate + "', 'default')," +
+                "('" + StageProposal  + "', 'proposal',  3, '#d97706', '" + SeedDate + "', 'default')," +
+                "('" + StageWon       + "', 'won',       4, '#16a34a', '" + SeedDate + "', 'default');");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.Sql(
+                "DELETE FROM \"PipelineStages\" WHERE \"Id\" IN " +
+                "('" + StageNew + "','" + StageQualified + "','" + StageProposal + "','" + StageWon + "');");
+
+            migrationBuilder.DeleteData(
+                table: "EmailTemplates",
+                keyColumn: "Id",
+                keyValues: new object[]
+                {
+                    new Guid(WelcomeTemplateId),
+                    new Guid(ProposalTemplateId),
+                    new Guid(ProposalReminderTemplateId),
+                    new Guid(CustomerWelcomeTemplateId),
+                    new Guid(AnalyticsAlertTemplateId)
+                });
+        }
+    }
+}

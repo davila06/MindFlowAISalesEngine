@@ -1,0 +1,303 @@
+name: CD Release Pipeline
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPS-02 | Continuous Delivery with environment promotion gates
+# OPS-06 | Blue/green slot-swap strategy for production releases
+#
+# Flow:
+#   1. Triggered on push to main (auto → Staging) or manual dispatch.
+#   2. Staging deployment runs smoke tests before marking ready.
+#   3. Production deployment requires manual approval via GitHub Environments.
+#   4. Blue/green: new build deployed to "green" slot; health check gates
+#      the slot swap; old slot retained as rollback target for 15 min.
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment"
+        type: choice
+        options: [staging, production]
+        default: staging
+      force_production:
+        description: "Skip staging and deploy directly to production (emergency only)"
+        type: boolean
+        default: false
+
+concurrency:
+  group: cd-${{ github.ref }}
+  cancel-in-progress: false   # Never cancel a deployment mid-flight
+
+env:
+  DOTNET_VERSION: "9.0.x"
+  NODE_VERSION: "20"
+  APP_NAME: "novamind-mindflow"
+  REGISTRY: "ghcr.io"
+  IMAGE_BACKEND: "ghcr.io/${{ github.repository }}/backend"
+  IMAGE_FRONTEND: "ghcr.io/${{ github.repository }}/frontend"
+
+jobs:
+  # ─────────────────────────────────────────────
+  # Versioning — compute semver tag from commits
+  # ─────────────────────────────────────────────
+  version:
+    name: "Compute release version"
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.ver.outputs.version }}
+      sha_short: ${{ steps.ver.outputs.sha_short }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute version
+        id: ver
+        shell: bash
+        run: |
+          # Derive patch from total commit count; major.minor from latest semver tag.
+          LAST_TAG=$(git tag --sort=-version:refname | grep -E '^v[0-9]+\.[0-9]+' | head -1 || echo "v1.0")
+          MAJOR=$(echo "$LAST_TAG" | cut -d. -f1 | tr -d 'v')
+          MINOR=$(echo "$LAST_TAG" | cut -d. -f2)
+          PATCH=$(git rev-list --count HEAD)
+          SHA_SHORT=$(git rev-parse --short HEAD)
+          VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "sha_short=${SHA_SHORT}" >> "$GITHUB_OUTPUT"
+          echo "Computed version: ${VERSION}+${SHA_SHORT}"
+
+  # ─────────────────────────────────────────────
+  # Build & publish container images
+  # ─────────────────────────────────────────────
+  build-images:
+    name: "Build Docker images"
+    runs-on: ubuntu-latest
+    needs: version
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # ── Backend image ──────────────────────────
+      - name: Build & push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: backend
+          file: backend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.IMAGE_BACKEND }}:${{ needs.version.outputs.version }}
+            ${{ env.IMAGE_BACKEND }}:${{ needs.version.outputs.sha_short }}
+            ${{ env.IMAGE_BACKEND }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            BUILD_VERSION=${{ needs.version.outputs.version }}
+
+      # ── Frontend image ─────────────────────────
+      - name: Build & push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: frontend
+          file: frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.IMAGE_FRONTEND }}:${{ needs.version.outputs.version }}
+            ${{ env.IMAGE_FRONTEND }}:${{ needs.version.outputs.sha_short }}
+            ${{ env.IMAGE_FRONTEND }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            BUILD_VERSION=${{ needs.version.outputs.version }}
+
+  # ─────────────────────────────────────────────
+  # OPS-02 | Deploy to Staging
+  # Auto-triggered; no manual approval required.
+  # ─────────────────────────────────────────────
+  deploy-staging:
+    name: "Deploy → Staging"
+    runs-on: ubuntu-latest
+    needs: [version, build-images]
+    environment:
+      name: staging
+      url: ${{ vars.STAGING_URL }}
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' &&
+       (inputs.environment == 'staging' || inputs.force_production == false))
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to staging slot (green)
+        shell: bash
+        env:
+          DEPLOY_TOKEN: ${{ secrets.STAGING_DEPLOY_TOKEN }}
+          IMAGE_TAG: ${{ needs.version.outputs.version }}
+          TARGET_URL: ${{ vars.STAGING_URL }}
+        run: |
+          echo "Deploying backend image ${{ env.IMAGE_BACKEND }}:${IMAGE_TAG} to staging"
+          echo "Deploying frontend image ${{ env.IMAGE_FRONTEND }}:${IMAGE_TAG} to staging"
+          # Replace with: az webapp config container set, kubectl apply, fly deploy, etc.
+          # Example (Azure Container Apps):
+          # az containerapp update \
+          #   --name "${APP_NAME}-backend-staging" \
+          #   --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
+          #   --image "${{ env.IMAGE_BACKEND }}:${IMAGE_TAG}"
+          echo "Staging deployment placeholder – integrate with your cloud provider."
+
+      - name: Wait for staging health
+        shell: bash
+        env:
+          TARGET_URL: ${{ vars.STAGING_URL }}
+        run: |
+          for i in $(seq 1 30); do
+            HTTP_CODE=$(curl -o /dev/null -s -w "%{http_code}" \
+              "${TARGET_URL:-http://localhost}/health/ready" || echo "000")
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "Staging health OK after ${i} attempts"
+              exit 0
+            fi
+            echo "Attempt ${i}: HTTP ${HTTP_CODE}"
+            sleep 5
+          done
+          echo "::error ::Staging health check failed after 150 s"
+          exit 1
+
+      - name: Run post-deploy smoke tests against staging
+        shell: bash
+        env:
+          SMOKE_TARGET: ${{ vars.STAGING_URL }}
+          SMOKE_API_TARGET: ${{ vars.STAGING_API_URL }}
+        run: |
+          bash infra/scripts/smoke-test.sh \
+            "${SMOKE_TARGET:-http://localhost}" \
+            "${SMOKE_API_TARGET:-http://localhost:5165}"
+
+      - name: Tag release as staging-verified
+        if: success()
+        shell: bash
+        run: |
+          echo "VERSION=${{ needs.version.outputs.version }}" >> staging-verified.env
+          echo "SHA=${{ needs.version.outputs.sha_short }}" >> staging-verified.env
+          echo "Staging verified: ${{ needs.version.outputs.version }}"
+
+      - name: Upload staging verification artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-verified-${{ needs.version.outputs.version }}
+          path: staging-verified.env
+
+  # ─────────────────────────────────────────────
+  # OPS-02 / OPS-06 | Deploy to Production
+  # Requires manual approval via GitHub Environments.
+  # Blue/green: deploy to green slot, health-gate, then swap.
+  # ─────────────────────────────────────────────
+  deploy-production:
+    name: "Deploy → Production (blue/green)"
+    runs-on: ubuntu-latest
+    needs: [version, deploy-staging]
+    environment:
+      name: production
+      url: ${{ vars.PRODUCTION_URL }}
+    if: |
+      (github.event_name == 'push') ||
+      (github.event_name == 'workflow_dispatch' && inputs.environment == 'production')
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Record active (blue) slot before deploy
+        shell: bash
+        run: |
+          echo "BLUE_VERSION=$(cat .current-prod-version 2>/dev/null || echo 'unknown')" >> $GITHUB_ENV
+          echo "GREEN_VERSION=${{ needs.version.outputs.version }}" >> $GITHUB_ENV
+          echo "Current blue: ${BLUE_VERSION:-unknown}  →  Green: ${{ needs.version.outputs.version }}"
+
+      - name: Deploy to green slot
+        shell: bash
+        env:
+          IMAGE_TAG: ${{ needs.version.outputs.version }}
+          DEPLOY_TOKEN: ${{ secrets.PROD_DEPLOY_TOKEN }}
+        run: |
+          echo "Deploying backend image ${{ env.IMAGE_BACKEND }}:${IMAGE_TAG} to production green slot"
+          echo "Deploying frontend image ${{ env.IMAGE_FRONTEND }}:${IMAGE_TAG} to production green slot"
+          # Example (Azure Container Apps staging slot swap):
+          # az containerapp revision copy \
+          #   --name "${APP_NAME}-backend" \
+          #   --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
+          #   --image "${{ env.IMAGE_BACKEND }}:${IMAGE_TAG}"
+          echo "Production green-slot deployment placeholder."
+
+      - name: Health gate – green slot must pass before traffic shift
+        shell: bash
+        env:
+          GREEN_SLOT_URL: ${{ vars.PRODUCTION_GREEN_SLOT_URL }}
+        run: |
+          for i in $(seq 1 30); do
+            HTTP_CODE=$(curl -o /dev/null -s -w "%{http_code}" \
+              "${GREEN_SLOT_URL:-http://localhost}/health/ready" || echo "000")
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "Green slot healthy after ${i} attempts – proceeding with slot swap"
+              exit 0
+            fi
+            echo "Attempt ${i}: HTTP ${HTTP_CODE}"
+            sleep 5
+          done
+          echo "::error ::Green slot failed health gate – aborting swap. Blue slot remains active."
+          exit 1
+
+      - name: Slot swap – shift 100% traffic to green
+        shell: bash
+        run: |
+          echo "Swapping traffic: blue → green (v${{ needs.version.outputs.version }})"
+          # az containerapp ingress traffic set ...  or Kubernetes ingress weight update
+          echo "Traffic swap placeholder – integrate with your cloud provider."
+          echo "${{ needs.version.outputs.version }}" > .current-prod-version
+
+      - name: Run post-swap smoke tests
+        shell: bash
+        env:
+          SMOKE_TARGET: ${{ vars.PRODUCTION_URL }}
+          SMOKE_API_TARGET: ${{ vars.PRODUCTION_API_URL }}
+        run: |
+          bash infra/scripts/smoke-test.sh \
+            "${SMOKE_TARGET:-http://localhost}" \
+            "${SMOKE_API_TARGET:-http://localhost:5165}"
+
+      - name: Notify deployment success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const version = '${{ needs.version.outputs.version }}';
+            const sha = '${{ needs.version.outputs.sha_short }}';
+            await github.rest.repos.createCommitComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: context.sha,
+              body: `✅ **Production deploy succeeded** · \`v${version}\` (${sha})\n\nBlue/green slot swap completed. Smoke tests passing.`
+            });
+
+      - name: Auto-rollback on smoke failure
+        if: failure()
+        shell: bash
+        run: |
+          echo "::error ::Post-swap smoke tests failed – initiating automated rollback to blue slot"
+          bash infra/scripts/rollback.sh \
+            production \
+            "${BLUE_VERSION:-unknown}" \
+            "smoke-failure-after-swap"

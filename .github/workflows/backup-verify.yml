@@ -1,0 +1,154 @@
+name: Backup Verify
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPS-16 | Scheduled encrypted backup with automated restore verification.
+#
+# Schedule:
+#   - Full backup + restore-verify: daily at 02:00 UTC
+#   - Backup-only (no verify): every 6 hours
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  schedule:
+    - cron: "0 2 * * *"      # Daily full backup + restore verify
+    - cron: "0 8,14,20 * * *" # Incremental backup only (no verify)
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to backup"
+        type: choice
+        options: [staging, production]
+        default: production
+      verify_restore:
+        description: "Run restore verification after backup"
+        type: boolean
+        default: true
+
+jobs:
+  # ─────────────────────────────────────────────
+  # Create encrypted backup
+  # ─────────────────────────────────────────────
+  backup:
+    name: "Create encrypted backup – ${{ inputs.environment || 'production' }}"
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment || 'production' }}
+    outputs:
+      backup_name: ${{ steps.run_backup.outputs.backup_name }}
+      backup_size: ${{ steps.run_backup.outputs.backup_size }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install sqlite3
+        run: sudo apt-get install -y sqlite3
+
+      - name: Download latest database from storage
+        shell: bash
+        env:
+          AZURE_STORAGE_ACCOUNT: ${{ vars.AZURE_STORAGE_ACCOUNT }}
+          ENVIRONMENT: ${{ inputs.environment || 'production' }}
+        run: |
+          mkdir -p /data
+          if [ -n "${AZURE_STORAGE_ACCOUNT}" ]; then
+            az storage blob download \
+              --account-name "${AZURE_STORAGE_ACCOUNT}" \
+              --container-name "db-${ENVIRONMENT}" \
+              --name "mindflow.db" \
+              --file "/data/mindflow-${ENVIRONMENT}.db" \
+              --auth-mode login || \
+              echo "DB download skipped (placeholder for local run)"
+          else
+            echo "PLACEHOLDER_DB" > "/data/mindflow-${ENVIRONMENT}.db"
+            echo "Using placeholder database – set AZURE_STORAGE_ACCOUNT for real backups"
+          fi
+
+      - name: Run backup script
+        id: run_backup
+        shell: bash
+        env:
+          ENVIRONMENT: ${{ inputs.environment || 'production' }}
+          MINDFLOW_DB_PATH: /data/mindflow-${{ inputs.environment || 'production' }}.db
+          BACKUP_GPG_RECIPIENT: ${{ vars.BACKUP_GPG_RECIPIENT || 'ops@novamind.ai' }}
+          AZURE_STORAGE_ACCOUNT: ${{ vars.AZURE_STORAGE_ACCOUNT }}
+          BACKUP_RETENTION_DAYS: "30"
+        run: |
+          mkdir -p /backups
+          chmod +x infra/scripts/backup.sh
+          bash infra/scripts/backup.sh "${ENVIRONMENT}" /backups
+          BACKUP_FILE=$(ls -t /backups/mindflow-${ENVIRONMENT}-*.gpg 2>/dev/null | head -1 || \
+                        ls -t /backups/mindflow-${ENVIRONMENT}-*.tar.gz 2>/dev/null | head -1 || echo "")
+          if [ -n "${BACKUP_FILE}" ]; then
+            echo "backup_name=$(basename "${BACKUP_FILE}")" >> "$GITHUB_OUTPUT"
+            echo "backup_size=$(du -sh "${BACKUP_FILE}" | cut -f1)" >> "$GITHUB_OUTPUT"
+          else
+            echo "backup_name=none" >> "$GITHUB_OUTPUT"
+            echo "backup_size=0" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload backup artifact (7-day retention for restore-verify)
+        uses: actions/upload-artifact@v4
+        with:
+          name: backup-${{ inputs.environment || 'production' }}-${{ github.run_number }}
+          path: /backups/
+          retention-days: 7
+
+  # ─────────────────────────────────────────────
+  # Automated restore verification
+  # Runs only on daily schedule or explicit request
+  # ─────────────────────────────────────────────
+  verify-restore:
+    name: "Verify restore from backup"
+    runs-on: ubuntu-latest
+    needs: backup
+    if: |
+      github.event_name == 'workflow_dispatch' && inputs.verify_restore == true ||
+      github.event.schedule == '0 2 * * *'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install sqlite3
+        run: sudo apt-get install -y sqlite3
+
+      - name: Download backup artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: backup-${{ inputs.environment || 'production' }}-${{ github.run_number }}
+          path: /backups/
+
+      - name: Run restore verification
+        shell: bash
+        run: |
+          BACKUP_FILE=$(ls -t /backups/*.gpg 2>/dev/null | head -1 || \
+                        ls -t /backups/*.tar.gz 2>/dev/null | head -1 || echo "")
+          if [ -z "${BACKUP_FILE}" ]; then
+            echo "::error ::No backup file found for restore verification"
+            exit 1
+          fi
+          chmod +x infra/scripts/restore.sh
+          bash infra/scripts/restore.sh "${BACKUP_FILE}" /data/restored
+          echo "Restore verification PASSED"
+
+      - name: Report backup + restore success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const name = '${{ needs.backup.outputs.backup_name }}';
+            const size = '${{ needs.backup.outputs.backup_size }}';
+            core.info(`Backup + restore verified: ${name} (${size})`);
+
+      - name: Alert on restore failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '[BACKUP] Restore verification FAILED',
+              labels: ['backup', 'ops', 'critical'],
+              body: `## Backup Restore Verification Failed\n\n` +
+                    `- **Run**: ${context.runNumber}\n` +
+                    `- **Time**: ${new Date().toISOString()}\n\n` +
+                    `Investigate the backup at run \`${context.runNumber}\` immediately.`
+            });

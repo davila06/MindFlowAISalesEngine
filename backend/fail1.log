@@ -1,0 +1,19 @@
+  Determinando los proyectos que se van a restaurar...
+  Todos los proyectos est├ín actualizados para la restauraci├│n.
+  Api -> C:\NovaMind - MindFlow AI sales engine\backend\src\Api\bin\Debug\net9.0\Api.dll
+  Api.Tests -> C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\bin\Debug\net9.0\Api.Tests.dll
+Serie de pruebas para C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\bin\Debug\net9.0\Api.Tests.dll (.NETCoreApp,Version=v9.0)
+1 archivos de prueba en total coincidieron con el patr├│n especificado.
+[xUnit.net 00:00:18.76]     Api.Tests.QaMutationRulesCriticalTests.Regression_DryRunRule_DoesNotMutatePersistentState [FAIL]
+  Con error Api.Tests.QaMutationRulesCriticalTests.Regression_DryRunRule_DoesNotMutatePersistentState [15 s]
+  Mensaje de error:
+   Assert.Equal() Failure: Values differ
+Expected: OK
+Actual:   MethodNotAllowed
+  Seguimiento de la pila:
+     at Api.Tests.QaMutationRulesCriticalTests.Regression_DryRunRule_DoesNotMutatePersistentState() in C:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\QaMutationRulesCriticalTests.cs:line 274
+--- End of stack trace from previous location ---
+
+Con error! - Con error:     1, Superado:     0, Omitido:     0, Total:     1, Duraci├│n: 15 s - Api.Tests.dll (net9.0)
+
+Hay actualizaciones de carga de trabajo disponibles. Ejecute "dotnet workload list" para obtener m├ís informaci├│n.

@@ -1,0 +1,13 @@
+  Determinando los proyectos que se van a restaurar...
+  Todos los proyectos est├ín actualizados para la restauraci├│n.
+  Api -> c:\NovaMind - MindFlow AI sales engine\backend\src\Api\bin\Debug\net9.0\Api.dll
+  Api.Tests -> c:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\bin\Debug\net9.0\Api.Tests.dll
+Serie de pruebas para c:\NovaMind - MindFlow AI sales engine\backend\tests\Api.Tests\bin\Debug\net9.0\Api.Tests.dll (.NETCoreApp,Version=v9.0)
+Versi├│n 17.14.1 (x64) de VSTest
+
+Iniciando la ejecuci├│n de pruebas, espere...
+1 archivos de prueba en total coincidieron con el patr├│n especificado.
+
+Correctas! - Con error:     0, Superado:    22, Omitido:     0, Total:    22, Duraci├│n: 10 s - Api.Tests.dll (net9.0)
+
+Hay actualizaciones de carga de trabajo disponibles. Ejecute "dotnet workload list" para obtener m├ís informaci├│n.
