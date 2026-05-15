@@ -1,0 +1,27 @@
+# Node modules
+frontend/node_modules/
+
+# Build outputs
+backend/**/bin/
+backend/**/obj/
+
+# Test results
+frontend/test-results/
+
+# Playwright reports
+frontend/playwright-report/
+
+# LFS/binaries
+.tools/
+*.exe
+*.node
+
+# User-specific files
+*.lscache
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Others
+*.log
