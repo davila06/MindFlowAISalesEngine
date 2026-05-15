@@ -1,0 +1,173 @@
+openapi: 3.0.1
+info:
+  title: MindFlow API Core
+  version: 1.0.0
+servers:
+  - url: http://localhost:5078/
+paths:
+  /api/leads/intake:
+    post:
+      summary: Intake de leads
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadIntakeRequest'
+      responses:
+        '201':
+          description: Lead creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadResponse'
+        '400':
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/pipeline:
+    get:
+      summary: Obtener pipeline
+      responses:
+        '200':
+          description: Pipeline actual
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineResponse'
+        '401':
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/email/send:
+    post:
+      summary: Enviar email automático
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailSendRequest'
+      responses:
+        '200':
+          description: Email enviado
+        '400':
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/rules:
+    get:
+      summary: Listar reglas activas
+      responses:
+        '200':
+          description: Lista de reglas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RulesListResponse'
+components:
+  schemas:
+    LeadIntakeRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+        phone:
+          type: string
+        source:
+          type: string
+    LeadResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        score:
+          type: integer
+        status:
+          type: string
+    PipelineResponse:
+      type: object
+      properties:
+        stages:
+          type: array
+          items:
+            $ref: '#/components/schemas/PipelineStage'
+    PipelineStage:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        opportunities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Opportunity'
+    Opportunity:
+      type: object
+      properties:
+        id:
+          type: string
+        leadId:
+          type: string
+        stageId:
+          type: string
+        value:
+          type: number
+        status:
+          type: string
+    EmailSendRequest:
+      type: object
+      required:
+        - to
+        - templateId
+      properties:
+        to:
+          type: string
+        templateId:
+          type: string
+        variables:
+          type: object
+    RulesListResponse:
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+    Rule:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        isActive:
+          type: boolean
+        trigger:
+          type: string
+        condition:
+          type: string
+        action:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: string

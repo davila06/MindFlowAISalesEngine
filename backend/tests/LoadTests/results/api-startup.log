@@ -1,0 +1,141 @@
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "Score" INTEGER NOT NULL DEFAULT 0;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "Priority" TEXT NOT NULL DEFAULT 'Low';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "Channel" TEXT NOT NULL DEFAULT 'inbound';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "Campaign" TEXT NOT NULL DEFAULT 'organic';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "Country" TEXT NOT NULL DEFAULT 'xx';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "ScoringVersion" TEXT NOT NULL DEFAULT 'unscored';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Leads" ADD COLUMN "ScoredAtUtc" TEXT NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Contacts" ADD COLUMN "IsDeleted" INTEGER NOT NULL DEFAULT 0;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Contacts" ADD COLUMN "DeletedAtUtc" TEXT NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Companies" ADD COLUMN "IsDeleted" INTEGER NOT NULL DEFAULT 0;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Companies" ADD COLUMN "DeletedAtUtc" TEXT NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Rules" ADD COLUMN "Version" INTEGER NOT NULL DEFAULT 1;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Rules" ADD COLUMN "Environment" TEXT NOT NULL DEFAULT 'dev';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Rules" ADD COLUMN "ApprovalStatus" TEXT NOT NULL DEFAULT 'approved';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Rules" ADD COLUMN "ApprovedBy" TEXT NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Rules" ADD COLUMN "ApprovedAtUtc" TEXT NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Contacts" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Companies" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "PipelineStages" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Opportunities" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "OpportunityStageHistory" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "SmtpSettings" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "EmailTemplates" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "EmailLogs" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "FollowUpJobs" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AssignmentUsers" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "LeadAssignments" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Rules" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "RuleConditions" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "RuleActions" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Proposals" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "ProposalReminderJobs" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "Customers" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "OnboardingTasks" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "OnboardingWelcomeJobs" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertThresholds" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "PoisonQueueRemediationRuns" ADD COLUMN "TenantId" TEXT NOT NULL DEFAULT 'default';
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertThresholds" ADD COLUMN "WebhookUrl" TEXT NULL;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "Status" TEXT NOT NULL DEFAULT 'open'
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "AcknowledgedBy" TEXT NULL
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "AcknowledgedAtUtc" TEXT NULL
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "SnoozedUntilUtc" TEXT NULL
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "ResolvedBy" TEXT NULL
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "ResolvedAtUtc" TEXT NULL
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE "AlertEvents" ADD COLUMN "StatusNotes" TEXT NULL

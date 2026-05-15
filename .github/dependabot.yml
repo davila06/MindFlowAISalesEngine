@@ -1,0 +1,99 @@
+# .github/dependabot.yml
+# ─────────────────────────────────────────────────────────────────────────────
+# OPS-17 | Automated dependency inventory and secure update policy.
+# OPS-18 | Platform patching cadence – automated PRs for dependency updates.
+#
+# Dependabot opens PRs on the defined schedule so the team can review,
+# test, and merge updates following the patching policy defined in
+# docs/operations/dependency-policy.md.
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 2
+
+updates:
+  # ── GitHub Actions ───────────────────────────────────────────────────────
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "07:00"
+      timezone: "UTC"
+    labels:
+      - "patching"
+      - "github-actions"
+      - "ops"
+    commit-message:
+      prefix: "chore(actions)"
+    reviewers:
+      - "ops-team"
+
+  # ── NuGet (.NET backend) ─────────────────────────────────────────────────
+  - package-ecosystem: "nuget"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "07:30"
+      timezone: "UTC"
+    labels:
+      - "patching"
+      - "dotnet"
+      - "backend"
+    commit-message:
+      prefix: "chore(deps/backend)"
+    open-pull-requests-limit: 5
+    # Group minor + patch updates into a single PR
+    groups:
+      dotnet-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    reviewers:
+      - "backend-team"
+    ignore:
+      # Exclude pre-release versions
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # ── npm (Next.js frontend) ───────────────────────────────────────────────
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "08:00"
+      timezone: "UTC"
+    labels:
+      - "patching"
+      - "npm"
+      - "frontend"
+    commit-message:
+      prefix: "chore(deps/frontend)"
+    open-pull-requests-limit: 5
+    # Group React + Next.js ecosystem updates
+    groups:
+      next-ecosystem:
+        patterns:
+          - "next"
+          - "react"
+          - "react-dom"
+          - "@types/react*"
+      playwright:
+        patterns:
+          - "@playwright/*"
+          - "playwright"
+      eslint:
+        patterns:
+          - "eslint*"
+          - "@typescript-eslint/*"
+      minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    reviewers:
+      - "frontend-team"

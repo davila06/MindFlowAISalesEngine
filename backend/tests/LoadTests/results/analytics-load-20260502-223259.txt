@@ -1,0 +1,327 @@
+
+          /\      |ΓÇ╛ΓÇ╛| /ΓÇ╛ΓÇ╛/   /ΓÇ╛ΓÇ╛/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ΓÇ╛ΓÇ╛\  
+   /          \   |  |\  \ |  (ΓÇ╛)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+     execution: local
+        script: .\analytics-advanced-load.js
+        output: -
+
+     scenarios: (100.00%) 3 scenarios, 7 max VUs, 55s max duration (incl. graceful stop):
+              * smoke: 5 looping VUs for 20s (exec: smokeSuite, gracefulStop: 30s)
+              * baseline: Up to 1 looping VUs for 3s over 3 stages (gracefulRampDown: 30s, exec: baselineSuite, startTime: 12s, gracefulStop: 30s)
+              * stress: Up to 1 looping VUs for 3s over 3 stages (gracefulRampDown: 30s, exec: stressSuite, startTime: 24s, gracefulStop: 30s)
+
+
+running (01.0s), 5/7 VUs, 0 complete and 0 interrupted iterations
+smoke      [   5% ] 5 VUs    01.0s/20s
+baseline ΓÇó [   0% ] waiting  11.0s
+stress   ΓÇó [   0% ] waiting  23.0s
+
+running (02.0s), 5/7 VUs, 5 complete and 0 interrupted iterations
+smoke      [  10% ] 5 VUs    02.0s/20s
+baseline ΓÇó [   0% ] waiting  10.0s
+stress   ΓÇó [   0% ] waiting  22.0s
+
+running (03.0s), 5/7 VUs, 10 complete and 0 interrupted iterations
+smoke      [  15% ] 5 VUs    03.0s/20s
+baseline ΓÇó [   0% ] waiting  09.0s
+stress   ΓÇó [   0% ] waiting  21.0s
+
+running (04.0s), 5/7 VUs, 15 complete and 0 interrupted iterations
+smoke      [  20% ] 5 VUs    04.0s/20s
+baseline ΓÇó [   0% ] waiting  08.0s
+stress   ΓÇó [   0% ] waiting  20.0s
+
+running (05.0s), 5/7 VUs, 20 complete and 0 interrupted iterations
+smoke      [  25% ] 5 VUs    05.0s/20s
+baseline ΓÇó [   0% ] waiting  07.0s
+stress   ΓÇó [   0% ] waiting  19.0s
+
+running (06.0s), 5/7 VUs, 20 complete and 0 interrupted iterations
+smoke      [  30% ] 5 VUs    06.0s/20s
+baseline ΓÇó [   0% ] waiting  06.0s
+stress   ΓÇó [   0% ] waiting  18.0s
+
+running (07.0s), 5/7 VUs, 20 complete and 0 interrupted iterations
+smoke      [  35% ] 5 VUs    07.0s/20s
+baseline ΓÇó [   0% ] waiting  05.0s
+stress   ΓÇó [   0% ] waiting  17.0s
+
+running (08.0s), 5/7 VUs, 20 complete and 0 interrupted iterations
+smoke      [  40% ] 5 VUs    08.0s/20s
+baseline ΓÇó [   0% ] waiting  04.0s
+stress   ΓÇó [   0% ] waiting  16.0s
+
+running (09.0s), 5/7 VUs, 20 complete and 0 interrupted iterations
+smoke      [  45% ] 5 VUs    09.0s/20s
+baseline ΓÇó [   0% ] waiting  03.0s
+stress   ΓÇó [   0% ] waiting  15.0s
+
+running (10.0s), 5/7 VUs, 20 complete and 0 interrupted iterations
+smoke      [  50% ] 5 VUs    10.0s/20s
+baseline ΓÇó [   0% ] waiting  02.0s
+stress   ΓÇó [   0% ] waiting  14.0s
+
+running (11.0s), 5/7 VUs, 20 complete and 0 interrupted iterations
+smoke      [  55% ] 5 VUs    11.0s/20s
+baseline ΓÇó [   0% ] waiting  01.0s
+stress   ΓÇó [   0% ] waiting  13.0s
+
+running (12.0s), 5/7 VUs, 20 complete and 0 interrupted iterations
+smoke      [  60% ] 5 VUs    12.0s/20s
+baseline ΓÇó [   0% ] waiting  00.0s
+stress   ΓÇó [   0% ] waiting  12.0s
+
+running (13.0s), 6/7 VUs, 20 complete and 0 interrupted iterations
+smoke      [  65% ] 5 VUs    13.0s/20s
+baseline   [  99% ] 1/1 VUs  1.0s/1.0s
+stress   ΓÇó [   0% ] waiting  11.0s
+
+running (14.0s), 6/7 VUs, 20 complete and 0 interrupted iterations
+smoke      [  70% ] 5 VUs    14.0s/20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   ΓÇó [   0% ] waiting  10.0s
+
+running (15.0s), 6/7 VUs, 20 complete and 0 interrupted iterations
+smoke      [  75% ] 5 VUs    15.0s/20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   ΓÇó [   0% ] waiting  09.0s
+
+running (16.0s), 6/7 VUs, 24 complete and 0 interrupted iterations
+smoke      [  80% ] 5 VUs    16.0s/20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   ΓÇó [   0% ] waiting  08.0s
+
+running (17.0s), 6/7 VUs, 24 complete and 0 interrupted iterations
+smoke      [  85% ] 5 VUs    17.0s/20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   ΓÇó [   0% ] waiting  07.0s
+
+running (18.0s), 6/7 VUs, 24 complete and 0 interrupted iterations
+smoke      [  90% ] 5 VUs    18.0s/20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   ΓÇó [   0% ] waiting  06.0s
+
+running (19.0s), 6/7 VUs, 24 complete and 0 interrupted iterations
+smoke      [  95% ] 5 VUs    19.0s/20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   ΓÇó [   0% ] waiting  05.0s
+
+running (20.0s), 6/7 VUs, 24 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   ΓÇó [   0% ] waiting  04.0s
+
+running (21.0s), 6/7 VUs, 24 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   ΓÇó [   0% ] waiting  03.0s
+
+running (22.0s), 6/7 VUs, 24 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   ΓÇó [   0% ] waiting  02.0s
+
+running (23.0s), 6/7 VUs, 24 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   ΓÇó [   0% ] waiting  01.0s
+
+running (24.0s), 6/7 VUs, 24 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   ΓÇó [   0% ] waiting  00.0s
+
+running (25.0s), 7/7 VUs, 24 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress     [ 100% ] 1/1 VUs  1.0s/1.0s
+
+running (26.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (27.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (28.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (29.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (30.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (31.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (32.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (33.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (34.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (35.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (36.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (37.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (38.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (39.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (40.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (41.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (42.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (43.0s), 6/7 VUs, 25 complete and 0 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γåô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (44.0s), 5/7 VUs, 25 complete and 1 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γ£ô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (45.0s), 5/7 VUs, 25 complete and 1 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γ£ô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (46.0s), 5/7 VUs, 25 complete and 1 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γ£ô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (47.0s), 5/7 VUs, 25 complete and 1 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γ£ô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (48.0s), 5/7 VUs, 25 complete and 1 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γ£ô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (49.0s), 5/7 VUs, 25 complete and 1 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γ£ô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (50.0s), 5/7 VUs, 25 complete and 1 interrupted iterations
+smoke    Γåô [ 100% ] 5 VUs    20s
+baseline Γ£ô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (51.0s), 1/7 VUs, 25 complete and 5 interrupted iterations
+smoke    Γ£ô [ 100% ] 5 VUs    20s
+baseline Γ£ô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (52.0s), 1/7 VUs, 25 complete and 5 interrupted iterations
+smoke    Γ£ô [ 100% ] 5 VUs    20s
+baseline Γ£ô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (53.0s), 1/7 VUs, 25 complete and 5 interrupted iterations
+smoke    Γ£ô [ 100% ] 5 VUs    20s
+baseline Γ£ô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (54.0s), 1/7 VUs, 25 complete and 5 interrupted iterations
+smoke    Γ£ô [ 100% ] 5 VUs    20s
+baseline Γ£ô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+running (55.0s), 1/7 VUs, 25 complete and 5 interrupted iterations
+smoke    Γ£ô [ 100% ] 5 VUs    20s
+baseline Γ£ô [ 100% ] 1/1 VUs  1s
+stress   Γåô [ 100% ] 1/1 VUs  1s
+
+     Γ£ù status is 200 (alert-events)
+      Γå│  80% ΓÇö Γ£ô 25 / Γ£ù 6
+     Γ£ù status is 200 (heatmap)
+      Γå│  80% ΓÇö Γ£ô 25 / Γ£ù 6
+     Γ£ù status is 200 (trends)
+      Γå│  80% ΓÇö Γ£ô 25 / Γ£ù 6
+     Γ£ù status is 200 (tenant-summary)
+      Γå│  96% ΓÇö Γ£ô 24 / Γ£ù 1
+     Γ£ù status is 200 (slo-status)
+      Γå│  80% ΓÇö Γ£ô 20 / Γ£ù 5
+
+     checks.........................: 83.21% Γ£ô 119      Γ£ù 24 
+     data_received..................: 51 kB  922 B/s
+     data_sent......................: 31 kB  572 B/s
+   Γ£ù failures.......................: 16.78% Γ£ô 24       Γ£ù 119
+     http_req_blocked...............: avg=584.28┬╡s min=0s      med=0s     max=13.38ms p(90)=999┬╡s    p(95)=1.46ms 
+     http_req_connecting............: avg=125.71┬╡s min=0s      med=0s     max=1.51ms  p(90)=577.9┬╡s  p(95)=999┬╡s  
+   Γ£ù http_req_duration..............: avg=1.68s    min=518.7┬╡s med=2.61ms max=10.01s  p(90)=10s      p(95)=10s    
+       { expected_response:true }...: avg=7.36ms   min=518.7┬╡s med=2.54ms max=50.08ms p(90)=23.32ms  p(95)=25.56ms
+   Γ£ù http_req_failed................: 16.78% Γ£ô 24       Γ£ù 119
+     http_req_receiving.............: avg=145.52┬╡s min=0s      med=0s     max=1.55ms  p(90)=581.91┬╡s p(95)=733.4┬╡s
+     http_req_sending...............: avg=37.39┬╡s  min=0s      med=0s     max=1.14ms  p(90)=0s       p(95)=0s     
+     http_req_tls_handshaking.......: avg=0s       min=0s      med=0s     max=0s      p(90)=0s       p(95)=0s     
+     http_req_waiting...............: avg=1.68s    min=518.7┬╡s med=2.61ms max=10.01s  p(90)=10s      p(95)=10s    
+     http_reqs......................: 143    2.599522/s
+     iteration_duration.............: avg=3.44s    min=1.01s   med=1.03s  max=21.04s  p(90)=11.03s   p(95)=11.03s 
+     iterations.....................: 25     0.454462/s
+     vus............................: 1      min=1      max=7
+     vus_max........................: 7      min=7      max=7
+
+
+running (55.0s), 0/7 VUs, 25 complete and 6 interrupted iterations
+smoke    Γ£ô [ 100% ] 5 VUs    20s
+baseline Γ£ô [ 100% ] 1/1 VUs  1s
+stress   Γ£ô [ 100% ] 1/1 VUs  1s
