@@ -1,0 +1,96 @@
+using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace Api.Migrations
+{
+    /// <inheritdoc />
+    public partial class M0002_SeedData : Migration
+    {
+        // All GUIDs are fixed — never regenerate these values.
+        private const string WelcomeTemplateId          = "b1000001-0000-0000-0000-000000000001";
+        private const string ProposalTemplateId         = "b1000002-0000-0000-0000-000000000002";
+        private const string ProposalReminderTemplateId = "b1000003-0000-0000-0000-000000000003";
+        private const string CustomerWelcomeTemplateId  = "b1000004-0000-0000-0000-000000000004";
+        private const string AnalyticsAlertTemplateId   = "b1000005-0000-0000-0000-000000000005";
+
+        // Pipeline stage GUIDs must match DefaultPipelineStages exactly.
+        private const string StageNew       = "11111111-1111-1111-1111-111111111111";
+        private const string StageQualified = "22222222-2222-2222-2222-222222222222";
+        private const string StageProposal  = "33333333-3333-3333-3333-333333333333";
+        private const string StageWon       = "44444444-4444-4444-4444-444444444444";
+
+        private const string TemplateColumns =
+            "\"Id\", \"Name\", \"Version\", \"Subject\", \"BodyHtml\", " +
+            "\"RequiredVariablesSerialized\", \"IsActive\", \"IsCurrent\", \"CreatedAtUtc\", \"TenantId\"";
+
+        private const string SeedDate = "2026-01-01T00:00:00.0000000Z";
+
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            // ── Email Templates ──────────────────────────────────────────────
+            // INSERT OR IGNORE is idempotent on IX_EmailTemplates_TenantId_Name_Version (unique).
+            // Non-interpolated strings avoid escaping conflicts with Handlebars {{variables}}.
+
+            migrationBuilder.Sql(
+                "INSERT OR IGNORE INTO \"EmailTemplates\" (" + TemplateColumns + ") VALUES " +
+                "('" + WelcomeTemplateId + "', 'lead.welcome', 1, " +
+                "'We received your inquiry — MindFlow', " +
+                "'<p>Hello,</p><p>Thank you for reaching out. Our sales team will contact you shortly.</p><p>Best regards,<br/>The MindFlow Team</p>', " +
+                "'[]', 1, 1, '" + SeedDate + "', 'default');");
+
+            migrationBuilder.Sql(
+                "INSERT OR IGNORE INTO \"EmailTemplates\" (" + TemplateColumns + ") VALUES " +
+                "('" + ProposalTemplateId + "', 'proposal.standard', 1, " +
+                "'Your proposal is ready — MindFlow', " +
+                "'<p>Hello {{recipient_name}},</p><p>Your proposal <strong>{{proposal_title}}</strong> for {{amount}} {{currency}} is attached.</p><p>Track: <a href=''{{tracking_url}}''>open proposal</a></p>', " +
+                "'[\"recipient_name\",\"proposal_title\",\"amount\",\"currency\",\"tracking_url\"]', 1, 1, '" + SeedDate + "', 'default');");
+
+            migrationBuilder.Sql(
+                "INSERT OR IGNORE INTO \"EmailTemplates\" (" + TemplateColumns + ") VALUES " +
+                "('" + ProposalReminderTemplateId + "', 'proposal.reminder', 1, " +
+                "'Reminder: your proposal is waiting — MindFlow', " +
+                "'<p>Hello {{recipient_name}},</p><p>Friendly reminder for proposal <strong>{{proposal_title}}</strong>.</p><p>Track: <a href=''{{tracking_url}}''>review proposal</a></p>', " +
+                "'[\"recipient_name\",\"proposal_title\",\"tracking_url\"]', 1, 1, '" + SeedDate + "', 'default');");
+
+            migrationBuilder.Sql(
+                "INSERT OR IGNORE INTO \"EmailTemplates\" (" + TemplateColumns + ") VALUES " +
+                "('" + CustomerWelcomeTemplateId + "', 'customer.welcome', 1, " +
+                "'Welcome to onboarding — MindFlow', " +
+                "'<p>Welcome to onboarding.</p><p>Track your onboarding: <a href=''{{tracking_url}}''>open tracking</a></p>', " +
+                "'[\"tracking_url\"]', 1, 1, '" + SeedDate + "', 'default');");
+
+            migrationBuilder.Sql(
+                "INSERT OR IGNORE INTO \"EmailTemplates\" (" + TemplateColumns + ") VALUES " +
+                "('" + AnalyticsAlertTemplateId + "', 'alert.analytics.degradation', 1, " +
+                "'Analytics degradation detected — MindFlow', " +
+                "'<p>Analytics degradation alert.</p><p>Endpoint: <strong>{{endpoint_name}}</strong></p><p>Metric: <strong>{{metric_name}}</strong></p><p>Observed: {{observed_value}}</p><p>Threshold: {{threshold_value}}</p><p>TriggeredAtUtc: {{triggered_at_utc}}</p>', " +
+                "'[\"endpoint_name\",\"metric_name\",\"observed_value\",\"threshold_value\",\"triggered_at_utc\"]', 1, 1, '" + SeedDate + "', 'default');");
+
+            // ── Pipeline Stages ──────────────────────────────────────────────
+            // GUIDs must match DefaultPipelineStages constants exactly.
+            // INSERT OR IGNORE is idempotent on IX_PipelineStages_TenantId_Name (unique).
+            migrationBuilder.Sql(
+                "INSERT OR IGNORE INTO \"PipelineStages\" (\"Id\", \"Name\", \"Order\", \"Color\", \"CreatedAtUtc\", \"TenantId\") VALUES " +
+                "('" + StageNew       + "', 'new',       1, '#2563eb', '" + SeedDate + "', 'default')," +
+                "('" + StageQualified + "', 'qualified', 2, '#7c3aed', '" + SeedDate + "', 'default')," +
+                "('" + StageProposal  + "', 'proposal',  3, '#d97706', '" + SeedDate + "', 'default')," +
+                "('" + StageWon       + "', 'won',       4, '#16a34a', '" + SeedDate + "', 'default');");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.Sql(
+                "DELETE FROM \"PipelineStages\" WHERE \"Id\" IN " +
+                "('" + StageNew + "','" + StageQualified + "','" + StageProposal + "','" + StageWon + "');");
+
+            migrationBuilder.Sql(
+                "DELETE FROM \"EmailTemplates\" WHERE \"Id\" IN " +
+                "('" + WelcomeTemplateId + "','" + ProposalTemplateId + "','" +
+                ProposalReminderTemplateId + "','" + CustomerWelcomeTemplateId + "','" + AnalyticsAlertTemplateId + "');");
+        }
+    }
+}

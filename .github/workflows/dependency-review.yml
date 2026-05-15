@@ -1,0 +1,239 @@
+name: Dependency Review
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPS-17 | Dependency inventory and secure update policy.
+# OPS-18 | Platform patching cadence enforcement.
+#
+# Runs on every PR to main/develop to:
+#   1. Block PRs that introduce vulnerable direct dependencies (GHSA database).
+#   2. Enforce a minimum severity level (HIGH+) as the PR gate.
+#   3. Generate a full dependency inventory report as an artifact.
+#   4. Patch cadence: separate scheduled job audits current lockfiles for staleness.
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  pull_request:
+    branches: ["main", "develop"]
+  schedule:
+    # OPS-18 | Weekly patching cadence audit – every Tuesday at 07:00 UTC
+    - cron: "0 7 * * 2"
+  workflow_dispatch:
+
+jobs:
+  # ─────────────────────────────────────────────
+  # OPS-17 | GitHub dependency review (PR gate)
+  # Blocks PRs introducing HIGH/CRITICAL vulnerabilities
+  # ─────────────────────────────────────────────
+  dependency-review:
+    name: "Dependency review (PR gate)"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+          allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, 0BSD, Unlicense
+          comment-summary-in-pr: on-failure
+          deny-packages: ""
+          # Fail fast on any CRITICAL/HIGH newly introduced vulnerability
+          vulnerability-check: true
+
+  # ─────────────────────────────────────────────
+  # OPS-17 | NuGet vulnerability scan
+  # ─────────────────────────────────────────────
+  nuget-audit:
+    name: "NuGet vulnerability audit"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Audit NuGet packages for vulnerabilities
+        run: dotnet list package --vulnerable --include-transitive 2>&1 | tee nuget-audit.txt
+        continue-on-error: false
+
+      - name: Generate NuGet dependency inventory
+        run: |
+          dotnet list package --include-transitive > nuget-inventory.txt
+          echo "NuGet packages:" && wc -l nuget-inventory.txt
+
+      - name: Check for outdated packages (advisory only)
+        run: dotnet list package --outdated > nuget-outdated.txt || true
+        continue-on-error: true
+
+      - name: Upload NuGet audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-audit-report
+          path: |
+            backend/nuget-audit.txt
+            backend/nuget-inventory.txt
+            backend/nuget-outdated.txt
+          retention-days: 30
+
+  # ─────────────────────────────────────────────
+  # OPS-17 | npm audit (frontend)
+  # ─────────────────────────────────────────────
+  npm-audit:
+    name: "npm vulnerability audit"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies (clean)
+        run: npm ci
+
+      - name: Audit npm packages for vulnerabilities (level: high)
+        run: npm audit --audit-level=high 2>&1 | tee npm-audit.txt
+        continue-on-error: false
+
+      - name: Generate npm dependency inventory
+        run: |
+          npm ls --depth=0 > npm-inventory-direct.txt 2>&1 || true
+          echo "Direct npm dependencies:" && wc -l npm-inventory-direct.txt
+
+      - name: Check for outdated packages (advisory only)
+        run: npm outdated > npm-outdated.txt || true
+        continue-on-error: true
+
+      - name: Upload npm audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit-report
+          path: |
+            frontend/npm-audit.txt
+            frontend/npm-inventory-direct.txt
+            frontend/npm-outdated.txt
+          retention-days: 30
+
+  # ─────────────────────────────────────────────
+  # OPS-18 | Weekly patching cadence report
+  # Scheduled: evaluates staleness of lockfiles
+  # ─────────────────────────────────────────────
+  patching-cadence-report:
+    name: "Patching cadence audit"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Check lockfile staleness
+        shell: bash
+        run: |
+          echo "══════════════════════════════════════════════"
+          echo "  Patching Cadence Report – $(date -u +%Y-%m-%d)"
+          echo "══════════════════════════════════════════════"
+
+          # Check when package-lock.json was last modified
+          NPM_LOCK_AGE=$(git log -1 --format="%ar" -- frontend/package-lock.json 2>/dev/null || echo "unknown")
+          NUGET_LOCK_AGE=$(git log -1 --format="%ar" -- backend/MindFlow.Backend.sln 2>/dev/null || echo "unknown")
+
+          echo ""
+          echo "Lockfile ages:"
+          echo "  frontend/package-lock.json : ${NPM_LOCK_AGE}"
+          echo "  backend solution            : ${NUGET_LOCK_AGE}"
+
+      - name: Run NuGet outdated check
+        working-directory: backend
+        run: |
+          dotnet restore --quiet
+          dotnet list package --outdated 2>&1 | tee nuget-outdated-weekly.txt || true
+          echo "NuGet outdated packages (top 20):"
+          head -30 nuget-outdated-weekly.txt || true
+
+      - name: Run npm outdated check
+        working-directory: frontend
+        run: |
+          npm ci --silent
+          npm outdated 2>&1 | tee npm-outdated-weekly.txt || true
+          echo "npm outdated packages:"
+          cat npm-outdated-weekly.txt || true
+
+      - name: Upload patching report
+        uses: actions/upload-artifact@v4
+        with:
+          name: patching-cadence-report-${{ github.run_number }}
+          path: |
+            backend/nuget-outdated-weekly.txt
+            frontend/npm-outdated-weekly.txt
+          retention-days: 90
+
+      - name: Create patching reminder issue if packages are stale
+        shell: bash
+        run: |
+          NPM_OUTDATED=$(cat frontend/npm-outdated-weekly.txt 2>/dev/null | grep -c "^[a-z]" || echo "0")
+          NUGET_OUTDATED=$(cat backend/nuget-outdated-weekly.txt 2>/dev/null | grep -c ">" || echo "0")
+          echo "npm outdated: ${NPM_OUTDATED}, NuGet outdated: ${NUGET_OUTDATED}"
+          echo "NPM_OUTDATED=${NPM_OUTDATED}" >> $GITHUB_ENV
+          echo "NUGET_OUTDATED=${NUGET_OUTDATED}" >> $GITHUB_ENV
+
+      - name: Open tracking issue if outdated packages detected
+        if: env.NPM_OUTDATED != '0' || env.NUGET_OUTDATED != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const npm = parseInt(process.env.NPM_OUTDATED || '0');
+            const nuget = parseInt(process.env.NUGET_OUTDATED || '0');
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'patching',
+              state: 'open'
+            });
+            if (existing.data.length > 0) {
+              core.info('Patching issue already open – skipping duplicate');
+              return;
+            }
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[OPS-18] Weekly patching: ${npm} npm + ${nuget} NuGet packages outdated`,
+              labels: ['patching', 'ops', 'maintenance'],
+              body: `## Weekly Patching Cadence Report – ${new Date().toISOString().split('T')[0]}\n\n` +
+                    `| Ecosystem | Outdated Packages |\n` +
+                    `|-----------|------------------|\n` +
+                    `| npm (frontend) | ${npm} |\n` +
+                    `| NuGet (backend) | ${nuget} |\n\n` +
+                    `### Action Required\n` +
+                    `1. Review the [patching report artifact](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}).\n` +
+                    `2. Update dependencies via \`npm update\` / \`dotnet outdated --upgrade\`.\n` +
+                    `3. Run full test suite before merging.\n` +
+                    `4. Close this issue once updates are merged.\n\n` +
+                    `> Target patching cadence: **monthly** for minor/patch; **within 7 days** for security patches.`
+            });

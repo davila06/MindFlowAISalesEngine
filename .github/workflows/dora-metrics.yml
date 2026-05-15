@@ -1,0 +1,194 @@
+name: DORA Metrics Collector
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPS-15 | DORA (DevOps Research and Assessment) metrics collection.
+#
+# Collects and archives the four key DORA metrics:
+#   1. Deployment Frequency     – how often we deploy to production.
+#   2. Lead Time for Changes    – time from commit to production.
+#   3. Change Failure Rate      – % of deployments that cause a rollback/incident.
+#   4. Mean Time to Recovery    – average time to recover from a failure.
+#
+# Metrics are appended to docs/metrics/dora-history.csv and stored as
+# workflow artifacts for downstream dashboards (Grafana, Datadog, etc.).
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  # Record a deployment event on every prod deployment
+  workflow_run:
+    workflows: ["CD Release Pipeline"]
+    types: [completed]
+  # Weekly aggregation for trend analysis
+  schedule:
+    - cron: "0 6 * * 1"   # Every Monday at 06:00 UTC
+  workflow_dispatch:
+    inputs:
+      record_rollback:
+        description: "Record a change failure (rollback) event"
+        type: boolean
+        default: false
+      recovery_minutes:
+        description: "MTTR for last incident (minutes, 0 = no incident)"
+        type: number
+        default: 0
+
+jobs:
+  collect-dora-metrics:
+    name: "Collect DORA metrics"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute deployment frequency
+        id: deploy_freq
+        shell: bash
+        run: |
+          # Count production deployments in the last 30 days from git tags
+          SINCE=$(date -d "30 days ago" +%Y-%m-%d 2>/dev/null || date -v-30d +%Y-%m-%d)
+          DEPLOY_COUNT=$(git tag --sort=-version:refname --list "v*" \
+            | xargs -I{} git log -1 --format="%ai {}" {} 2>/dev/null \
+            | awk -v since="$SINCE" '$1 >= since' | wc -l || echo "0")
+          DEPLOY_PER_DAY=$(awk "BEGIN { printf \"%.3f\", $DEPLOY_COUNT / 30 }")
+          echo "count=${DEPLOY_COUNT}" >> "$GITHUB_OUTPUT"
+          echo "per_day=${DEPLOY_PER_DAY}" >> "$GITHUB_OUTPUT"
+          echo "Deployment frequency: ${DEPLOY_COUNT} deploys / 30 days = ${DEPLOY_PER_DAY}/day"
+
+      - name: Compute lead time for changes
+        id: lead_time
+        shell: bash
+        run: |
+          # Lead time = time from first commit on branch to production tag (approximation)
+          LAST_TAG=$(git tag --sort=-version:refname | grep -E '^v[0-9]+' | head -1 || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            echo "lead_time_hours=0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          TAG_DATE=$(git log -1 --format="%ai" "$LAST_TAG" 2>/dev/null || echo "")
+          # Approximate: median of last 5 PR merge-to-tag durations
+          # Simplified: measure time between last 2 tags as proxy
+          PREV_TAG=$(git tag --sort=-version:refname | grep -E '^v[0-9]+' | sed -n '2p' || echo "")
+          if [ -n "$PREV_TAG" ]; then
+            T1=$(git log -1 --format="%ct" "$PREV_TAG" 2>/dev/null || echo "0")
+            T2=$(git log -1 --format="%ct" "$LAST_TAG" 2>/dev/null || echo "0")
+            HOURS=$(awk "BEGIN { printf \"%.1f\", ($T2 - $T1) / 3600 }")
+          else
+            HOURS="0"
+          fi
+          echo "lead_time_hours=${HOURS}" >> "$GITHUB_OUTPUT"
+          echo "Lead time approximation: ${HOURS} hours"
+
+      - name: Compute change failure rate
+        id: cfr
+        shell: bash
+        run: |
+          # Count rollback events from infra/rollback-log/history.log
+          ROLLBACK_FILE="infra/rollback-log/history.log"
+          if [ -f "$ROLLBACK_FILE" ]; then
+            SINCE=$(date -d "30 days ago" +%Y-%m-%d 2>/dev/null || date -v-30d +%Y-%m-%d)
+            ROLLBACKS=$(grep -c "env=production" "$ROLLBACK_FILE" 2>/dev/null || echo "0")
+          else
+            ROLLBACKS=0
+          fi
+          TOTAL="${{ steps.deploy_freq.outputs.count }}"
+          if [ "$TOTAL" -gt 0 ]; then
+            CFR=$(awk "BEGIN { printf \"%.1f\", ($ROLLBACKS / $TOTAL) * 100 }")
+          else
+            CFR="0.0"
+          fi
+          echo "rollbacks=${ROLLBACKS}" >> "$GITHUB_OUTPUT"
+          echo "cfr_percent=${CFR}" >> "$GITHUB_OUTPUT"
+          echo "Change failure rate: ${ROLLBACKS} rollbacks / ${TOTAL} deploys = ${CFR}%"
+
+      - name: Record MTTR from workflow input
+        id: mttr
+        shell: bash
+        run: |
+          MTTR="${{ inputs.recovery_minutes || 0 }}"
+          # Update rolling average from history if available
+          HISTORY="docs/metrics/dora-history.csv"
+          if [ -f "$HISTORY" ] && [ -s "$HISTORY" ]; then
+            # Last 10 MTTR values
+            LAST_MTTRS=$(awk -F',' 'NR>1 && $6!="" && $6!="0" {print $6}' "$HISTORY" | tail -10)
+            COUNT=$(echo "$LAST_MTTRS" | grep -c '[0-9]' || echo "0")
+            if [ "$COUNT" -gt 0 ]; then
+              SUM=$(echo "$LAST_MTTRS" | paste -sd+ - | bc 2>/dev/null || echo "0")
+              AVG_MTTR=$(awk "BEGIN { printf \"%.0f\", $SUM / $COUNT }")
+            else
+              AVG_MTTR="${MTTR}"
+            fi
+          else
+            AVG_MTTR="${MTTR}"
+          fi
+          echo "mttr_minutes=${MTTR}" >> "$GITHUB_OUTPUT"
+          echo "avg_mttr_minutes=${AVG_MTTR}" >> "$GITHUB_OUTPUT"
+          echo "MTTR this incident: ${MTTR} min  |  Rolling avg: ${AVG_MTTR} min"
+
+      - name: Append to DORA history CSV
+        shell: bash
+        run: |
+          mkdir -p docs/metrics
+          HISTORY="docs/metrics/dora-history.csv"
+          if [ ! -f "$HISTORY" ]; then
+            echo "Date,DeployCount30d,DeployPerDay,LeadTimeHours,ChangeFailureRatePct,MttrMinutes,Rollbacks,Sha" > "$HISTORY"
+          fi
+          echo "$(date -u +%Y-%m-%d),${{ steps.deploy_freq.outputs.count }},${{ steps.deploy_freq.outputs.per_day }},${{ steps.lead_time.outputs.lead_time_hours }},${{ steps.cfr.outputs.cfr_percent }},${{ steps.mttr.outputs.mttr_minutes }},${{ steps.cfr.outputs.rollbacks }},${{ github.sha }}" >> "$HISTORY"
+          echo "Appended DORA record to ${HISTORY}"
+          cat "$HISTORY"
+
+      - name: Evaluate DORA maturity level
+        shell: bash
+        run: |
+          DEPLOY_PER_DAY="${{ steps.deploy_freq.outputs.per_day }}"
+          LEAD_HOURS="${{ steps.lead_time.outputs.lead_time_hours }}"
+          CFR="${{ steps.cfr.outputs.cfr_percent }}"
+          AVG_MTTR="${{ steps.mttr.outputs.avg_mttr_minutes }}"
+
+          echo "══════════════════════════════════════"
+          echo "  DORA Metrics Summary"
+          echo "══════════════════════════════════════"
+          echo "  Deploy frequency  : ${DEPLOY_PER_DAY}/day"
+          echo "  Lead time         : ${LEAD_HOURS}h"
+          echo "  Change fail rate  : ${CFR}%"
+          echo "  Avg MTTR          : ${AVG_MTTR} min"
+          echo ""
+
+          # Elite thresholds (Google DORA 2023 research)
+          LEVEL="Low"
+          DEPLOY_OK=$(awk "BEGIN { print ($DEPLOY_PER_DAY >= 1) ? 1 : 0 }")
+          LEAD_OK=$(awk "BEGIN { print ($LEAD_HOURS <= 24) ? 1 : 0 }")
+          CFR_OK=$(awk "BEGIN { print ($CFR <= 15) ? 1 : 0 }")
+          MTTR_OK=$(awk "BEGIN { print ($AVG_MTTR <= 60) ? 1 : 0 }")
+
+          SCORE=$(( DEPLOY_OK + LEAD_OK + CFR_OK + MTTR_OK ))
+          [ $SCORE -ge 4 ] && LEVEL="Elite"
+          [ $SCORE -eq 3 ] && LEVEL="High"
+          [ $SCORE -eq 2 ] && LEVEL="Medium"
+
+          echo "  DORA Level: ${LEVEL} (${SCORE}/4 criteria met)"
+          echo "══════════════════════════════════════"
+
+          # Warn if below High
+          if [ "$SCORE" -lt 3 ]; then
+            echo "::warning ::DORA maturity is '${LEVEL}'. Review deployment pipeline for improvements."
+          fi
+
+      - name: Upload DORA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dora-metrics-${{ github.run_number }}
+          path: docs/metrics/dora-history.csv
+          retention-days: 90
+
+      - name: Commit updated DORA history
+        if: github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/metrics/dora-history.csv infra/rollback-log/ || true
+          git diff --staged --quiet || git commit -m "chore(ops): update DORA metrics history [skip ci]"
+          git push origin HEAD || true

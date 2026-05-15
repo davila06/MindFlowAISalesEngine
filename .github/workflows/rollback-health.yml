@@ -1,0 +1,175 @@
+name: Rollback – Health Degradation
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPS-07 | Automated rollback triggered by health degradation.
+#
+# Trigger modes:
+#   1. Manual dispatch (emergency rollback with explicit version).
+#   2. Called by cd-release.yml via workflow_call (auto after failed smoke).
+#   3. Scheduled health poll every 10 min (catches silent regressions).
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to rollback"
+        type: choice
+        options: [staging, production]
+        required: true
+      target_version:
+        description: "Version to roll back TO (leave blank for previous)"
+        required: false
+      reason:
+        description: "Rollback reason (for audit log)"
+        required: true
+        default: "manual-emergency"
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
+      target_version:
+        type: string
+        required: false
+      reason:
+        type: string
+        required: false
+        default: "automated-health-gate"
+  schedule:
+    # Health poll: every 10 minutes during business hours (UTC)
+    - cron: "*/10 8-20 * * 1-5"
+
+env:
+  APP_NAME: "novamind-mindflow"
+
+jobs:
+  # ─────────────────────────────────────────────
+  # Scheduled health probe – skip rollback if healthy
+  # ─────────────────────────────────────────────
+  health-probe:
+    name: "Health probe"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    outputs:
+      degraded: ${{ steps.probe.outputs.degraded }}
+    steps:
+      - name: Probe production health
+        id: probe
+        shell: bash
+        env:
+          PROD_URL: ${{ vars.PRODUCTION_URL }}
+          PROD_API_URL: ${{ vars.PRODUCTION_API_URL }}
+        run: |
+          DEGRADED="false"
+          for ENDPOINT in \
+            "${PROD_API_URL:-http://localhost:5165}/health/ready" \
+            "${PROD_API_URL:-http://localhost:5165}/health/live"; do
+            CODE=$(curl -o /dev/null -s -w "%{http_code}" --max-time 5 "$ENDPOINT" || echo "000")
+            echo "  $ENDPOINT → HTTP $CODE"
+            if [ "$CODE" != "200" ]; then
+              DEGRADED="true"
+              echo "::warning ::Health degradation detected at $ENDPOINT (HTTP $CODE)"
+            fi
+          done
+          echo "degraded=${DEGRADED}" >> "$GITHUB_OUTPUT"
+
+  # ─────────────────────────────────────────────
+  # Execute rollback
+  # Runs on: manual, workflow_call, or when health-probe reports degradation
+  # ─────────────────────────────────────────────
+  rollback:
+    name: "Execute rollback – ${{ inputs.environment || 'production' }}"
+    runs-on: ubuntu-latest
+    needs:
+      - health-probe
+    if: |
+      always() && (
+        github.event_name == 'workflow_dispatch' ||
+        github.event_name == 'workflow_call' ||
+        (github.event_name == 'schedule' && needs.health-probe.outputs.degraded == 'true')
+      )
+    environment:
+      name: ${{ inputs.environment || 'production' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine rollback target version
+        id: target
+        shell: bash
+        run: |
+          # Prefer explicit input; fall back to previous git tag
+          if [ -n "${{ inputs.target_version }}" ]; then
+            VERSION="${{ inputs.target_version }}"
+          else
+            PREV=$(git tag --sort=-version:refname | grep -E '^v[0-9]+' | sed -n '2p' || echo "")
+            VERSION="${PREV:-unknown}"
+          fi
+          echo "target=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Rolling back to: ${VERSION}"
+
+      - name: Emit rollback audit entry
+        shell: bash
+        run: |
+          mkdir -p infra/rollback-log
+          cat >> infra/rollback-log/history.log <<EOF
+          $(date -u +"%Y-%m-%dT%H:%M:%SZ") | ENV=${{ inputs.environment || 'production' }} | TARGET=${{ steps.target.outputs.target }} | REASON=${{ inputs.reason || 'automated-health-gate' }} | ACTOR=${{ github.actor }}
+          EOF
+          cat infra/rollback-log/history.log | tail -20
+
+      - name: Execute rollback script
+        shell: bash
+        env:
+          ROLLBACK_ENV: ${{ inputs.environment || 'production' }}
+          ROLLBACK_VERSION: ${{ steps.target.outputs.target }}
+          ROLLBACK_REASON: ${{ inputs.reason || 'automated-health-gate' }}
+          DEPLOY_TOKEN: ${{ secrets.PROD_DEPLOY_TOKEN }}
+        run: |
+          chmod +x infra/scripts/rollback.sh
+          bash infra/scripts/rollback.sh \
+            "${ROLLBACK_ENV}" \
+            "${ROLLBACK_VERSION}" \
+            "${ROLLBACK_REASON}"
+
+      - name: Post-rollback health verification
+        shell: bash
+        env:
+          TARGET_URL: ${{ vars.PRODUCTION_API_URL }}
+        run: |
+          for i in $(seq 1 20); do
+            CODE=$(curl -o /dev/null -s -w "%{http_code}" \
+              "${TARGET_URL:-http://localhost:5165}/health/ready" || echo "000")
+            if [ "$CODE" = "200" ]; then
+              echo "Post-rollback health OK"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error ::Post-rollback health check failed – manual intervention required"
+          exit 1
+
+      - name: Create GitHub issue on rollback
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const env = '${{ inputs.environment || "production" }}';
+            const version = '${{ steps.target.outputs.target }}';
+            const reason = '${{ inputs.reason || "automated-health-gate" }}';
+            const actor = '${{ github.actor }}';
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[ROLLBACK] ${env} rolled back – ${reason}`,
+              labels: ['rollback', 'ops', env],
+              body: `## Automatic Rollback Event\n\n` +
+                    `- **Environment**: ${env}\n` +
+                    `- **Rolled back to**: \`${version}\`\n` +
+                    `- **Reason**: ${reason}\n` +
+                    `- **Triggered by**: ${actor}\n` +
+                    `- **Time**: ${new Date().toISOString()}\n\n` +
+                    `### Action Required\n` +
+                    `Investigate root cause and create a fix branch before re-deploying.`
+            });
