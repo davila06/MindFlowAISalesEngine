@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Simple Email Rule",
+    "triggers": ["email_received"],
+    "conditions": [
+      { "field": "subject", "operator": "contains", "value": "Oferta" }
+    ],
+    "actions": [
+      { "type": "move_to_folder", "params": { "folder": "Promociones" } }
+    ]
+  },
+  {
+    "name": "Lead Scoring Rule",
+    "triggers": ["lead_created"],
+    "conditions": [
+      { "field": "score", "operator": ">", "value": 80 }
+    ],
+    "actions": [
+      { "type": "assign_owner", "params": { "owner": "ventas@empresa.com" } }
+    ]
+  }
+]

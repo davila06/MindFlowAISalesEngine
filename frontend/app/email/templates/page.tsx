@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { Field } from "@/components/ui/Field";
@@ -22,14 +23,14 @@ const sampleVariables = [
 
 export default function EmailTemplatesPage() {
   const { t } = useI18n();
-  const [subject, setSubject] = useState("Welcome {{lead.name}}");
-  const [bodyHtml, setBodyHtml] = useState("<p>Hello {{lead.name}}</p><p>Stage: {{pipeline.stage}}</p>");
-  const [requiredVariables, setRequiredVariables] = useState("lead.name, pipeline.stage");
-  const [rollbackVersion, setRollbackVersion] = useState("1");
+  const [subject, setSubject] = useState<string>(t("email.templates.defaultSubject"));
+  const [bodyHtml, setBodyHtml] = useState<string>(t("email.templates.defaultBodyHtml"));
+  const [requiredVariables, setRequiredVariables] = useState<string>(t("email.templates.defaultRequiredVariables"));
+  const [rollbackVersion, setRollbackVersion] = useState<string>("1");
   const [preview, setPreview] = useState<EmailTemplatePreview | null>(null);
   const [currentVersion, setCurrentVersion] = useState<EmailTemplateVersion | null>(null);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   async function publishVersion() {
     setMessage("");
@@ -88,7 +89,7 @@ export default function EmailTemplatesPage() {
               id="email-template-subject"
               aria-label={t("email.templates.subjectLabel")}
               value={subject}
-              onChange={(event) => setSubject(event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setSubject(event.target.value)}
             />
           </Field>
           <Field label={t("email.templates.bodyLabel")} htmlFor="email-template-body">
@@ -97,7 +98,7 @@ export default function EmailTemplatesPage() {
               aria-label={t("email.templates.bodyLabel")}
               rows={10}
               value={bodyHtml}
-              onChange={(event) => setBodyHtml(event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => setBodyHtml(event.target.value)}
             />
           </Field>
           <Field label={t("email.templates.requiredVariablesLabel")} htmlFor="email-template-required">
@@ -105,7 +106,7 @@ export default function EmailTemplatesPage() {
               id="email-template-required"
               aria-label={t("email.templates.requiredVariablesLabel")}
               value={requiredVariables}
-              onChange={(event) => setRequiredVariables(event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setRequiredVariables(event.target.value)}
               placeholder={t("email.templates.requiredVariablesPlaceholder")}
             />
           </Field>

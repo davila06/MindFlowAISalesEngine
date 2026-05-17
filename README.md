@@ -49,6 +49,7 @@ El proyecto está dividido en las siguientes secciones principales:
    ```
 4. Configurar el backend:
    - Abrir el archivo `appsettings.json` en el directorio `backend/src/Api` y configurar las credenciales necesarias.
+   - **Nota:** No almacenes credenciales sensibles directamente en `appsettings.json`. Utiliza Azure Key Vault para gestionar secretos de forma segura.
 
 ## Ejecución
 ### Backend
@@ -60,6 +61,9 @@ El proyecto está dividido en las siguientes secciones principales:
    ```bash
    dotnet run
    ```
+   - **Variables de entorno recomendadas:**
+     - `ConnectionStrings__DefaultConnection`: Cadena de conexión a la base de datos.
+     - `Azure__KeyVault__Uri`: URI del Key Vault para gestionar secretos.
 
 ### Frontend
 1. Navegar al directorio del frontend:
@@ -70,6 +74,25 @@ El proyecto está dividido en las siguientes secciones principales:
    ```bash
    npm run dev
    ```
+   - **Variables de entorno recomendadas:**
+     - `NEXT_PUBLIC_API_URL`: URL base de la API del backend.
+
+## Observabilidad y Monitoreo
+NovaMind utiliza Azure Monitor y Application Insights para proporcionar métricas avanzadas y trazabilidad distribuida. A continuación, se describen los pasos básicos para configurar y utilizar estas herramientas:
+
+1. **Configurar Application Insights:**
+   - Agrega el SDK de Application Insights al backend y frontend.
+   - Configura la clave de Instrumentación en el entorno de Azure o mediante variables de entorno.
+
+2. **Consultas KQL:**
+   - Ejemplo de consulta para errores:
+     ```kql
+     exceptions
+     | order by timestamp desc
+     ```
+
+3. **Alertas:**
+   - Configura alertas en Azure Monitor para notificar sobre métricas críticas, como errores de servidor o tiempos de respuesta elevados.
 
 ## Contribución
 Por favor, consulta el archivo [CONTRIBUTING.md](CONTRIBUTING.md) para obtener detalles sobre cómo contribuir al proyecto.

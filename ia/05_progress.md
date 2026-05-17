@@ -1,3 +1,4 @@
+
 # 05 — Progreso del Proyecto
 
 > **Última actualización:** 2026-05-04
@@ -604,7 +605,11 @@
 - Se agrega persistencia operativa de `PoisonQueueRemediationRun` para capturar ejecución de remediación (`endpoint/jobType/severity/action/outcome/executedBy/latency`).
 - `AnalyticsAdvancedAlertsController` incorpora endpoints para registrar runs, listar historial filtrado y consultar resumen de efectividad (`successRate`, latencias promedio, desglose resolved/partial/failed).
 - `observability.html` registra telemetría al accionar `Open remediation` y muestra panel "Remediation Effectiveness" con refresh manual y actualización tras ejecución.
+<<<<<<< HEAD
 - Cobertura de integración agregada para flujo de registro+summary y validación frontend de nuevos marcadores/endpoint strings.
+=======
+- Cobertura de integración agregada para flujo de registro+summary y validacion frontend de nuevos marcadores/endpoint strings.
+>>>>>>> V1
 - Validacion ejecutada: `dotnet test tests/Api.Tests/Api.Tests.csproj` 96/96 ✅.
 
 ### Gobernanza de Datos (DAT remediation lifecycle states)

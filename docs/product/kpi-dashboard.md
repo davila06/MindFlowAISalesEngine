@@ -1,3 +1,4 @@
+
 # Product KPI Dashboard Definition
 
 Owner: Product + Analytics
@@ -38,6 +39,7 @@ Track conversion, velocity, reliability, and quality indicators aligned with rev
 2. Operations view (SLO and incident signals)
 3. Sales flow view (stage throughput, stuck opportunities)
 4. Data quality view (completeness and duplicate trends)
+5. UX observability & alerting dashboard (telemetría de eventos UX, errores, web vitals, alertas de experiencia)
 
 ## Ownership
 

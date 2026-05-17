@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -16,6 +17,7 @@ interface NavItem {
 export function AppShell({ children }: { children: ReactNode }) {
   const tenant = useTenant();
   const pathname = usePathname();
+  const currentPath = pathname ?? "";
   const { t } = useI18n();
 
   const navItems: NavItem[] = [
@@ -44,8 +46,8 @@ export function AppShell({ children }: { children: ReactNode }) {
         <nav className="nav" aria-label="Main navigation">
           {navItems.map((item) => {
             const isActive =
-              pathname === item.href ||
-              (item.href !== "/dashboard" && pathname.startsWith(item.href));
+              currentPath === item.href ||
+              (item.href !== "/dashboard" && currentPath.startsWith(item.href));
 
             return (
               <Link

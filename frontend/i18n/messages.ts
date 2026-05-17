@@ -1,7 +1,11 @@
+
 export type Locale = "en" | "es";
 
 export type TranslationKey =
   | "app.title"
+  | "email.templates.defaultSubject"
+  | "email.templates.defaultBodyHtml"
+  | "email.templates.defaultRequiredVariables"
   | "app.tenant"
   | "app.skipToContent"
   | "language.label"
@@ -188,6 +192,9 @@ export type TranslationKey =
 export const messages: Record<Locale, Record<TranslationKey, string>> = {
   en: {
     "app.title": "MindFlow",
+    "email.templates.defaultSubject": "Welcome {{lead.name}}",
+    "email.templates.defaultBodyHtml": "<p>Hello {{lead.name}}</p><p>Stage: {{pipeline.stage}}</p>",
+    "email.templates.defaultRequiredVariables": "lead.name, pipeline.stage",
     "app.tenant": "Tenant",
     "app.skipToContent": "Skip to content",
     "language.label": "Language",
@@ -373,6 +380,9 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
   },
   es: {
     "app.title": "MindFlow",
+    "email.templates.defaultSubject": "Bienvenido {{lead.name}}",
+    "email.templates.defaultBodyHtml": "<p>Hola {{lead.name}}</p><p>Etapa: {{pipeline.stage}}</p>",
+    "email.templates.defaultRequiredVariables": "lead.name, pipeline.stage",
     "app.tenant": "Tenant",
     "app.skipToContent": "Saltar al contenido",
     "language.label": "Idioma",
