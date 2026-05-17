@@ -65,9 +65,10 @@ La aplicación no se detiene al crear una oportunidad. También cubre propuestas
 
 Cuando una oportunidad se gana, MindFlow puede crear clientes, tareas de onboarding y secuencias de bienvenida. Para un negocio, esto evita que la venta se rompa al pasar de comercial a postventa, mejorando experiencia del cliente y velocidad de activación.
 
+
 ### 9. Analítica y observabilidad para dirigir con datos
 
-MindFlow expone overview comercial, funnel, revenue, velocity, SLA, activación de onboarding, historial de métricas y snapshots operativos. Esto permite a dirección comercial responder preguntas clave: cuántos leads entran, cuánto pipeline se está acumulando, qué parte convierte, cuánto valor se gana y dónde se están generando fricciones.
+MindFlow expone overview comercial, funnel, revenue, velocity, SLA, activación de onboarding, historial de métricas, snapshots operativos y dashboard de UX observability (telemetría de eventos, errores, web vitals y alertas de experiencia). Esto permite a dirección comercial responder preguntas clave: cuántos leads entran, cuánto pipeline se está acumulando, qué parte convierte, cuánto valor se gana y dónde se están generando fricciones o problemas de experiencia.
 
 ### 10. Seguridad y control para operación seria
 

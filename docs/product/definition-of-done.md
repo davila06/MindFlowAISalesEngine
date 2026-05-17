@@ -22,6 +22,12 @@ Standardize completion criteria across backend, frontend, operations, security, 
 - E2E or integration tests updated where relevant.
 - Shared UI changes validated against smoke/a11y/contracts/visual gates when applicable.
 
+## Evidencia de cumplimiento E2E — Mayo 2026
+
+- Todas las suites E2E frontend (unitarias, accesibilidad, visuales, contratos) pasan en verde.
+- Cambios de configuración y procedimiento documentados en `docs/product/frontend-e2e-status-2026-05.md`.
+- Validación registrada en `ia/05_progress.md` y cierre de tarea en `ia/04_tasks.md`.
+
 ## DevOps/Operations DoD
 
 - Workflow/script is deterministic and non-interactive.

@@ -749,7 +749,7 @@ Evidence:
 	- Compatibilidad hacia atrás para `Leads` con columnas `Score` y `Priority` (`ALTER TABLE` idempotente + índices).
 - Pruebas TDD agregadas:
 	- `backend/tests/Api.Tests/ScoringEndpointTests.cs` (4 pruebas RED→GREEN).
-- Validación técnica final:
+- Validacion técnica final:
 	- `dotnet build -c Release` → 0 errores, 0 advertencias.
 	- `dotnet test -c Release` → 28/28 tests GREEN.
 
@@ -815,7 +815,7 @@ Evidence:
 	- Tablas `Rules`, `RuleConditions`, `RuleActions` + índices.
 - Pruebas TDD agregadas:
 	- `backend/tests/Api.Tests/RulesEngineEndpointTests.cs` (5 pruebas RED→GREEN).
-- Validación técnica final:
+- Validacion técnica final:
 	- `dotnet build -c Release` → 0 errores, 0 advertencias.
 	- `dotnet test -c Release` → 33/33 tests GREEN.
 
@@ -861,7 +861,7 @@ Evidence:
 - Pruebas TDD agregadas:
 	- `backend/tests/Api.Tests/DashboardEndpointTests.cs` (4 pruebas RED→GREEN).
 	- Cobertura: endpoint sin datos, endpoint con datos, leads por día, serving de `dashboard.html`.
-- Validación técnica final:
+- Validacion técnica final:
 	- `dotnet build -c Release` → 0 errores, 0 advertencias.
 	- `dotnet test -c Release` → 37/37 tests GREEN.
 
@@ -892,7 +892,7 @@ Entregables implementados:
 - Wiring de DI/pipeline en `Program.cs` para contexto tenant+rol y bootstrap idempotente de columnas/índices `TenantId`.
 - Pruebas de integración nuevas en `backend/tests/Api.Tests/MultiTenantRoleEndpointTests.cs`.
 
-Evidencia de validación:
+Evidencia de validacion:
 - `dotnet build -c Release` → 0 errores, 0 advertencias.
 - `dotnet test -c Release --no-build` → 40/40 tests GREEN.
 
@@ -934,7 +934,7 @@ Entregables implementados:
 - Persistencia agregada para `Proposals` y `ProposalReminderJobs` en `LeadsDbContext` + bootstrap idempotente en `Program.cs`.
 - Pruebas de integración nuevas en `backend/tests/Api.Tests/ProposalAutomationEndpointTests.cs`.
 
-Evidencia de validación:
+Evidencia de validacion:
 - `dotnet build -c Release` → 0 errores, 0 advertencias.
 - `dotnet test -c Release --filter "FullyQualifiedName~ProposalAutomationEndpointTests"` → 4/4 tests GREEN.
 - `dotnet test -c Release --no-build` → 44/44 tests GREEN.
@@ -976,7 +976,7 @@ Entregables implementados:
 - Persistencia agregada para `Customers` y `OnboardingTasks` en `LeadsDbContext` + bootstrap idempotente en `Program.cs`.
 - Pruebas de integración nuevas en `backend/tests/Api.Tests/OnboardingAutomationEndpointTests.cs`.
 
-Evidencia de validación:
+Evidencia de validacion:
 - `dotnet build -c Release` → 0 errores, 0 advertencias.
 - `dotnet test -c Release --filter "FullyQualifiedName~OnboardingAutomationEndpointTests"` → 4/4 tests GREEN.
 - `dotnet test -c Release --no-build` → 48/48 tests GREEN.
@@ -1021,7 +1021,7 @@ Entregables implementados:
 	- `AnalyticsBacklogItemResponse`.
 - Endpoints backend priorizados para implementación incremental de TASK-FULL-14.
 
-Evidencia de validación:
+Evidencia de validacion:
 - `dotnet build -c Release` → 0 errores, 0 advertencias.
 - `dotnet test -c Release --no-build` → 48/48 tests GREEN.
 
@@ -1064,7 +1064,7 @@ Entregables implementados:
 - DI actualizado en `backend/src/Api/Program.cs` para registrar servicio y repositorio de analytics avanzado.
 - Suite TDD de integración agregada en `backend/tests/Api.Tests/AnalyticsAdvancedEndpointTests.cs`.
 
-Evidencia de validación:
+Evidencia de validacion:
 - `dotnet test -c Release --filter "FullyQualifiedName~AnalyticsAdvancedEndpointTests"` → 4/4 tests GREEN.
 - `dotnet build -c Release` → 0 errores, 0 advertencias.
 - `dotnet test -c Release --no-build` → 52/52 tests GREEN.
@@ -1106,13 +1106,13 @@ Entregables implementados:
 		- `IX_OpportunityStageHistory_ToStageId`, `IX_OpportunityStageHistory_ChangedAtUtc`.
 		- `IX_LeadAssignments_LeadId_AssignedAtUtc`.
 		- `IX_Customers_CreatedAtUtc`.
-- Validación de filtros en API agregada en `backend/src/Api/Controllers/AnalyticsAdvancedController.cs`:
+- Validacion de filtros en API agregada en `backend/src/Api/Controllers/AnalyticsAdvancedController.cs`:
 	- `groupBy` permitido: `day|week|month`.
 	- Rango de fechas válido y ventana máxima de 366 días.
 - Pruebas TDD nuevas para frontend/API de analytics avanzado:
 	- `backend/tests/Api.Tests/AnalyticsAdvancedFrontendEndpointTests.cs`.
 
-Evidencia de validación:
+Evidencia de validacion:
 - `dotnet test -c Release --filter "FullyQualifiedName~AnalyticsAdvancedFrontendEndpointTests"` → 3/3 tests GREEN.
 - `dotnet build -c Release` → 0 errores, 0 advertencias.
 - `dotnet test -c Release --no-build` → 55/55 tests GREEN.
@@ -1156,7 +1156,7 @@ Entregables implementados:
 - Pruebas TDD nuevas:
 	- `backend/tests/Api.Tests/AnalyticsAdvancedObservabilityEndpointTests.cs`.
 
-Evidencia de validación:
+Evidencia de validacion:
 - `dotnet test -c Release --filter "FullyQualifiedName~AnalyticsAdvancedObservabilityEndpointTests"` → 3/3 tests GREEN.
 - `dotnet build -c Release` → 0 errores, 0 advertencias.
 - `dotnet test -c Release --no-build` → 58/58 tests GREEN.
@@ -1215,7 +1215,7 @@ Entregables implementados:
 	- `backend/tests/Api.Tests/ObservabilityHistoryEndpointTests.cs` (4 pruebas RED→GREEN).
 	- Cobertura: lista vacía inicial, flush persiste y aparece en historial, filtro por endpoint, filtro por rango de fechas.
 
-Evidencia de validación:
+Evidencia de validacion:
 - `dotnet test -c Release --filter "FullyQualifiedName~ObservabilityHistoryEndpointTests"` → 4/4 tests GREEN.
 - `dotnet build -c Release` → 0 errores, 0 advertencias.
 - `dotnet test -c Release --no-build` → 62/62 tests GREEN.
@@ -1280,7 +1280,7 @@ Entregables implementados:
 	- `LeadsDbContext` actualizado con `DbSet<AlertThreshold>` y `DbSet<AlertEvent>` + mappings con tenant isolation.
 	- `Program.cs` actualizado con DI (`IAlertThresholdRepository`, `IAlertEventRepository`, `IAlertEvaluationService`) y bootstrap SQL de tablas `AlertThresholds` / `AlertEvents` + índices.
 
-Evidencia de validación:
+Evidencia de validacion:
 - `dotnet test -c Release --filter "FullyQualifiedName~AnalyticsAdvancedAlertsEndpointTests"` → 4/4 tests GREEN.
 - `dotnet build -c Release` → 0 errores, 0 advertencias.
 - `dotnet test -c Release --no-build` → 66/66 tests GREEN.
@@ -1334,13 +1334,13 @@ Entregables implementados:
 	- `backend/tests/Api.Tests/ObservabilityDashboardFrontendEndpointTests.cs` (3 pruebas RED→GREEN).
 	- Cobertura: serving de `/observability.html`, navegación desde vistas existentes, filtro backend de umbrales activos.
 
-Evidencia de validación:
+Evidencia de validacion:
 - `dotnet test -c Release --filter "FullyQualifiedName~ObservabilityDashboardFrontendEndpointTests"` → 3/3 tests GREEN.
 - `dotnet build -c Release` → 0 errores, 0 advertencias.
 - `dotnet test -c Release --no-build` → 69/69 tests GREEN.
 
 ## TASK-ARC-20: ARC-01..ARC-15 (bloque de gobernanza API y resiliencia)
-**Estado:** ✅ Parcialmente completada (13/15)
+**Estado:** ✅ Parcialmente completado (13/15)
 
 Title: Ejecutar endurecimiento transversal de arquitectura/API para ARC-01..ARC-15 sin regresiones
 
@@ -1656,7 +1656,7 @@ Steps:
 4. Validar filtro por tipo y rango temporal con test de integración.
 
 Expected Output:
-Endpoint `GET /api/dashboard/data-quality/anomalies` con trazabilidad histórica usable desde operación/soporte.
+Endpoint `GET /api/dashboard/data-quality` con trazabilidad histórica usable desde operación/soporte.
 
 Dependencies:
 TASK-DAT-24.
@@ -2089,7 +2089,7 @@ Steps:
 6. Cubrir con test de integración TDD (RED → GREEN). Extender smoke test frontend.
 
 Expected Output:
-Vista segmentada de efectividad de remediación que permite priorización operacional por tipo de job y severidad.
+Vista segmentada de efectividad de remediación que permite priorización operativa por tipo de job y severidad.
 
 Dependencies:
 TASK-DAT-37.

@@ -72,12 +72,15 @@ Define operational runbooks per module with trigger conditions, first response a
 - Symptoms:
   - Alert flood or missing alerts
   - High latency in trends/heatmap endpoints
+  - UX telemetry ingestion failures or missing dashboard signals
 - First actions:
   1. Check alert threshold configuration.
   2. Review cardinality metadata and overflow bucket.
   3. Run incremental aggregation endpoint.
+  4. Validate `/api/ux/telemetry` endpoint health and event logging.
+  5. Inspect UX observability dashboard for missing or anomalous signals.
 - Escalation:
-  - Data/ops if SLO non-compliance persists for > 30 minutes.
+  - Data/ops if SLO non-compliance or UX dashboard gaps persist for > 30 minutes.
 
 ## Operations And Release
 

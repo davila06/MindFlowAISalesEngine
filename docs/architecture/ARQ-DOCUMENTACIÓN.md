@@ -16,3 +16,4 @@ DOCUMENTACIÓN
 │
 └── product
     └── roadmap.md
+- `docs/product/frontend-e2e-status-2026-05.md`: Evidencia y procedimiento de validación E2E frontend (unitarias, accesibilidad, visuales, contratos) — Mayo 2026.

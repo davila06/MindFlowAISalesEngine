@@ -273,22 +273,22 @@ Implementacion:
 ## 5. Backlog Priorizado (90 dias)
 
 ## Fase 0 (Semana 1-2) - Riesgo alto primero
-- [ ] Reemplazar confirmaciones nativas por modal accesible.
-- [ ] Sanitizar preview de templates HTML.
-- [ ] Eliminar strings hardcodeadas en email/templates.
-- [ ] Definir y publicar tokens semanticos v1.
+- [x] Reemplazar confirmaciones nativas por modal accesible.
+- [x] Sanitizar preview de templates HTML.
+- [x] Eliminar strings hardcodeadas en email/templates.
+- [x] Definir y publicar tokens semanticos v1.
 
 ## Fase 1 (Semana 3-5) - Estabilidad operativa
-- [ ] Implementar capa de queries con cache/invalidation/optimistic update.
-- [ ] Agregar loading.tsx/error.tsx por segmentos criticos.
-- [ ] Server-side pagination/filtering para logs.
-- [ ] Instrumentar correlation IDs FE-BE.
+- [x] Implementar capa de queries con cache/invalidation/optimistic update.
+- [x] Agregar loading.tsx/error.tsx por segmentos criticos.
+- [x] Server-side pagination/filtering para logs.
+- [x] Instrumentar correlation IDs FE-BE.
 
 ## Fase 2 (Semana 6-9) - Calidad enterprise
-- [ ] Suite a11y automatizada en CI.
-- [ ] Visual regression por rutas clave.
-- [ ] Contract tests FE-BE.
-- [ ] Dashboard de UX observability y alertas.
+- [x] Suite a11y automatizada en CI.
+- [x] Visual regression por rutas clave.
+- [x] Contract tests FE-BE.
+- [x] Dashboard de UX observability y alertas.
 
 ## Fase 3 (Semana 10-12) - Escala y productividad
 - [ ] Rule builder avanzado + fixture testing UI.

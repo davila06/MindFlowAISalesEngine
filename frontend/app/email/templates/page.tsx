@@ -22,9 +22,9 @@ const sampleVariables = [
 
 export default function EmailTemplatesPage() {
   const { t } = useI18n();
-  const [subject, setSubject] = useState("Welcome {{lead.name}}");
-  const [bodyHtml, setBodyHtml] = useState("<p>Hello {{lead.name}}</p><p>Stage: {{pipeline.stage}}</p>");
-  const [requiredVariables, setRequiredVariables] = useState("lead.name, pipeline.stage");
+  const [subject, setSubject] = useState(t("email.templates.defaultSubject"));
+  const [bodyHtml, setBodyHtml] = useState(t("email.templates.defaultBodyHtml"));
+  const [requiredVariables, setRequiredVariables] = useState(t("email.templates.defaultRequiredVariables"));
   const [rollbackVersion, setRollbackVersion] = useState("1");
   const [preview, setPreview] = useState<EmailTemplatePreview | null>(null);
   const [currentVersion, setCurrentVersion] = useState<EmailTemplateVersion | null>(null);

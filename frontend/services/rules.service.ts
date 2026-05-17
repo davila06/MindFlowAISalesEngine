@@ -60,5 +60,14 @@ export const rulesService = {
     };
   }) => apiClient.post<RuleFixtureResponse>("/api/rules/test-fixture", payload),
   rollback: (ruleId: string, targetVersion: number) =>
-    apiClient.post<Rule>(`/api/rules/${ruleId}/rollback`, { targetVersion })
+    apiClient.post<Rule>(`/api/rules/${ruleId}/rollback`, { targetVersion }),
+  /**
+   * Fetches advanced rule builder metadata.
+   * @param signal Optional AbortSignal for request cancellation.
+   */
+  getAdvancedBuilderMetadata: (signal?: AbortSignal) =>
+    apiClient.get<{ fields: string[]; actions: string[]; operators: string[] }>(
+      "/api/rules/advanced-builder-metadata",
+      { signal }
+    ),
 };

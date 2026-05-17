@@ -25,6 +25,12 @@ Thanks for contributing to MindFlow AI Sales Engine.
 - Security/dependency checks.
 - Documentation updates when behavior changes.
 
+## UI Definition of Done (DoD)
+
+- Ver criterios y checklist en `frontend/docs/ui-dod.md`.
+- Todo PR de UI debe enlazar el DoD y marcar evidencia de cumplimiento.
+- Cambios de UI deben incluir story en Storybook y evidencia visual/accesibilidad.
+
 ## UI Enterprise DoD
 
 - No `window.confirm`; destructive flows must use `ConfirmDialog`.
@@ -65,3 +71,9 @@ Backlog policy:
 
 Do not open public issues for vulnerabilities with exploit details.
 Use internal security channel and include impact, reproduction, and mitigation proposal.
+
+## Evidencia de validación E2E — Mayo 2026
+
+- Todas las suites E2E frontend (unitarias, accesibilidad, visuales, contratos) pasan en verde.
+- Evidencia y procedimiento: `docs/product/frontend-e2e-status-2026-05.md`.
+- Referencias cruzadas en DoD y progreso (`docs/product/definition-of-done.md`, `ia/05_progress.md`).

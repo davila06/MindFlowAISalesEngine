@@ -267,6 +267,12 @@ export function KanbanBoard() {
                         aria-label={`${t("pipeline.selectOpportunity")} ${opportunity.title}`}
                         checked={selectedIds.includes(opportunity.id)}
                         onChange={() => toggleSelection(opportunity.id)}
+                        onKeyDown={(e) => {
+                          if (e.key === " " || e.key === "Enter") {
+                            e.preventDefault();
+                            toggleSelection(opportunity.id);
+                          }
+                        }}
                       />
                       <span>{t("pipeline.selectOpportunity")}</span>
                     </label>

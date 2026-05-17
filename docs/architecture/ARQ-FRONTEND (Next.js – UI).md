@@ -70,14 +70,17 @@ Fácil deshabilitar features por tenant/plan
 ## Baseline enterprise UX, accesibilidad y performance (2026-05-03)
 
 Implementado en frontend:
-- Tokens visuales y estilos globales compartidos en `frontend/app/globals.css`.
-- Libreria base reusable en `frontend/components/ui` (`Button`, `Field`, `EmptyState`, `ErrorState`, `Skeleton`, `TableContainer`).
-- Navegacion global con estado activo, skip link, selector de idioma y tracking de Web Vitals en `frontend/components/layout/AppShell.tsx`.
-- Internacionalizacion base EN/ES en `frontend/i18n/messages.ts` + `frontend/i18n/I18nProvider.tsx`.
-- Persistencia de filtros y debounce en `frontend/hooks/usePersistedState.ts` y `frontend/hooks/useDebouncedValue.ts`.
-- Telemetria UX no bloqueante (`view_loaded`, `user_action`, `request_error`, `time_to_insight`, `web_vital`) en `frontend/services/uxTelemetry.ts`.
-- Requests cancelables y timeout por default en `frontend/services/apiClient.ts` (AbortSignal + timeout).
-- Hardening por vista: estados vacio/error/skeleton, labels accesibles, confirmacion+undo y tablas responsive en Dashboard/Pipeline/Rules/SMTP/Email Logs.
-- Guia visual de patrones en `frontend/app/admin/ui-guide/page.tsx`.
-- Budget de bundle inicial en `frontend/scripts/check-bundle-budget.mjs` + script `npm run check:bundle`.
-- E2E operativos extendidos en `frontend/tests/e2e/flows.spec.ts`.
+ 
+## Fase 2 (Semana 6-9): Calidad enterprise (2026-05-09)
+
+Implementado en frontend:
+- Suite de accesibilidad automatizada en CI (`frontend/tests/e2e/accessibility.spec.ts`) usando Playwright + axe-core, cubriendo `/dashboard`, `/pipeline`, `/rules`, `/email/logs`.
+- Visual regression testing por rutas clave (`frontend/tests/e2e/visual.spec.ts` + snapshots), con rutas y selectores críticos, tolerancia de diffs y preparación de estado para capturas estables.
+- Contract tests FE-BE (`frontend/tests/e2e/contracts.spec.ts`) validando shape de payloads críticos (`/api/pipeline/board`, `/api/rules`, `/api/email/logs`) y headers multi-tenant.
+- Dashboard de UX observability: Telemetría UX instrumentada (`frontend/services/uxTelemetry.ts`), endpoint de ingestión (`frontend/pages/api/ux/telemetry.ts`), eventos `view_loaded`, `user_action`, `request_error`, `time_to_insight`, `web_vital` y logging para análisis y alertas.
+
+## Validación E2E Frontend — Mayo 2026
+
+- Todas las suites E2E frontend (unitarias, accesibilidad, visuales, contratos) pasan en verde tras estabilización y actualización de snapshots.
+- Evidencia y procedimiento: `docs/product/frontend-e2e-status-2026-05.md`.
+- Referencias cruzadas en DoD y progreso (`docs/product/definition-of-done.md`, `ia/05_progress.md`).

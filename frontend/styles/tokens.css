@@ -1,0 +1,42 @@
+/* Semantic Design Tokens v1 - MindFlow Enterprise */
+:root {
+  /* Surface */
+  --color-surface-default: #fff;
+  --color-surface-hover: #f5f7fa;
+  --color-surface-inverse: #181a1b;
+
+  /* Text */
+  --color-text-primary: #181a1b;
+  --color-text-secondary: #5a5e6a;
+  --color-text-disabled: #b0b3bb;
+
+  /* Action */
+  --color-action-primary: #2563eb;
+  --color-action-danger: #e11d48;
+  --color-action-warning: #f59e42;
+  --color-action-success: #22c55e;
+
+  /* Spacing */
+  --spacing-scale-2: 0.5rem;
+  --spacing-scale-4: 1rem;
+  --spacing-scale-6: 1.5rem;
+  --spacing-scale-8: 2rem;
+  --spacing-scale-10: 2.5rem;
+  --spacing-scale-12: 3rem;
+
+  /* Radius */
+  --radius-scale: 0.5rem;
+
+  /* Motion */
+  --motion-duration: 180ms;
+  --motion-easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  --color-surface-default: #181a1b;
+  --color-surface-hover: #23272e;
+  --color-surface-inverse: #fff;
+  --color-text-primary: #fff;
+  --color-text-secondary: #b0b3bb;
+  --color-text-disabled: #5a5e6a;
+}
