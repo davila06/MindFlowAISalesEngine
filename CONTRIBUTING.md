@@ -77,3 +77,49 @@ Use internal security channel and include impact, reproduction, and mitigation p
 - Todas las suites E2E frontend (unitarias, accesibilidad, visuales, contratos) pasan en verde.
 - Evidencia y procedimiento: `docs/product/frontend-e2e-status-2026-05.md`.
 - Referencias cruzadas en DoD y progreso (`docs/product/definition-of-done.md`, `ia/05_progress.md`).
+
+## Backend Contributions
+
+When contributing to the backend, follow these additional guidelines:
+
+1. **Code Structure**:
+   - Place new domain logic in the appropriate `Domain/` folder.
+   - Use `Application/` for commands, queries, and handlers.
+   - Avoid placing business logic in controllers.
+
+2. **Testing**:
+   - Write unit tests for all new features in `tests/Api.Tests/`.
+   - Use integration tests for API endpoints.
+
+3. **Secrets Management**:
+   - Do not hardcode secrets in `appsettings.json`. Use Azure Key Vault.
+
+## Frontend Contributions
+
+When contributing to the frontend, follow these additional guidelines:
+
+1. **Component Structure**:
+   - Place new components in the appropriate `components/` folder.
+   - Use `hooks/` for reusable logic.
+
+2. **Styling**:
+   - Use `globals.css` for global styles and scoped CSS modules for components.
+
+3. **Testing**:
+   - Write unit tests for components using Jest.
+   - Use Playwright for end-to-end tests.
+
+4. **Environment Variables**:
+   - Document any new variables in `frontend/.env.example`.
+
+## Documentation Contributions
+
+1. **Location**:
+   - Place new documentation in the appropriate `docs/` subfolder.
+
+2. **Format**:
+   - Use Markdown for all documentation.
+   - Follow the existing structure and naming conventions.
+
+3. **Examples**:
+   - Include code snippets or examples where applicable.
