@@ -61,6 +61,27 @@ namespace Api.Migrations
                 "('" + StageQualified + "', 'qualified', 2, '#7c3aed', '" + SeedDate + "', 'default')," +
                 "('" + StageProposal  + "', 'proposal',  3, '#d97706', '" + SeedDate + "', 'default')," +
                 "('" + StageWon       + "', 'won',       4, '#16a34a', '" + SeedDate + "', 'default');");
+
+            // ── Usuarios de prueba ───────────────────────────────────────────
+            migrationBuilder.Sql(
+                "INSERT OR IGNORE INTO \"AssignmentUsers\" (\"Id\", \"FullName\", \"Email\", \"IsActive\", \"PreferredCountry\", \"PreferredIndustry\", \"MaxActiveLeads\", \"MinScoreToAssign\", \"CreatedAtUtc\", \"TenantId\") VALUES " +
+                "('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0001', 'Test User 1', 'testuser1@novamind.com', 1, 'CR', 'Technology', 100, 0, '" + SeedDate + "', 'default')," +
+                "('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0002', 'Test User 2', 'testuser2@novamind.com', 1, 'MX', 'Finance', 100, 0, '" + SeedDate + "', 'default')," +
+                "('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0003', 'Test User 3', 'testuser3@novamind.com', 1, 'CO', 'Retail', 100, 0, '" + SeedDate + "', 'default');");
+
+            // ── Leads de prueba ─────────────────────────────────────────────
+            migrationBuilder.Sql(
+                "INSERT OR IGNORE INTO \"Leads\" (\"Id\", \"Email\", \"Phone\", \"Source\", \"Channel\", \"Campaign\", \"Country\", \"Score\", \"Priority\", \"ScoringVersion\", \"ScoredAtUtc\", \"CreatedAtUtc\", \"TenantId\") VALUES " +
+                "('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbb0001', 'lead1@demo.com', '+50611111111', 'web', 'inbound', 'organic', 'CR', 10, 'Low', 'v1', '" + SeedDate + "', '" + SeedDate + "', 'default')," +
+                "('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbb0002', 'lead2@demo.com', '+525511111111', 'web', 'inbound', 'organic', 'MX', 20, 'Medium', 'v1', '" + SeedDate + "', '" + SeedDate + "', 'default')," +
+                "('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbb0003', 'lead3@demo.com', '+573011111111', 'web', 'inbound', 'organic', 'CO', 30, 'High', 'v1', '" + SeedDate + "', '" + SeedDate + "', 'default');");
+
+            // ── Asignaciones de prueba ──────────────────────────────────────
+            migrationBuilder.Sql(
+                "INSERT OR IGNORE INTO \"LeadAssignments\" (\"Id\", \"LeadId\", \"UserId\", \"Strategy\", \"RuleKey\", \"AssignedAtUtc\", \"TenantId\") VALUES " +
+                "('cccccccc-cccc-cccc-cccc-cccccccc0001', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbb0001', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0001', 'manual', NULL, '" + SeedDate + "', 'default')," +
+                "('cccccccc-cccc-cccc-cccc-cccccccc0002', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbb0002', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0002', 'manual', NULL, '" + SeedDate + "', 'default')," +
+                "('cccccccc-cccc-cccc-cccc-cccccccc0003', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbb0003', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0003', 'manual', NULL, '" + SeedDate + "', 'default');");
         }
 
         /// <inheritdoc />
