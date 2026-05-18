@@ -1,20 +1,65 @@
 "use client";
 
+import { useState } from "react";
+import { Badge } from "@/components/ui/Badge";
+import { Banner } from "@/components/ui/Banner";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { Field } from "@/components/ui/Field";
+import { Icon } from "@/components/ui/Icon";
 import { KpiCard } from "@/components/ui/KpiCard";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Skeleton } from "@/components/ui/Skeleton";
+import { Spinner } from "@/components/ui/Spinner";
+import { Tooltip } from "@/components/ui/Tooltip";
 import { useI18n } from "@/i18n/I18nProvider";
 
 export default function UiGuidePage() {
   const { t } = useI18n();
+  const [dark, setDark] = useState(false);
 
   return (
-    <section className="panel grid">
-      <PageHeader title={t("uiGuide.title")} subtitle={t("uiGuide.subtitle")} />
+    <section className={`panel grid${dark ? " dark" : ""}`}>
+      <PageHeader
+        title={t("uiGuide.title")}
+        subtitle={t("uiGuide.subtitle")}
+        actions={
+          <label style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <input
+              type="checkbox"
+              aria-label="Modo oscuro"
+              checked={dark}
+              onChange={(e) => setDark(e.target.checked)}
+              style={{ accentColor: "#222" }}
+            />
+            <span style={{ fontSize: 13 }}>{dark ? "ON" : "OFF"}</span>
+          </label>
+        }
+      />
+
+      <article className="grid">
+        <h2>Feedback banners</h2>
+        <Banner type="success" message="Guardado correctamente" />
+        <Banner type="warning" message="Advertencia: cambios no guardados" />
+        <Banner type="error" message="Error al guardar" />
+      </article>
+
+      <article className="grid">
+        <h2>Componentes reutilizables</h2>
+        <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+          <Badge color="success">Activo</Badge>
+          <Badge color="warning">Pendiente</Badge>
+          <Badge color="error">Error</Badge>
+          <Badge>Default</Badge>
+          <Tooltip content="Tooltip accesible">
+            <button type="button">Hover o foco aqui</button>
+          </Tooltip>
+          <Icon name="check" label="Correcto" />
+          <Icon name="warning" label="Advertencia" />
+          <Icon name="error" label="Error" />
+        </div>
+      </article>
 
       <article className="grid">
         <h2>{t("uiGuide.buttons")}</h2>
@@ -38,21 +83,30 @@ export default function UiGuidePage() {
 
       <article className="grid">
         <h2>{t("uiGuide.feedbackStates")}</h2>
-        <EmptyState title={t("uiGuide.noRecords")} detail={t("uiGuide.emptyDescription")} />
-        <ErrorState message={t("uiGuide.errorDescription")} />
+        {/* Only one status region for a11y: wrap both states in a single region */}
+        <div role="status" aria-live="polite" aria-label={t("uiGuide.feedbackAnnounce")}>
+          <EmptyState title={t("uiGuide.noRecords")} detail={t("uiGuide.emptyDescription")} />
+          <ErrorState message={t("uiGuide.errorDescription")} />
+        </div>
       </article>
 
       <article className="grid">
         <h2>{t("uiGuide.loadingStates")}</h2>
-        <Skeleton large />
-        <Skeleton />
+        <p className="muted">{t("uiGuide.loadingDescription")}</p>
+        <div className="grid items-center gap-2" aria-label={t("uiGuide.loadingAnnounce")}>
+          <div className="flex items-center gap-2">
+            <Spinner size={28} />
+            <Skeleton large />
+          </div>
+          <Skeleton />
+        </div>
       </article>
 
       <article className="grid">
         <h2>{t("uiGuide.kpiCards")}</h2>
         <div className="cards">
-          <KpiCard label="Conversion" value="23%" />
-          <KpiCard label="Pipeline Value" value="52,900" />
+          <KpiCard label="Conversion" value="23%" trend="up" variant="success" />
+          <KpiCard label="Pipeline Value" value="52,900" trend="down" variant="warning" />
         </div>
       </article>
 

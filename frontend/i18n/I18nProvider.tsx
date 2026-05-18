@@ -20,14 +20,14 @@ interface I18nContextValue {
 
 const I18nContext = createContext<I18nContextValue | null>(null);
 
-export function I18nProvider({ children }: { children: ReactNode }) {
+
+export function I18nProvider({ children, initialLocale }: { children: ReactNode; initialLocale?: Locale }) {
   const [locale, setLocaleState] = useState<Locale>(() => {
     if (typeof window === "undefined") {
-      return "en";
+      return initialLocale || "en";
     }
-
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    return stored === "es" ? "es" : "en";
+    return stored === "es" ? "es" : initialLocale || "en";
   });
 
   const setLocale = useCallback((nextLocale: Locale) => {
