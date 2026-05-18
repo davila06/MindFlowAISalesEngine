@@ -1,9 +1,11 @@
 # Node modules
 frontend/node_modules/
+node_modules/
 
 # Build outputs
 backend/**/bin/
 backend/**/obj/
+frontend/.next/
 
 # Test results
 frontend/test-results/
@@ -25,3 +27,8 @@ Thumbs.db
 
 # Others
 *.log
+
+# Local SQLite artifacts
+backend/src/Api/leads.db
+backend/src/Api/leads.db-shm
+backend/src/Api/leads.db-wal
