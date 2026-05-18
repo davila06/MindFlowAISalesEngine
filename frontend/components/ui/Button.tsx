@@ -18,7 +18,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     .trim();
 
   return (
-    <button {...props} ref={ref} className={className}>
+    <button {...props} ref={ref} className={className} data-testid="button">
       {children}
     </button>
   );

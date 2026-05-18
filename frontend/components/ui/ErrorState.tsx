@@ -6,7 +6,7 @@ export function ErrorState({ message }: { message: string }) {
   const { t } = useI18n();
 
   return (
-    <div className="error-state" role="alert" aria-live="assertive">
+    <div className="error-state" role="alert">
       <strong>{t("common.errorTitle")}</strong>
       <p>{message}</p>
     </div>

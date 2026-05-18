@@ -180,10 +180,13 @@ export type TranslationKey =
   | "uiGuide.samplePlaceholder"
   | "uiGuide.sampleHint"
   | "uiGuide.feedbackStates"
+  | "uiGuide.feedbackAnnounce"
   | "uiGuide.noRecords"
   | "uiGuide.emptyDescription"
   | "uiGuide.errorDescription"
   | "uiGuide.loadingStates"
+  | "uiGuide.loadingDescription"
+  | "uiGuide.loadingAnnounce"
   | "uiGuide.kpiCards"
   | "home.title"
   | "home.subtitle"
@@ -369,10 +372,13 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "uiGuide.samplePlaceholder": "Type something...",
     "uiGuide.sampleHint": "Use explicit labels for AA compliance.",
     "uiGuide.feedbackStates": "Feedback states",
+    "uiGuide.feedbackAnnounce": "Feedback status",
     "uiGuide.noRecords": "No records",
     "uiGuide.emptyDescription": "This is the standard empty-state pattern.",
     "uiGuide.errorDescription": "This is the standard error-state pattern.",
     "uiGuide.loadingStates": "Loading states",
+    "uiGuide.loadingDescription": "Placeholder blocks represent pending content while data is being fetched.",
+    "uiGuide.loadingAnnounce": "Loading content",
     "uiGuide.kpiCards": "KPI cards",
     "home.title": "MindFlow Frontend",
     "home.subtitle": "This project follows the ARQ-FRONTEND Next.js feature-based structure.",
@@ -557,10 +563,13 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "uiGuide.samplePlaceholder": "Escribe algo...",
     "uiGuide.sampleHint": "Usa labels explicitos para cumplimiento AA.",
     "uiGuide.feedbackStates": "Estados de feedback",
+    "uiGuide.feedbackAnnounce": "Estado de retroalimentacion",
     "uiGuide.noRecords": "Sin registros",
     "uiGuide.emptyDescription": "Este es el patron estandar de estado vacio.",
     "uiGuide.errorDescription": "Este es el patron estandar de estado de error.",
     "uiGuide.loadingStates": "Estados de carga",
+    "uiGuide.loadingDescription": "Los bloques placeholder representan contenido pendiente mientras se consulta la data.",
+    "uiGuide.loadingAnnounce": "Cargando contenido",
     "uiGuide.kpiCards": "Tarjetas KPI",
     "home.title": "MindFlow Frontend",
     "home.subtitle": "Este proyecto sigue la estructura feature-based ARQ-FRONTEND para Next.js.",

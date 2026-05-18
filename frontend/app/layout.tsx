@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
@@ -10,14 +11,25 @@ export const metadata: Metadata = {
   description: "MindFlow operational frontend"
 };
 
-export default function RootLayout({
-  children
-}: Readonly<{ children: ReactNode }>) {
+function getPreferredLocale(): "en" | "es" {
+  if (typeof navigator !== "undefined" && navigator.language) {
+    return navigator.language.startsWith("es") ? "es" : "en";
+  }
+  if (typeof window !== "undefined" && window.localStorage) {
+    const stored = window.localStorage.getItem("mindflow.locale");
+    if (stored === "es" || stored === "en") return stored;
+  }
+  return "en";
+}
+
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+  // SSR fallback: always en, but client will hydrate with preferred
+  const initialLocale = typeof navigator !== "undefined" ? getPreferredLocale() : "en";
   return (
-    <html lang="en">
+    <html lang={initialLocale}>
       <body>
         <QueryProvider>
-          <I18nProvider>
+          <I18nProvider initialLocale={initialLocale}>
             <AppShell>{children}</AppShell>
           </I18nProvider>
         </QueryProvider>
