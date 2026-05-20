@@ -100,7 +100,11 @@ a {
   align-content: start;
   position: sticky;
   top: 0;
+  height: 100vh;
   max-height: 100vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
 }
 
 .brand-wrap {
@@ -115,22 +119,202 @@ a {
 }
 
 /* ─── Dark mode ──────────────────────────────────────────────────── */
-body.dark, .dark {
-  --bg: #181c1f;
-  --surface: #23272b;
-  --surface-strong: #23272b;
-  --text: #f3f3f3;
-  --muted: #b0b6be;
-  --line: #2d3237;
-  --brand: #00bfae;
-  --brand-strong: #008e7a;
-  --accent: #ffb366;
-  --ok: #22c55e;
-  --warn: #f59e42;
-  --err: #ef4444;
-  --focus: #00bfae;
-  background: #181c1f;
+html.dark, body.dark, .dark {
+  --bg: #0a0d10;
+  --surface: #111520;
+  --surface-strong: #181d2a;
+  --text: #dde3f0;
+  --muted: #7a8496;
+  --line: #1e2535;
+  --brand: #00d4c8;
+  --brand-strong: #00a89f;
+  --accent: #ff9f4a;
+  --ok: #34d470;
+  --warn: #ffb84a;
+  --err: #ff5566;
+  --focus: #00d4c8;
+  --color-field-bg: #0d1018;
+  --color-field-border: #1e2535;
+  --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.5);
+  /* ── Neon accent tokens ── */
+  --neon-cyan: #00f5ff;
+  --neon-green: #39ff14;
+  --neon-magenta: #ff2d78;
+  --neon-purple: #b026ff;
+  --neon-glow-cyan: 0 0 8px rgba(0, 245, 255, 0.55), 0 0 24px rgba(0, 245, 255, 0.28), 0 0 48px rgba(0, 245, 255, 0.12);
+  --neon-glow-green: 0 0 8px rgba(57, 255, 20, 0.6), 0 0 24px rgba(57, 255, 20, 0.28);
+  --neon-glow-magenta: 0 0 8px rgba(255, 45, 120, 0.5), 0 0 24px rgba(255, 45, 120, 0.22);
+  --neon-glow-purple: 0 0 8px rgba(176, 38, 255, 0.5), 0 0 24px rgba(176, 38, 255, 0.22);
+}
+
+html.dark body, body.dark {
+  background: radial-gradient(ellipse 80% 50% at 50% -10%, #0d1420 0%, #0a0d10 60%);
   color: var(--text);
+}
+
+/* Sidebar dark */
+html.dark .sidebar, body.dark .sidebar {
+  background: linear-gradient(180deg, #0e1219 0%, #0a0d10 100%);
+  border-right-color: #1a2030;
+  scrollbar-color: #1e2535 transparent;
+}
+
+html.dark .brand, body.dark .brand {
+  background: linear-gradient(90deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: neon-pulse 3s ease-in-out infinite;
+}
+
+html.dark .nav-toggle, body.dark .nav-toggle {
+  background: #131820;
+  border-color: #1e2535;
+  color: var(--text);
+}
+
+html.dark .nav a, body.dark .nav a {
+  background: rgba(255, 255, 255, 0.025);
+  border-color: #1a2030;
+  color: #8a94a6;
+}
+
+html.dark .nav-group + .nav-group, body.dark .nav-group + .nav-group {
+  border-top-color: #1a2030;
+}
+
+html.dark .nav-group-label, body.dark .nav-group-label {
+  color: #4a5568;
+}
+
+html.dark .nav a:hover, body.dark .nav a:hover {
+  border-color: rgba(0, 245, 255, 0.4);
+  color: var(--neon-cyan);
+  background: rgba(0, 245, 255, 0.04);
+  box-shadow: 0 0 16px rgba(0, 245, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+html.dark .nav a[aria-current="page"], body.dark .nav a[aria-current="page"] {
+  border-color: var(--neon-cyan);
+  background: rgba(0, 245, 255, 0.07);
+  color: var(--neon-cyan);
+  box-shadow: var(--neon-glow-cyan);
+  font-weight: 700;
+}
+
+/* Panels, cards dark */
+html.dark .panel, body.dark .panel {
+  background: var(--surface);
+  border-color: #1e2535;
+}
+
+html.dark .kpi, body.dark .kpi {
+  background: #131820;
+  border-color: #1e2535;
+}
+
+html.dark .column, body.dark .column {
+  background: #131820;
+  border-color: #1e2535;
+}
+
+html.dark .column h3, body.dark .column h3 {
+  background: var(--brand);
+  color: #0a0d10;
+}
+
+html.dark .card, body.dark .card {
+  background: #131820;
+  border-color: #1e2535;
+}
+
+html.dark .card:hover, body.dark .card:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 20px rgba(0, 245, 255, 0.08);
+  background: rgba(0, 245, 255, 0.025);
+}
+
+html.dark .pill, body.dark .pill {
+  background: #181d28;
+  border-color: #1e2535;
+}
+
+/* Inputs dark */
+html.dark input, html.dark select, html.dark textarea,
+body.dark input, body.dark select, body.dark textarea {
+  background: var(--color-field-bg);
+  border-color: var(--color-field-border);
+  color: var(--text);
+}
+
+html.dark input:focus, html.dark select:focus, html.dark textarea:focus,
+body.dark input:focus, body.dark select:focus, body.dark textarea:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 0 3px rgba(0, 245, 255, 0.12);
+  outline: none;
+}
+
+/* Buttons dark */
+html.dark .button, body.dark .button {
+  background: var(--brand);
+  color: #0a0d10;
+}
+
+html.dark .button:hover, body.dark .button:hover {
+  box-shadow: var(--neon-glow-cyan);
+}
+
+html.dark .button-ghost, body.dark .button-ghost {
+  background: transparent;
+  border-color: #1e2535;
+  color: var(--text);
+}
+
+html.dark .button-ghost:hover, body.dark .button-ghost:hover {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  background: rgba(0, 245, 255, 0.04);
+}
+
+/* Tables dark */
+html.dark .table th, body.dark .table th {
+  background: #111520;
+}
+
+html.dark .table tbody tr:hover, body.dark .table tbody tr:hover {
+  background: rgba(0, 245, 255, 0.03);
+}
+
+/* Toast dark */
+html.dark .toast, body.dark .toast {
+  background: #131820;
+  border-color: #1e2535;
+  color: var(--text);
+}
+
+/* Skeleton dark */
+html.dark .skeleton, body.dark .skeleton {
+  background: linear-gradient(90deg, #181d28 0%, #1e2535 50%, #181d28 100%);
+  background-size: 300% 100%;
+  border-color: #1e2535;
+}
+
+/* Badge dark */
+html.dark .badge, body.dark .badge {
+  background: #181d28;
+  border-color: #1e2535;
+}
+
+/* Empty/error state dark */
+html.dark .empty-state, body.dark .empty-state {
+  background: #131820;
+}
+
+/* Dialog dark */
+html.dark .dialog-surface, body.dark .dialog-surface {
+  background: #131820;
+  border-color: #1e2535;
 }
 
 /* ─── Navigation ─────────────────────────────────────────────────── */
@@ -141,7 +325,28 @@ body.dark, .dark {
 
 .nav {
   display: grid;
-  gap: 8px;
+  gap: 2px;
+}
+
+.nav-group {
+  display: grid;
+  gap: 3px;
+}
+
+.nav-group + .nav-group {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.nav-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 2px 4px 5px;
+  user-select: none;
 }
 
 .nav-toggle {
@@ -187,10 +392,17 @@ body.dark, .dark {
 }
 
 /* ─── Main content ───────────────────────────────────────────────── */
+.content-area {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .main {
   padding: 24px;
   display: grid;
   gap: 18px;
+  flex: 1;
 }
 
 .panel {
@@ -744,10 +956,322 @@ textarea:focus {
   }
 }
 
+@keyframes dropdown-in {
+  from { opacity: 0; transform: translateY(-10px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+}
+
+@keyframes neon-pulse {
+  0%, 100% { filter: brightness(1);   }
+  50%       { filter: brightness(1.3); }
+}
+
+/* ─── TopBar ─────────────────────────────────────────────────────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 24px;
+  height: 52px;
+  min-height: 52px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 12px;
+}
+
+.topbar-spacer {
+  flex: 1;
+}
+
+.topbar-right {
+  position: relative;
+}
+
+/* ─── Topbar theme button (always visible) ───────────────────────── */
+.topbar-theme-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 17px;
+  line-height: 1;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.topbar-theme-btn:hover {
+  border-color: var(--brand);
+  transform: rotate(20deg) scale(1.1);
+  box-shadow: 0 0 12px rgba(18, 111, 104, 0.2);
+}
+
+html.dark .topbar-theme-btn, body.dark .topbar-theme-btn {
+  border-color: #2a3040;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+html.dark .topbar-theme-btn:hover, body.dark .topbar-theme-btn:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: var(--neon-glow-cyan);
+  transform: rotate(20deg) scale(1.1);
+}
+
+/* ─── Profile Button ─────────────────────────────────────────────── */
+.profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 5px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.profile-btn:hover {
+  border-color: var(--brand);
+  box-shadow: 0 2px 14px rgba(18, 111, 104, 0.14);
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+
+.profile-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chevron {
+  font-size: 9px;
+  color: var(--muted);
+  line-height: 1;
+}
+
+/* ─── Profile Dropdown ───────────────────────────────────────────── */
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 268px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: 0 16px 48px rgba(15, 23, 42, 0.16), 0 4px 14px rgba(15, 23, 42, 0.08);
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+  z-index: 300;
+  animation: dropdown-in 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.pd-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pd-avatar-lg {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+
+.pd-user-info {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.pd-name {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.pd-email {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pd-plan {
+  display: inline-block;
+  margin-top: 3px;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  border-radius: 999px;
+  background: var(--brand);
+  color: #fff;
+}
+
+.pd-divider {
+  height: 1px;
+  background: var(--line);
+}
+
+.pd-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pd-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.pd-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.pd-meta-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.pd-meta-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ─── Theme Toggle Slider ────────────────────────────────────────── */
+.theme-toggle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--line);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.25s, box-shadow 0.25s;
+  flex-shrink: 0;
+}
+
+.theme-toggle.is-dark {
+  background: var(--ok);
+}
+
+.toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  display: block;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
+}
+
+.theme-toggle.is-dark .toggle-knob {
+  transform: translateX(20px);
+}
+
+/* ─── Neon dark mode: topbar & profile ───────────────────────────── */
+html.dark .topbar, body.dark .topbar {
+  background: rgba(10, 13, 18, 0.88);
+  border-bottom-color: #1a2030;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+html.dark .profile-btn, body.dark .profile-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: #2a3548;
+  box-shadow: 0 0 0 1px rgba(0, 245, 255, 0.08);
+}
+
+html.dark .profile-btn:hover, body.dark .profile-btn:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 18px rgba(0, 245, 255, 0.18);
+}
+
+html.dark .avatar, body.dark .avatar,
+html.dark .pd-avatar-lg, body.dark .pd-avatar-lg {
+  background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+  box-shadow: 0 0 14px rgba(0, 245, 255, 0.3);
+}
+
+html.dark .profile-dropdown, body.dark .profile-dropdown {
+  background: rgba(11, 14, 22, 0.96);
+  border-color: rgba(0, 245, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 20px 64px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(0, 245, 255, 0.08);
+}
+
+html.dark .pd-plan, body.dark .pd-plan {
+  background: var(--neon-cyan);
+  color: #0a0d10;
+  box-shadow: 0 0 10px rgba(0, 245, 255, 0.45);
+}
+
+html.dark .theme-toggle.is-dark, body.dark .theme-toggle.is-dark {
+  background: var(--neon-green);
+  box-shadow: var(--neon-glow-green);
+}
+
+html.dark .theme-toggle.is-dark .toggle-knob,
+body.dark .theme-toggle.is-dark .toggle-knob {
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+}
+
 /* ─── Responsive ─────────────────────────────────────────────────── */
 @media (max-width: 980px) {
   .shell {
     grid-template-columns: 1fr;
+  }
+
+  .content-area {
+    min-height: auto;
   }
 
   .sidebar {

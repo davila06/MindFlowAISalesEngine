@@ -21,6 +21,10 @@ export type TranslationKey =
   | "nav.emailLogs"
   | "nav.admin"
   | "nav.uiGuide"
+  | "nav.group.crm"
+  | "nav.group.automation"
+  | "nav.group.comms"
+  | "nav.group.admin"
   | "common.refresh"
   | "common.clearFilter"
   | "common.loading"
@@ -322,7 +326,7 @@ export type TranslationKey =
 
 export const messages: Record<Locale, Record<TranslationKey, string>> = {
   en: {
-    "app.title": "MindFlow",
+    "app.title": "MindFlow IA Sales Engine",
     "email.templates.defaultSubject": "Welcome {{lead.name}}",
     "email.templates.defaultBodyHtml": "<p>Hello {{lead.name}}</p><p>Stage: {{pipeline.stage}}</p>",
     "email.templates.defaultRequiredVariables": "lead.name, pipeline.stage",
@@ -341,6 +345,10 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "nav.emailLogs": "Email Logs",
     "nav.admin": "Admin",
     "nav.uiGuide": "UI Guide",
+    "nav.group.crm": "CRM",
+    "nav.group.automation": "Automation",
+    "nav.group.comms": "Communications",
+    "nav.group.admin": "Administration",
     "common.refresh": "Refresh",
     "common.clearFilter": "Clear filter",
     "common.loading": "Loading",
@@ -640,7 +648,7 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "home.goDashboard": "Go to Dashboard"
   },
   es: {
-    "app.title": "MindFlow",
+    "app.title": "MindFlow IA Sales Engine",
     "email.templates.defaultSubject": "Bienvenido {{lead.name}}",
     "email.templates.defaultBodyHtml": "<p>Hola {{lead.name}}</p><p>Etapa: {{pipeline.stage}}</p>",
     "email.templates.defaultRequiredVariables": "lead.name, pipeline.stage",
@@ -659,6 +667,10 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "nav.emailLogs": "Logs Email",
     "nav.admin": "Admin",
     "nav.uiGuide": "Guia UI",
+    "nav.group.crm": "CRM",
+    "nav.group.automation": "Automatización",
+    "nav.group.comms": "Comunicaciones",
+    "nav.group.admin": "Administración",
     "common.refresh": "Refrescar",
     "common.clearFilter": "Limpiar filtro",
     "common.loading": "Cargando",
