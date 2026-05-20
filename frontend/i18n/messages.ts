@@ -7,12 +7,14 @@ export type TranslationKey =
   | "email.templates.defaultBodyHtml"
   | "email.templates.defaultRequiredVariables"
   | "app.tenant"
+  | "app.menu"
   | "app.skipToContent"
   | "language.label"
   | "language.en"
   | "language.es"
   | "nav.dashboard"
   | "nav.pipeline"
+  | "nav.leadActivities"
   | "nav.rules"
   | "nav.emailSmtp"
   | "nav.emailTemplates"
@@ -42,7 +44,10 @@ export type TranslationKey =
   | "dashboard.conversionRate"
   | "dashboard.pipelineValue"
   | "dashboard.noLeads"
+  | "dashboard.microcopy"
   | "dashboard.date"
+  | "dashboard.toastError"
+  | "dashboard.toastRefreshed"
   | "dashboard.count"
   | "pipeline.title"
   | "pipeline.subtitle"
@@ -56,6 +61,10 @@ export type TranslationKey =
   | "pipeline.bulkActions"
   | "pipeline.bulkMove"
   | "pipeline.savedView"
+  | "pipeline.toastCreated"
+  | "pipeline.toastMoved"
+  | "pipeline.toastBulkMoved"
+  | "pipeline.toastError"
   | "pipeline.applyView"
   | "pipeline.selectOpportunity"
   | "pipeline.focusQuickActions"
@@ -67,8 +76,15 @@ export type TranslationKey =
   | "pipeline.lead"
   | "pipeline.value"
   | "pipeline.defaultTitle"
+  | "pipeline.microcopy"
   | "rules.title"
   | "rules.subtitle"
+  | "rules.toastActivated"
+  | "rules.toastDeactivated"
+  | "rules.toastUndo"
+  | "rules.toastError"
+  | "rules.toastRefreshed"
+  | "rules.microcopy"
   | "rules.filter"
   | "rules.filterPlaceholder"
   | "rules.noMatches"
@@ -107,6 +123,11 @@ export type TranslationKey =
   | "email.logs.pageSize"
   | "email.logs.previous"
   | "email.logs.next"
+  | "email.logs.tracking"
+  | "email.logs.opened"
+  | "email.logs.notOpened"
+  | "email.logs.clicked"
+  | "email.logs.notClicked"
   | "email.templates.title"
   | "email.templates.subtitle"
   | "email.templates.subjectLabel"
@@ -188,6 +209,113 @@ export type TranslationKey =
   | "uiGuide.loadingDescription"
   | "uiGuide.loadingAnnounce"
   | "uiGuide.kpiCards"
+  | "leadActivities.title"
+  | "leadActivities.subtitle"
+  | "leadActivities.leadId"
+  | "leadActivities.leadIdPlaceholder"
+  | "leadActivities.typeFilter"
+  | "leadActivities.pageSize"
+  | "leadActivities.page"
+  | "leadActivities.empty"
+  | "leadActivities.invalidLeadId"
+  | "leadActivities.addNote"
+  | "leadActivities.notePlaceholder"
+  | "leadActivities.addNoteAction"
+  | "leadActivities.untitled"
+  | "leadActivities.actor"
+  | "leadActivities.type.all"
+  | "leadActivities.type.lead_created"
+  | "leadActivities.type.note_added"
+  | "leadActivities.type.email_sent"
+  | "leadActivities.type.stage_changed"
+  | "leadActivities.type.assigned"
+  | "leadActivities.type.score_changed"
+  | "leadActivities.type.call_logged"
+  | "leadActivities.type.whatsapp_sent"
+  | "leadActivities.type.whatsapp_received"
+  | "leadActivities.type.sequence_step_sent"
+  // Sequences
+  | "nav.sequences"
+  | "sequences.title"
+  | "sequences.subtitle"
+  | "sequences.create"
+  | "sequences.empty"
+  | "sequences.name"
+  | "sequences.description"
+  | "sequences.isActive"
+  | "sequences.steps"
+  | "sequences.step.order"
+  | "sequences.step.actionType"
+  | "sequences.step.actionValue"
+  | "sequences.step.delayDays"
+  | "sequences.step.addStep"
+  | "sequences.enroll"
+  | "sequences.enrollLeadId"
+  | "sequences.enrollSuccess"
+  | "sequences.unenroll"
+  | "sequences.save"
+  | "sequences.delete"
+  | "sequences.activeLabel"
+  | "sequences.inactiveLabel"
+  // Custom Fields
+  | "nav.customFields"
+  | "customFields.title"
+  | "customFields.subtitle"
+  | "customFields.create"
+  | "customFields.empty"
+  | "customFields.key"
+  | "customFields.label"
+  | "customFields.fieldType"
+  | "customFields.entityType"
+  | "customFields.options"
+  | "customFields.isRequired"
+  | "customFields.order"
+  | "customFields.save"
+  | "customFields.delete"
+  | "customFields.type.text"
+  | "customFields.type.number"
+  | "customFields.type.date"
+  | "customFields.type.select"
+  | "customFields.type.boolean"
+  // WhatsApp
+  | "nav.whatsapp"
+  | "whatsapp.title"
+  | "whatsapp.subtitle"
+  | "whatsapp.sendMessage"
+  | "whatsapp.phone"
+  | "whatsapp.body"
+  | "whatsapp.send"
+  | "whatsapp.optIn"
+  | "whatsapp.optOut"
+  | "whatsapp.conversation"
+  | "whatsapp.inbound"
+  | "whatsapp.outbound"
+  | "whatsapp.status"
+  | "whatsapp.empty"
+  | "whatsapp.notConfigured"
+  // Lead Search
+  | "leads.title"
+  | "leads.subtitle"
+  | "leads.search"
+  | "leads.empty"
+  | "leads.sortBy"
+  | "leads.sortDir"
+  | "leads.cfSort"
+  | "leads.cfSortDir"
+  | "leads.cfFilters"
+  | "leads.addFilter"
+  | "leads.removeFilter"
+  | "leads.applyFilters"
+  | "leads.clearFilters"
+  | "leads.col.email"
+  | "leads.col.phone"
+  | "leads.col.source"
+  | "leads.col.score"
+  | "leads.col.priority"
+  | "leads.col.createdAt"
+  | "leads.total"
+  | "leads.prevPage"
+  | "leads.nextPage"
   | "home.title"
   | "home.subtitle"
   | "home.goDashboard";
@@ -199,12 +327,14 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "email.templates.defaultBodyHtml": "<p>Hello {{lead.name}}</p><p>Stage: {{pipeline.stage}}</p>",
     "email.templates.defaultRequiredVariables": "lead.name, pipeline.stage",
     "app.tenant": "Tenant",
+    "app.menu": "Menu",
     "app.skipToContent": "Skip to content",
     "language.label": "Language",
     "language.en": "English",
     "language.es": "Spanish",
     "nav.dashboard": "Dashboard",
     "nav.pipeline": "Pipeline",
+    "nav.leadActivities": "Lead Timeline",
     "nav.rules": "Rules",
     "nav.emailSmtp": "Email SMTP",
     "nav.emailTemplates": "Email Templates",
@@ -234,7 +364,10 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "dashboard.conversionRate": "Conversion Rate",
     "dashboard.pipelineValue": "Pipeline Value",
     "dashboard.noLeads": "No leads were found.",
+    "dashboard.microcopy": "Start by adjusting the day window to spot trends before taking action.",
     "dashboard.date": "Date",
+    "dashboard.toastError": "Error loading dashboard.",
+    "dashboard.toastRefreshed": "Dashboard updated!",
     "dashboard.count": "Count",
     "pipeline.title": "Pipeline Board",
     "pipeline.subtitle": "Kanban operations by stage.",
@@ -248,6 +381,10 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "pipeline.bulkActions": "Bulk actions",
     "pipeline.bulkMove": "Bulk move",
     "pipeline.savedView": "Saved view",
+    "pipeline.toastCreated": "Opportunity created!",
+    "pipeline.toastMoved": "Opportunity moved!",
+    "pipeline.toastBulkMoved": "Bulk move completed!",
+    "pipeline.toastError": "Something went wrong.",
     "pipeline.applyView": "Apply view",
     "pipeline.selectOpportunity": "Select opportunity",
     "pipeline.focusQuickActions": "Focus quick actions",
@@ -259,8 +396,15 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "pipeline.lead": "Lead",
     "pipeline.value": "Value",
     "pipeline.defaultTitle": "New deal",
+    "pipeline.microcopy": "Create quickly, then move only qualified opportunities to keep momentum.",
     "rules.title": "Rules Engine",
     "rules.subtitle": "Trigger -> Condition -> Action",
+    "rules.toastActivated": "Rule activated!",
+    "rules.toastDeactivated": "Rule deactivated!",
+    "rules.toastUndo": "Deactivation undone!",
+    "rules.toastError": "Error updating rule.",
+    "rules.toastRefreshed": "Rules updated!",
+    "rules.microcopy": "Filter and activate only rules that are currently relevant to your operation.",
     "rules.filter": "Filter rules",
     "rules.filterPlaceholder": "Search by name or trigger",
     "rules.noMatches": "No rules match current filter.",
@@ -299,6 +443,11 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "email.logs.pageSize": "Page size",
     "email.logs.previous": "Previous",
     "email.logs.next": "Next",
+    "email.logs.tracking": "Tracking",
+    "email.logs.opened": "Opened",
+    "email.logs.notOpened": "Not opened",
+    "email.logs.clicked": "Clicked",
+    "email.logs.notClicked": "Not clicked",
     "email.templates.title": "Email Templates",
     "email.templates.subtitle": "Templates are automation assets and are executed by rules.",
     "email.templates.subjectLabel": "Subject",
@@ -380,6 +529,112 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "uiGuide.loadingDescription": "Placeholder blocks represent pending content while data is being fetched.",
     "uiGuide.loadingAnnounce": "Loading content",
     "uiGuide.kpiCards": "KPI cards",
+    "leadActivities.title": "Lead Activity Timeline",
+    "leadActivities.subtitle": "Track lead interactions, automation events, and manual notes.",
+    "leadActivities.leadId": "Lead Id",
+    "leadActivities.leadIdPlaceholder": "Paste a lead GUID",
+    "leadActivities.typeFilter": "Activity type",
+    "leadActivities.pageSize": "Page size",
+    "leadActivities.page": "Page",
+    "leadActivities.empty": "No activities found for this lead.",
+    "leadActivities.invalidLeadId": "Enter a valid lead GUID to load timeline activities.",
+    "leadActivities.addNote": "Manual note",
+    "leadActivities.notePlaceholder": "Add context for sales or support handoff...",
+    "leadActivities.addNoteAction": "Add note",
+    "leadActivities.untitled": "Activity",
+    "leadActivities.actor": "Actor",
+    "leadActivities.type.all": "All",
+    "leadActivities.type.lead_created": "Lead created",
+    "leadActivities.type.note_added": "Note added",
+    "leadActivities.type.email_sent": "Email sent",
+    "leadActivities.type.stage_changed": "Stage changed",
+    "leadActivities.type.assigned": "Assigned",
+    "leadActivities.type.score_changed": "Score changed",
+    "leadActivities.type.call_logged": "Call logged",
+    "leadActivities.type.whatsapp_sent": "WhatsApp sent",
+    "leadActivities.type.whatsapp_received": "WhatsApp received",
+    "leadActivities.type.sequence_step_sent": "Sequence step sent",
+    // Sequences
+    "nav.sequences": "Sequences",
+    "sequences.title": "Sales Sequences",
+    "sequences.subtitle": "Build automated cadences for lead nurturing",
+    "sequences.create": "New Sequence",
+    "sequences.empty": "No sequences yet. Create your first cadence.",
+    "sequences.name": "Name",
+    "sequences.description": "Description",
+    "sequences.isActive": "Active",
+    "sequences.steps": "Steps",
+    "sequences.step.order": "Order",
+    "sequences.step.actionType": "Action",
+    "sequences.step.actionValue": "Value (template name / text)",
+    "sequences.step.delayDays": "Delay (days)",
+    "sequences.step.addStep": "Add Step",
+    "sequences.enroll": "Enroll Lead",
+    "sequences.enrollLeadId": "Lead ID",
+    "sequences.enrollSuccess": "Lead enrolled successfully",
+    "sequences.unenroll": "Exit Enrollment",
+    "sequences.save": "Save Sequence",
+    "sequences.delete": "Delete",
+    "sequences.activeLabel": "Active",
+    "sequences.inactiveLabel": "Inactive",
+    // Custom Fields
+    "nav.customFields": "Custom Fields",
+    "customFields.title": "Custom Fields",
+    "customFields.subtitle": "Define tenant-specific fields for leads and contacts",
+    "customFields.create": "New Field",
+    "customFields.empty": "No custom fields defined yet.",
+    "customFields.key": "Key (slug)",
+    "customFields.label": "Label",
+    "customFields.fieldType": "Field Type",
+    "customFields.entityType": "Entity",
+    "customFields.options": "Options (comma-separated, for select)",
+    "customFields.isRequired": "Required",
+    "customFields.order": "Display Order",
+    "customFields.save": "Save Field",
+    "customFields.delete": "Delete",
+    "customFields.type.text": "Text",
+    "customFields.type.number": "Number",
+    "customFields.type.date": "Date",
+    "customFields.type.select": "Select",
+    "customFields.type.boolean": "Boolean",
+    // WhatsApp
+    "nav.whatsapp": "WhatsApp",
+    "whatsapp.title": "WhatsApp",
+    "whatsapp.subtitle": "Manage conversations and opt-in contacts",
+    "whatsapp.sendMessage": "Send Message",
+    "whatsapp.phone": "Phone (e.g. 15551234567)",
+    "whatsapp.body": "Message",
+    "whatsapp.send": "Send",
+    "whatsapp.optIn": "Opt In",
+    "whatsapp.optOut": "Opt Out",
+    "whatsapp.conversation": "Conversation",
+    "whatsapp.inbound": "Inbound",
+    "whatsapp.outbound": "Outbound",
+    "whatsapp.status": "Status",
+    "whatsapp.empty": "No messages yet.",
+    "whatsapp.notConfigured": "WhatsApp is not configured. Set WHATSAPP_PHONE_NUMBER_ID and WHATSAPP_ACCESS_TOKEN.",
+    "leads.title": "Leads",
+    "leads.subtitle": "Search and filter leads, including by custom field values.",
+    "leads.search": "Search",
+    "leads.empty": "No leads found.",
+    "leads.sortBy": "Sort by",
+    "leads.sortDir": "Direction",
+    "leads.cfSort": "Sort by custom field",
+    "leads.cfSortDir": "Custom field sort direction",
+    "leads.cfFilters": "Custom field filters",
+    "leads.addFilter": "Add filter",
+    "leads.removeFilter": "Remove",
+    "leads.applyFilters": "Apply",
+    "leads.clearFilters": "Clear all",
+    "leads.col.email": "Email",
+    "leads.col.phone": "Phone",
+    "leads.col.source": "Source",
+    "leads.col.score": "Score",
+    "leads.col.priority": "Priority",
+    "leads.col.createdAt": "Created",
+    "leads.total": "Total",
+    "leads.prevPage": "Previous",
+    "leads.nextPage": "Next",
     "home.title": "MindFlow Frontend",
     "home.subtitle": "This project follows the ARQ-FRONTEND Next.js feature-based structure.",
     "home.goDashboard": "Go to Dashboard"
@@ -390,12 +645,14 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "email.templates.defaultBodyHtml": "<p>Hola {{lead.name}}</p><p>Etapa: {{pipeline.stage}}</p>",
     "email.templates.defaultRequiredVariables": "lead.name, pipeline.stage",
     "app.tenant": "Tenant",
+    "app.menu": "Menu",
     "app.skipToContent": "Saltar al contenido",
     "language.label": "Idioma",
     "language.en": "Ingles",
     "language.es": "Espanol",
     "nav.dashboard": "Dashboard",
     "nav.pipeline": "Pipeline",
+    "nav.leadActivities": "Timeline de Leads",
     "nav.rules": "Reglas",
     "nav.emailSmtp": "SMTP Email",
     "nav.emailTemplates": "Plantillas Email",
@@ -425,7 +682,10 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "dashboard.conversionRate": "Tasa de conversion",
     "dashboard.pipelineValue": "Valor del pipeline",
     "dashboard.noLeads": "No se encontraron leads.",
+    "dashboard.microcopy": "Ajusta la ventana de dias para detectar tendencias antes de tomar accion.",
     "dashboard.date": "Fecha",
+    "dashboard.toastError": "Error al cargar dashboard.",
+    "dashboard.toastRefreshed": "¡Dashboard actualizado!",
     "dashboard.count": "Cantidad",
     "pipeline.title": "Tablero Pipeline",
     "pipeline.subtitle": "Operacion Kanban por etapa.",
@@ -439,6 +699,10 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "pipeline.bulkActions": "Acciones masivas",
     "pipeline.bulkMove": "Mover en lote",
     "pipeline.savedView": "Vista guardada",
+    "pipeline.toastCreated": "¡Oportunidad creada!",
+    "pipeline.toastMoved": "¡Oportunidad movida!",
+    "pipeline.toastBulkMoved": "¡Movimiento masivo completado!",
+    "pipeline.toastError": "Ocurrió un error.",
     "pipeline.applyView": "Aplicar vista",
     "pipeline.selectOpportunity": "Seleccionar oportunidad",
     "pipeline.focusQuickActions": "Enfocar acciones rapidas",
@@ -450,8 +714,15 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "pipeline.lead": "Lead",
     "pipeline.value": "Valor",
     "pipeline.defaultTitle": "Nuevo deal",
+    "pipeline.microcopy": "Crea rapido y mueve solo oportunidades calificadas para mantener ritmo.",
     "rules.title": "Motor de Reglas",
     "rules.subtitle": "Trigger -> Condition -> Action",
+    "rules.toastActivated": "¡Regla activada!",
+    "rules.toastDeactivated": "¡Regla desactivada!",
+    "rules.toastUndo": "¡Desactivación revertida!",
+    "rules.toastError": "Error al actualizar regla.",
+    "rules.toastRefreshed": "¡Reglas actualizadas!",
+    "rules.microcopy": "Filtra y activa solo reglas relevantes para la operacion actual.",
     "rules.filter": "Filtrar reglas",
     "rules.filterPlaceholder": "Buscar por nombre o trigger",
     "rules.noMatches": "No hay reglas para el filtro actual.",
@@ -490,6 +761,11 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "email.logs.pageSize": "Tamano de pagina",
     "email.logs.previous": "Anterior",
     "email.logs.next": "Siguiente",
+    "email.logs.tracking": "Rastreo",
+    "email.logs.opened": "Abierto",
+    "email.logs.notOpened": "No abierto",
+    "email.logs.clicked": "Clic",
+    "email.logs.notClicked": "Sin clic",
     "email.templates.title": "Plantillas de Email",
     "email.templates.subtitle": "Las plantillas son activos de automatizacion y se ejecutan por reglas.",
     "email.templates.subjectLabel": "Asunto",
@@ -571,6 +847,112 @@ export const messages: Record<Locale, Record<TranslationKey, string>> = {
     "uiGuide.loadingDescription": "Los bloques placeholder representan contenido pendiente mientras se consulta la data.",
     "uiGuide.loadingAnnounce": "Cargando contenido",
     "uiGuide.kpiCards": "Tarjetas KPI",
+    "leadActivities.title": "Timeline de Actividad del Lead",
+    "leadActivities.subtitle": "Seguimiento de interacciones, eventos automáticos y notas manuales.",
+    "leadActivities.leadId": "ID de lead",
+    "leadActivities.leadIdPlaceholder": "Pega un GUID de lead",
+    "leadActivities.typeFilter": "Tipo de actividad",
+    "leadActivities.pageSize": "Tamano de pagina",
+    "leadActivities.page": "Pagina",
+    "leadActivities.empty": "No hay actividades para este lead.",
+    "leadActivities.invalidLeadId": "Ingresa un GUID de lead valido para cargar la timeline.",
+    "leadActivities.addNote": "Nota manual",
+    "leadActivities.notePlaceholder": "Agrega contexto para ventas o handoff de soporte...",
+    "leadActivities.addNoteAction": "Agregar nota",
+    "leadActivities.untitled": "Actividad",
+    "leadActivities.actor": "Actor",
+    "leadActivities.type.all": "Todas",
+    "leadActivities.type.lead_created": "Lead creado",
+    "leadActivities.type.note_added": "Nota agregada",
+    "leadActivities.type.email_sent": "Email enviado",
+    "leadActivities.type.stage_changed": "Etapa cambiada",
+    "leadActivities.type.assigned": "Asignado",
+    "leadActivities.type.score_changed": "Score actualizado",
+    "leadActivities.type.call_logged": "Llamada registrada",
+    "leadActivities.type.whatsapp_sent": "WhatsApp enviado",
+    "leadActivities.type.whatsapp_received": "WhatsApp recibido",
+    "leadActivities.type.sequence_step_sent": "Paso de secuencia enviado",
+    // Sequences
+    "nav.sequences": "Secuencias",
+    "sequences.title": "Secuencias de Ventas",
+    "sequences.subtitle": "Construye cadencias automatizadas para la captación de leads",
+    "sequences.create": "Nueva Secuencia",
+    "sequences.empty": "Sin secuencias aún. Crea tu primera cadencia.",
+    "sequences.name": "Nombre",
+    "sequences.description": "Descripción",
+    "sequences.isActive": "Activa",
+    "sequences.steps": "Pasos",
+    "sequences.step.order": "Orden",
+    "sequences.step.actionType": "Acción",
+    "sequences.step.actionValue": "Valor (nombre de template / texto)",
+    "sequences.step.delayDays": "Demora (días)",
+    "sequences.step.addStep": "Agregar Paso",
+    "sequences.enroll": "Inscribir Lead",
+    "sequences.enrollLeadId": "ID del Lead",
+    "sequences.enrollSuccess": "Lead inscrito exitosamente",
+    "sequences.unenroll": "Salir de Inscripción",
+    "sequences.save": "Guardar Secuencia",
+    "sequences.delete": "Eliminar",
+    "sequences.activeLabel": "Activa",
+    "sequences.inactiveLabel": "Inactiva",
+    // Custom Fields
+    "nav.customFields": "Campos Personalizados",
+    "customFields.title": "Campos Personalizados",
+    "customFields.subtitle": "Define campos específicos del tenant para leads y contactos",
+    "customFields.create": "Nuevo Campo",
+    "customFields.empty": "Sin campos personalizados definidos aún.",
+    "customFields.key": "Clave (slug)",
+    "customFields.label": "Etiqueta",
+    "customFields.fieldType": "Tipo de Campo",
+    "customFields.entityType": "Entidad",
+    "customFields.options": "Opciones (separadas por coma, para select)",
+    "customFields.isRequired": "Requerido",
+    "customFields.order": "Orden de Visualización",
+    "customFields.save": "Guardar Campo",
+    "customFields.delete": "Eliminar",
+    "customFields.type.text": "Texto",
+    "customFields.type.number": "Número",
+    "customFields.type.date": "Fecha",
+    "customFields.type.select": "Selección",
+    "customFields.type.boolean": "Booleano",
+    // WhatsApp
+    "nav.whatsapp": "WhatsApp",
+    "whatsapp.title": "WhatsApp",
+    "whatsapp.subtitle": "Gestiona conversaciones y contactos con opt-in",
+    "whatsapp.sendMessage": "Enviar Mensaje",
+    "whatsapp.phone": "Teléfono (ej. 15551234567)",
+    "whatsapp.body": "Mensaje",
+    "whatsapp.send": "Enviar",
+    "whatsapp.optIn": "Opt In",
+    "whatsapp.optOut": "Opt Out",
+    "whatsapp.conversation": "Conversación",
+    "whatsapp.inbound": "Entrante",
+    "whatsapp.outbound": "Saliente",
+    "whatsapp.status": "Estado",
+    "whatsapp.empty": "Sin mensajes aún.",
+    "whatsapp.notConfigured": "WhatsApp no está configurado. Establece WHATSAPP_PHONE_NUMBER_ID y WHATSAPP_ACCESS_TOKEN.",
+    "leads.title": "Leads",
+    "leads.subtitle": "Busca y filtra leads, incluyendo por valores de campos personalizados.",
+    "leads.search": "Buscar",
+    "leads.empty": "No se encontraron leads.",
+    "leads.sortBy": "Ordenar por",
+    "leads.sortDir": "Dirección",
+    "leads.cfSort": "Ordenar por campo personalizado",
+    "leads.cfSortDir": "Dirección campo personalizado",
+    "leads.cfFilters": "Filtros de campos personalizados",
+    "leads.addFilter": "Agregar filtro",
+    "leads.removeFilter": "Eliminar",
+    "leads.applyFilters": "Aplicar",
+    "leads.clearFilters": "Limpiar todo",
+    "leads.col.email": "Email",
+    "leads.col.phone": "Teléfono",
+    "leads.col.source": "Fuente",
+    "leads.col.score": "Puntaje",
+    "leads.col.priority": "Prioridad",
+    "leads.col.createdAt": "Creado",
+    "leads.total": "Total",
+    "leads.prevPage": "Anterior",
+    "leads.nextPage": "Siguiente",
     "home.title": "MindFlow Frontend",
     "home.subtitle": "Este proyecto sigue la estructura feature-based ARQ-FRONTEND para Next.js.",
     "home.goDashboard": "Ir al Dashboard"

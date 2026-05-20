@@ -108,6 +108,7 @@ export default function EmailLogsPage() {
               <th scope="col">{t("email.logs.template")}</th>
               <th scope="col">{t("email.logs.recipient")}</th>
               <th scope="col">{t("common.status")}</th>
+              <th scope="col">{t("email.logs.tracking")}</th>
               <th scope="col">{t("email.logs.errorColumn")}</th>
             </tr>
           </thead>
@@ -118,6 +119,24 @@ export default function EmailLogsPage() {
                 <td data-label={t("email.logs.template")}>{log.templateName}</td>
                 <td data-label={t("email.logs.recipient")}>{log.toEmail ?? t("email.logs.masked")}</td>
                 <td data-label={t("common.status")}>{log.status}</td>
+                <td data-label={t("email.logs.tracking")}>
+                  <span className="tracking-badges">
+                    <span
+                      className={`badge ${log.isOpened ? "badge-success" : "badge-muted"}`}
+                      title={log.firstOpenedAtUtc ? new Date(log.firstOpenedAtUtc).toLocaleString() : t("email.logs.notOpened")}
+                      aria-label={log.isOpened ? `${t("email.logs.opened")} ×${log.openCount}` : t("email.logs.notOpened")}
+                    >
+                      👁 {log.openCount > 0 ? `×${log.openCount}` : "—"}
+                    </span>
+                    <span
+                      className={`badge ${log.isClicked ? "badge-info" : "badge-muted"}`}
+                      title={log.firstClickedAtUtc ? new Date(log.firstClickedAtUtc).toLocaleString() : t("email.logs.notClicked")}
+                      aria-label={log.isClicked ? `${t("email.logs.clicked")} ×${log.clickCount}` : t("email.logs.notClicked")}
+                    >
+                      🔗 {log.clickCount > 0 ? `×${log.clickCount}` : "—"}
+                    </span>
+                  </span>
+                </td>
                 <td data-label={t("email.logs.errorColumn")}>{log.errorMessage ?? "-"}</td>
               </tr>
             ))}

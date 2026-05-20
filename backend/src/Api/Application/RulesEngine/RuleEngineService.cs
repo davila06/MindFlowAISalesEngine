@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using Api.Application.Common.Interfaces;
 using Api.Application.Onboarding;
+using Api.Application.Sequences;
 using Api.Contracts;
 using Api.Domain.Leads;
 using Api.Domain.Pipeline;
@@ -37,7 +38,7 @@ public class RuleEngineService : IRuleService, IRuleEventListener
 
     private static readonly HashSet<string> AllowedActionTypes =
     [
-        "add_score", "set_priority", "move_stage"
+        "add_score", "set_priority", "move_stage", "enroll_sequence", "send_whatsapp"
     ];
 
     private readonly IRuleRepository _ruleRepository;
@@ -47,6 +48,8 @@ public class RuleEngineService : IRuleService, IRuleEventListener
     private readonly IPipelineStageRepository _pipelineStageRepository;
     private readonly IOpportunityStageHistoryRepository _opportunityStageHistoryRepository;
     private readonly IOnboardingService _onboardingService;
+    private readonly ISequenceService _sequenceService;
+    private readonly WhatsApp.WhatsAppService _whatsAppService;
     private readonly ILogger<RuleEngineService> _logger;
 
     public RuleEngineService(
@@ -57,6 +60,8 @@ public class RuleEngineService : IRuleService, IRuleEventListener
         IPipelineStageRepository pipelineStageRepository,
         IOpportunityStageHistoryRepository opportunityStageHistoryRepository,
         IOnboardingService onboardingService,
+        ISequenceService sequenceService,
+        WhatsApp.WhatsAppService whatsAppService,
         ILogger<RuleEngineService> logger)
     {
         _ruleRepository = ruleRepository;
@@ -66,6 +71,8 @@ public class RuleEngineService : IRuleService, IRuleEventListener
         _pipelineStageRepository = pipelineStageRepository;
         _opportunityStageHistoryRepository = opportunityStageHistoryRepository;
         _onboardingService = onboardingService;
+        _sequenceService = sequenceService;
+        _whatsAppService = whatsAppService;
         _logger = logger;
     }
 
@@ -644,6 +651,11 @@ public class RuleEngineService : IRuleService, IRuleEventListener
                         actionsApplied++;
                         actionCounter++;
                     }
+                    else if (await ApplyAsyncActionAsync(lead, action, cancellationToken))
+                    {
+                        actionsApplied++;
+                        actionCounter++;
+                    }
 
                     if (actionCounter >= MaxActionsPerExecution)
                     {
@@ -839,6 +851,51 @@ public class RuleEngineService : IRuleService, IRuleEventListener
             "set_priority" => ApplySetPriority(lead, action.Value),
             _ => false
         };
+    }
+
+    private async Task<bool> ApplyAsyncActionAsync(Lead lead, RuleAction action, CancellationToken cancellationToken)
+    {
+        switch (action.Type)
+        {
+            case "enroll_sequence":
+                if (!Guid.TryParse(action.Value, out var sequenceId))
+                {
+                    _logger.LogWarning("enroll_sequence action has invalid sequence id '{Value}'.", action.Value);
+                    return false;
+                }
+                try
+                {
+                    await _sequenceService.EnrollLeadAsync(lead.Id, sequenceId, cancellationToken);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "enroll_sequence failed for lead {LeadId} / sequence {SequenceId}.", lead.Id, sequenceId);
+                    return false;
+                }
+
+            case "send_whatsapp":
+                // action.Value format: "<phone>|<message>"
+                var parts = action.Value.Split('|', 2);
+                if (parts.Length < 2 || string.IsNullOrWhiteSpace(parts[0]))
+                {
+                    _logger.LogWarning("send_whatsapp action value must be '<phone>|<message>'.");
+                    return false;
+                }
+                try
+                {
+                    await _whatsAppService.SendTextAsync(parts[0].Trim(), parts[1], lead.Id, cancellationToken);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "send_whatsapp failed for lead {LeadId}.", lead.Id);
+                    return false;
+                }
+
+            default:
+                return false;
+        }
     }
 
     private static bool ApplyAddScore(Lead lead, string value)

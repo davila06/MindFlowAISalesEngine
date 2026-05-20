@@ -32,3 +32,14 @@ Thumbs.db
 backend/src/Api/leads.db
 backend/src/Api/leads.db-shm
 backend/src/Api/leads.db-wal
+
+# Local env overrides (keep .env.example instead)
+.env.local
+.env.*.local
+
+# TypeScript incremental build info
+tsconfig.tsbuildinfo
+frontend/tsconfig.tsbuildinfo
+
+# Backup files
+*.bak

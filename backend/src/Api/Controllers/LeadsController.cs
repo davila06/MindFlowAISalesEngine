@@ -16,6 +16,7 @@ public class LeadsController : ControllerBase
     private static readonly ConcurrentDictionary<string, SemaphoreSlim> IdempotencyLocks = new(StringComparer.OrdinalIgnoreCase);
 
     private readonly ILeadIntakeService _leadIntakeService;
+    private readonly ILeadQueryService _leadQueryService;
     private readonly IIdempotencyStore _idempotencyStore;
     private readonly ILeadAuditSnapshotRepository _leadAuditSnapshotRepository;
     private readonly ILeadIntakeFailureStore _leadIntakeFailureStore;
@@ -25,6 +26,7 @@ public class LeadsController : ControllerBase
 
     public LeadsController(
         ILeadIntakeService leadIntakeService,
+        ILeadQueryService leadQueryService,
         IIdempotencyStore idempotencyStore,
         ILeadAuditSnapshotRepository leadAuditSnapshotRepository,
         ILeadIntakeFailureStore leadIntakeFailureStore,
@@ -33,12 +35,35 @@ public class LeadsController : ControllerBase
         ILogger<LeadsController> logger)
     {
         _leadIntakeService = leadIntakeService;
+        _leadQueryService = leadQueryService;
         _idempotencyStore = idempotencyStore;
         _leadAuditSnapshotRepository = leadAuditSnapshotRepository;
         _leadIntakeFailureStore = leadIntakeFailureStore;
         _tenantDataGovernanceStore = tenantDataGovernanceStore;
         _tenantContext = tenantContext;
         _logger = logger;
+    }
+
+    /// <summary>
+    /// Search / list leads with optional custom-field filters and sort.
+    /// Custom-field filters: append query params as ?cfFilter[key]=value
+    /// Custom-field sort: ?cfSort=fieldKey&amp;cfSortDir=asc|desc
+    /// Core sort: ?sortBy=createdAt|score|email|source&amp;sortDir=asc|desc
+    /// </summary>
+    [HttpGet]
+    public async Task<IActionResult> Search(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20,
+        [FromQuery(Name = "cfFilter")] Dictionary<string, string>? cfFilter = null,
+        [FromQuery] string? cfSort = null,
+        [FromQuery] string cfSortDir = "desc",
+        [FromQuery] string sortBy = "createdAt",
+        [FromQuery] string sortDir = "desc",
+        CancellationToken cancellationToken = default)
+    {
+        var filters = (IReadOnlyDictionary<string, string>)(cfFilter ?? new Dictionary<string, string>());
+        var result = await _leadQueryService.SearchAsync(page, pageSize, filters, cfSort, cfSortDir, sortBy, sortDir, cancellationToken);
+        return Ok(result);
     }
 
     [HttpPost("intake")]

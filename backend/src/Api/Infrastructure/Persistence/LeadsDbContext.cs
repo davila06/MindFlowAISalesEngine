@@ -1,6 +1,7 @@
 using Api.Domain.Companies;
 using Api.Domain.Observability;
 using Api.Domain.Contacts;
+using Api.Domain.CustomFields;
 using Api.Domain.Email;
 using Api.Domain.FollowUp;
 using Api.Domain.Leads;
@@ -10,6 +11,8 @@ using Api.Domain.Pipeline;
 using Api.Domain.Assignment;
 using Api.Domain.Rules;
 using Api.Domain.Security;
+using Api.Domain.Sequences;
+using Api.Domain.WhatsApp;
 using Api.Application.Common.Interfaces;
 using Api.Infrastructure.Tenancy;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +35,7 @@ public class LeadsDbContext : DbContext
     }
 
     public DbSet<Lead> Leads => Set<Lead>();
+    public DbSet<LeadActivity> LeadActivities => Set<LeadActivity>();
     public DbSet<Contact> Contacts => Set<Contact>();
     public DbSet<Company> Companies => Set<Company>();
     public DbSet<PipelineStage> PipelineStages => Set<PipelineStage>();
@@ -67,6 +71,19 @@ public class LeadsDbContext : DbContext
     public DbSet<AdminAuditLog> AdminAuditLogs => Set<AdminAuditLog>();
     public DbSet<LeadAuditSnapshot> LeadAuditSnapshots => Set<LeadAuditSnapshot>();
     public DbSet<DataRetentionRun> DataRetentionRuns => Set<DataRetentionRun>();
+
+    // Sequences
+    public DbSet<Sequence> Sequences => Set<Sequence>();
+    public DbSet<SequenceStep> SequenceSteps => Set<SequenceStep>();
+    public DbSet<SequenceEnrollment> SequenceEnrollments => Set<SequenceEnrollment>();
+
+    // Custom Fields
+    public DbSet<CustomFieldDefinition> CustomFieldDefinitions => Set<CustomFieldDefinition>();
+    public DbSet<CustomFieldValue> CustomFieldValues => Set<CustomFieldValue>();
+
+    // WhatsApp
+    public DbSet<WhatsAppContact> WhatsAppContacts => Set<WhatsAppContact>();
+    public DbSet<WhatsAppMessage> WhatsAppMessages => Set<WhatsAppMessage>();
 
     public override int SaveChanges()
     {
@@ -127,6 +144,26 @@ public class LeadsDbContext : DbContext
             entity.HasIndex(x => x.Channel);
             entity.HasIndex(x => x.Score);
             entity.HasIndex(x => x.Priority);
+            entity.HasQueryFilter(x => EF.Property<string>(x, "TenantId") == _tenantContext.TenantId);
+        });
+
+        modelBuilder.Entity<LeadActivity>(entity =>
+        {
+            entity.ToTable("LeadActivities");
+            entity.HasKey(x => x.Id);
+            entity.Property<string>("TenantId").IsRequired().HasMaxLength(64).HasDefaultValue(TenantContext.DefaultTenantId);
+            entity.Property(x => x.LeadId).IsRequired();
+            entity.Property(x => x.ActivityType).IsRequired().HasMaxLength(50);
+            entity.Property(x => x.Title).HasMaxLength(200);
+            entity.Property(x => x.Description).HasMaxLength(2000);
+            entity.Property(x => x.RelatedEntityId);
+            entity.Property(x => x.RelatedEntityType).HasMaxLength(100);
+            entity.Property(x => x.Actor).IsRequired().HasMaxLength(200).HasDefaultValue("system");
+            entity.Property(x => x.OccurredAtUtc).IsRequired();
+            entity.HasIndex("TenantId");
+            entity.HasIndex(x => x.LeadId);
+            entity.HasIndex(x => x.ActivityType);
+            entity.HasIndex(x => x.OccurredAtUtc);
             entity.HasQueryFilter(x => EF.Property<string>(x, "TenantId") == _tenantContext.TenantId);
         });
 
@@ -332,8 +369,17 @@ public class LeadsDbContext : DbContext
             entity.Property(x => x.Succeeded).IsRequired();
             entity.Property(x => x.ErrorMessage).HasMaxLength(2000);
             entity.Property(x => x.SentAtUtc).IsRequired();
+            // Tracking fields
+            entity.Property(x => x.TrackingToken).IsRequired();
+            entity.Property(x => x.OpenCount).IsRequired().HasDefaultValue(0);
+            entity.Property(x => x.ClickCount).IsRequired().HasDefaultValue(0);
+            entity.Property(x => x.FirstOpenedAtUtc);
+            entity.Property(x => x.LastOpenedAtUtc);
+            entity.Property(x => x.FirstClickedAtUtc);
+            entity.Property(x => x.IsAppleMpp).IsRequired().HasDefaultValue(false);
             entity.HasIndex("TenantId");
             entity.HasIndex(x => x.LeadId);
+            entity.HasIndex(x => x.TrackingToken).IsUnique();
             entity.HasQueryFilter(x => EF.Property<string>(x, "TenantId") == _tenantContext.TenantId);
         });
 
@@ -840,6 +886,130 @@ public class LeadsDbContext : DbContext
             entity.Property(x => x.AdminAuditLogsRemoved).IsRequired();
             entity.Property(x => x.ExecutedAtUtc).IsRequired();
             entity.HasIndex(x => x.ExecutedAtUtc);
+        });
+
+        // --- Sequences ---
+        modelBuilder.Entity<Sequence>(entity =>
+        {
+            entity.ToTable("Sequences");
+            entity.HasKey(x => x.Id);
+            entity.Property<string>("TenantId").IsRequired().HasMaxLength(64).HasDefaultValue(TenantContext.DefaultTenantId);
+            entity.Property(x => x.Name).IsRequired().HasMaxLength(200);
+            entity.Property(x => x.Description).HasMaxLength(500);
+            entity.Property(x => x.IsActive).IsRequired().HasDefaultValue(true);
+            entity.Property(x => x.CreatedAtUtc).IsRequired();
+            entity.Property(x => x.UpdatedAtUtc).IsRequired();
+            entity.HasIndex("TenantId");
+            entity.HasQueryFilter(x => EF.Property<string>(x, "TenantId") == _tenantContext.TenantId);
+            entity.HasMany(x => x.Steps).WithOne().HasForeignKey(x => x.SequenceId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<SequenceStep>(entity =>
+        {
+            entity.ToTable("SequenceSteps");
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.SequenceId).IsRequired();
+            entity.Property(x => x.Order).IsRequired();
+            entity.Property(x => x.ActionType).IsRequired().HasMaxLength(50);
+            entity.Property(x => x.ActionValue).IsRequired().HasMaxLength(500);
+            entity.Property(x => x.DelayDays).IsRequired().HasDefaultValue(0);
+            entity.HasIndex(x => x.SequenceId);
+        });
+
+        modelBuilder.Entity<SequenceEnrollment>(entity =>
+        {
+            entity.ToTable("SequenceEnrollments");
+            entity.HasKey(x => x.Id);
+            entity.Property<string>("TenantId").IsRequired().HasMaxLength(64).HasDefaultValue(TenantContext.DefaultTenantId);
+            entity.Property(x => x.LeadId).IsRequired();
+            entity.Property(x => x.SequenceId).IsRequired();
+            entity.Property(x => x.Status).IsRequired().HasMaxLength(20).HasDefaultValue(SequenceEnrollment.Statuses.Active);
+            entity.Property(x => x.NextStepOrder).IsRequired().HasDefaultValue(1);
+            entity.Property(x => x.NextStepDueAtUtc).IsRequired();
+            entity.Property(x => x.EnrolledAtUtc).IsRequired();
+            entity.Property(x => x.CompletedAtUtc);
+            entity.Property(x => x.ExitedAtUtc);
+            entity.Property(x => x.ExitReason).HasMaxLength(50);
+            entity.HasIndex("TenantId");
+            entity.HasIndex(x => x.LeadId);
+            entity.HasIndex(x => x.SequenceId);
+            entity.HasIndex(x => x.Status);
+            entity.HasIndex(x => x.NextStepDueAtUtc);
+            entity.HasQueryFilter(x => EF.Property<string>(x, "TenantId") == _tenantContext.TenantId);
+        });
+
+        // --- Custom Fields ---
+        modelBuilder.Entity<CustomFieldDefinition>(entity =>
+        {
+            entity.ToTable("CustomFieldDefinitions");
+            entity.HasKey(x => x.Id);
+            entity.Property<string>("TenantId").IsRequired().HasMaxLength(64).HasDefaultValue(TenantContext.DefaultTenantId);
+            entity.Property(x => x.Key).IsRequired().HasMaxLength(64);
+            entity.Property(x => x.Label).IsRequired().HasMaxLength(120);
+            entity.Property(x => x.FieldType).IsRequired().HasMaxLength(20);
+            entity.Property(x => x.EntityType).IsRequired().HasMaxLength(20).HasDefaultValue("Lead");
+            entity.Property(x => x.Options).HasMaxLength(2000);
+            entity.Property(x => x.IsRequired).IsRequired().HasDefaultValue(false);
+            entity.Property(x => x.Order).IsRequired().HasDefaultValue(0);
+            entity.Property(x => x.CreatedAtUtc).IsRequired();
+            entity.HasIndex("TenantId");
+            entity.HasIndex("TenantId", nameof(CustomFieldDefinition.Key)).IsUnique();
+            entity.HasQueryFilter(x => EF.Property<string>(x, "TenantId") == _tenantContext.TenantId);
+        });
+
+        modelBuilder.Entity<CustomFieldValue>(entity =>
+        {
+            entity.ToTable("CustomFieldValues");
+            entity.HasKey(x => x.Id);
+            entity.Property<string>("TenantId").IsRequired().HasMaxLength(64).HasDefaultValue(TenantContext.DefaultTenantId);
+            entity.Property(x => x.EntityId).IsRequired();
+            entity.Property(x => x.EntityType).IsRequired().HasMaxLength(20);
+            entity.Property(x => x.FieldKey).IsRequired().HasMaxLength(64);
+            entity.Property(x => x.Value).HasMaxLength(2000);
+            entity.Property(x => x.UpdatedAtUtc).IsRequired();
+            entity.HasIndex("TenantId");
+            entity.HasIndex(x => x.EntityId);
+            entity.HasIndex("TenantId", nameof(CustomFieldValue.EntityId), nameof(CustomFieldValue.FieldKey)).IsUnique();
+            entity.HasQueryFilter(x => EF.Property<string>(x, "TenantId") == _tenantContext.TenantId);
+        });
+
+        // --- WhatsApp ---
+        modelBuilder.Entity<WhatsAppContact>(entity =>
+        {
+            entity.ToTable("WhatsAppContacts");
+            entity.HasKey(x => x.Id);
+            entity.Property<string>("TenantId").IsRequired().HasMaxLength(64).HasDefaultValue(TenantContext.DefaultTenantId);
+            entity.Property(x => x.PhoneNumber).IsRequired().HasMaxLength(32);
+            entity.Property(x => x.DisplayName).HasMaxLength(160);
+            entity.Property(x => x.OptedIn).IsRequired().HasDefaultValue(false);
+            entity.Property(x => x.OptedInAtUtc);
+            entity.Property(x => x.OptedOutAtUtc);
+            entity.Property(x => x.LeadId);
+            entity.Property(x => x.CreatedAtUtc).IsRequired();
+            entity.HasIndex("TenantId");
+            entity.HasIndex(x => x.PhoneNumber);
+            entity.HasIndex("TenantId", nameof(WhatsAppContact.PhoneNumber)).IsUnique();
+            entity.HasQueryFilter(x => EF.Property<string>(x, "TenantId") == _tenantContext.TenantId);
+        });
+
+        modelBuilder.Entity<WhatsAppMessage>(entity =>
+        {
+            entity.ToTable("WhatsAppMessages");
+            entity.HasKey(x => x.Id);
+            entity.Property<string>("TenantId").IsRequired().HasMaxLength(64).HasDefaultValue(TenantContext.DefaultTenantId);
+            entity.Property(x => x.ExternalMessageId).HasMaxLength(128);
+            entity.Property(x => x.ContactPhone).IsRequired().HasMaxLength(32);
+            entity.Property(x => x.Direction).IsRequired().HasMaxLength(10);
+            entity.Property(x => x.Body).HasMaxLength(4096);
+            entity.Property(x => x.TemplateName).HasMaxLength(100);
+            entity.Property(x => x.Status).IsRequired().HasMaxLength(20);
+            entity.Property(x => x.LeadId);
+            entity.Property(x => x.SentAtUtc).IsRequired();
+            entity.HasIndex("TenantId");
+            entity.HasIndex(x => x.ContactPhone);
+            entity.HasIndex(x => x.ExternalMessageId);
+            entity.HasIndex(x => x.SentAtUtc);
+            entity.HasQueryFilter(x => EF.Property<string>(x, "TenantId") == _tenantContext.TenantId);
         });
     }
 }

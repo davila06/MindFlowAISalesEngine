@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -15,11 +14,15 @@ import {
 } from "@/hooks/queries/usePipelineQueries";
 import { usePersistedState } from "@/hooks/usePersistedState";
 import { useI18n } from "@/i18n/I18nProvider";
+import { useToast } from "@/components/providers/ToastProvider";
 import { trackUxEvent } from "@/services/uxTelemetry";
 import type { Opportunity } from "@/types/lead";
+import type { TranslationKey } from "@/i18n/messages";
 
-export function KanbanBoard() {
+function KanbanBoard() {
+
   const { t } = useI18n();
+  const { showToast } = useToast();
   const leadIdInputRef = useRef<HTMLInputElement | null>(null);
   const [leadId, setLeadId] = useState("");
   const [title, setTitle] = useState(t("pipeline.defaultTitle"));
@@ -78,12 +81,11 @@ export function KanbanBoard() {
         screen: "pipeline",
         detail: "create_opportunity"
       });
-    } catch (err) {
-      const message = err instanceof Error ? err.message : t("common.error");
-      trackUxEvent({
-        event: "request_error",
-        screen: "pipeline",
-        detail: message
+      showToast({ message: t("pipeline.toastCreated"), type: "success" });
+    } catch (error) {
+      showToast({
+        message: t("pipeline.errorCreatingOpportunity" as TranslationKey),
+        type: "error"
       });
     }
   }
@@ -96,13 +98,15 @@ export function KanbanBoard() {
         screen: "pipeline",
         detail: "move_opportunity"
       });
-    } catch (err) {
-      const message = err instanceof Error ? err.message : t("common.error");
+      showToast({ message: t("pipeline.toastMoved"), type: "success" });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : t("common.error");
       trackUxEvent({
         event: "request_error",
         screen: "pipeline",
         detail: message
       });
+      showToast({ message: t("pipeline.toastError"), type: "error" });
     }
   }
 
@@ -123,6 +127,7 @@ export function KanbanBoard() {
       screen: "pipeline",
       detail: `bulk_move:${selectedIds.length}`
     });
+    showToast({ message: t("pipeline.toastBulkMoved"), type: "success" });
   }
 
   function toggleSelection(opportunityId: string) {
@@ -159,9 +164,10 @@ export function KanbanBoard() {
           </div>
         }
       />
+      <p className="subtle-copy">{t("pipeline.microcopy")}</p>
 
       <div className="grid" data-testid="pipeline-visual-shell">
-        <div className="row" role="group" aria-label={t("pipeline.quickActions")}>
+        <div className="row" role="group" aria-label={t("pipeline.quickActions")}>...
           <Field label={t("pipeline.leadId")} htmlFor="opportunity-lead-id">
             <input
               ref={leadIdInputRef}
@@ -247,66 +253,65 @@ export function KanbanBoard() {
       ) : null}
 
       <div className="board">
-        {opportunitiesByStage.map(({ stage, opportunities: stageItems }) => {
-
-          return (
-            <section className="column" key={stage.id}>
-              <h3>{stage.name}</h3>
-              <div className="items">
-                {stageItems.length === 0 ? (
-                  <EmptyState
-                    title={t("pipeline.noOpportunities")}
-                    detail={t("pipeline.stageEmpty")}
-                  />
-                ) : null}
-                {stageItems.map((opportunity) => (
-                  <article className="card" key={opportunity.id}>
-                    <label className="row" htmlFor={`select-${opportunity.id}`}>
-                      <input
-                        id={`select-${opportunity.id}`}
-                        type="checkbox"
-                        aria-label={`${t("pipeline.selectOpportunity")} ${opportunity.title}`}
-                        checked={selectedIds.includes(opportunity.id)}
-                        onChange={() => toggleSelection(opportunity.id)}
-                        onKeyDown={(e) => {
-                          if (e.key === " " || e.key === "Enter") {
-                            e.preventDefault();
-                            toggleSelection(opportunity.id);
-                          }
-                        }}
-                      />
-                      <span>{t("pipeline.selectOpportunity")}</span>
-                    </label>
-                    <strong>{opportunity.title}</strong>
-                    <span className="muted">
-                      {t("pipeline.lead")}: {opportunity.leadId}
-                    </span>
-                    <span className="muted">
-                      {t("pipeline.value")}: {opportunity.value}
-                    </span>
-                    <div className="row">
-                      <select
-                        aria-label={`${t("pipeline.moveToStage")} ${opportunity.title}`}
-                        title={`${t("pipeline.moveToStage")} ${opportunity.title}`}
-                        value={opportunity.stageId}
-                        onChange={(event) =>
-                          void moveOpportunity(opportunity.id, event.currentTarget.value)
+        {opportunitiesByStage.map(({ stage, opportunities: stageItems }) => (
+          <section className="column" key={stage.id}>
+            <h3>{stage.name}</h3>
+            <div className="items">
+              {stageItems.length === 0 ? (
+                <EmptyState
+                  title={t("pipeline.noOpportunities")}
+                  detail={t("pipeline.stageEmpty")}
+                />
+              ) : null}
+              {stageItems.map((opportunity) => (
+                <article className="card" key={opportunity.id}>
+                  <label className="row" htmlFor={`select-${opportunity.id}`}>
+                    <input
+                      id={`select-${opportunity.id}`}
+                      type="checkbox"
+                      aria-label={`${t("pipeline.selectOpportunity")} ${opportunity.title}`}
+                      checked={selectedIds.includes(opportunity.id)}
+                      onChange={() => toggleSelection(opportunity.id)}
+                      onKeyDown={(e) => {
+                        if (e.key === " " || e.key === "Enter") {
+                          e.preventDefault();
+                          toggleSelection(opportunity.id);
                         }
-                      >
-                        {board.stages.map((target) => (
-                          <option key={target.id} value={target.id}>
-                            {target.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
-          );
-        })}
+                      }}
+                    />
+                    <span>{t("pipeline.selectOpportunity")}</span>
+                  </label>
+                  <strong>{opportunity.title}</strong>
+                  <span className="muted">
+                    {t("pipeline.lead")}: {opportunity.leadId}
+                  </span>
+                  <span className="muted">
+                    {t("pipeline.value")}: {opportunity.value}
+                  </span>
+                  <div className="row">
+                    <select
+                      aria-label={`${t("pipeline.moveToStage")} ${opportunity.title}`}
+                      title={`${t("pipeline.moveToStage")} ${opportunity.title}`}
+                      value={opportunity.stageId}
+                      onChange={(event) =>
+                        void moveOpportunity(opportunity.id, event.currentTarget.value)
+                      }
+                    >
+                      {board.stages.map((target) => (
+                        <option key={target.id} value={target.id}>
+                          {target.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
     </section>
   );
 }
+
+export default KanbanBoard;

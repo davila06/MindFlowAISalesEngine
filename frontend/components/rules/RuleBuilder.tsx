@@ -20,7 +20,7 @@ const RuleBuilder: React.FC<RuleBuilderProps> = ({ rules = [] }) => {
           <ul>
             {rules.map((rule) => (
               <li key={rule.id || rule.name}>
-                <strong>{rule.name}</strong> — Trigger: {rule.trigger || (rule.triggers ? rule.triggers.join(", ") : "")}<br />
+                <strong>{rule.name}</strong> — Trigger: {rule.trigger}<br />
                 <span>Conditions: {rule.conditions?.length ?? 0}</span> | <span>Actions: {rule.actions?.length ?? 0}</span>
               </li>
             ))}

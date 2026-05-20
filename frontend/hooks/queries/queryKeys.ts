@@ -11,5 +11,9 @@ export const queryKeys = {
   email: {
     logs: (page: number, pageSize: number, search: string) =>
       ["email", "logs", { page, pageSize, search }] as const
+  },
+  leads: {
+    activities: (leadId: string, page: number, pageSize: number, type: string) =>
+      ["leads", "activities", { leadId, page, pageSize, type }] as const
   }
 };

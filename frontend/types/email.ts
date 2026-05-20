@@ -28,6 +28,23 @@ export interface EmailLog {
   status: string;
   sentAtUtc: string;
   errorMessage?: string;
+  // Tracking
+  openCount: number;
+  clickCount: number;
+  firstOpenedAtUtc?: string;
+  firstClickedAtUtc?: string;
+  isOpened: boolean;
+  isClicked: boolean;
+}
+
+export interface EmailTrackingMetrics {
+  templateName: string;
+  totalSent: number;
+  totalOpened: number;
+  totalClicked: number;
+  openRatePercent: number;
+  clickRatePercent: number;
+  clickToOpenRatePercent: number;
 }
 
 export interface EmailTemplateVersion {

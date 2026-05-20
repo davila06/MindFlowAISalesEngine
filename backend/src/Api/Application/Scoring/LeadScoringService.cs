@@ -6,6 +6,7 @@ using System.Text.Json;
 
 namespace Api.Application.Scoring;
 
+
 public class LeadScoringService : ILeadScoringService
 {
     private static readonly LeadScoringFormula DefaultFormula = new();
@@ -17,6 +18,7 @@ public class LeadScoringService : ILeadScoringService
     private readonly IOpportunityRepository _opportunityRepository;
     private readonly IPipelineStageRepository _pipelineStageRepository;
     private readonly ITenantContext _tenantContext;
+    private readonly ILeadScoringAIService _aiService;
 
     public LeadScoringService(
         ILeadRepository leadRepository,
@@ -25,7 +27,8 @@ public class LeadScoringService : ILeadScoringService
         ILeadScoringFormulaStore formulaStore,
         IOpportunityRepository opportunityRepository,
         IPipelineStageRepository pipelineStageRepository,
-        ITenantContext tenantContext)
+        ITenantContext tenantContext,
+        ILeadScoringAIService aiService)
     {
         _leadRepository = leadRepository;
         _leadAuditSnapshotRepository = leadAuditSnapshotRepository;
@@ -34,6 +37,7 @@ public class LeadScoringService : ILeadScoringService
         _opportunityRepository = opportunityRepository;
         _pipelineStageRepository = pipelineStageRepository;
         _tenantContext = tenantContext;
+        _aiService = aiService;
     }
 
     public async Task<LeadScoreResponse?> ScoreLeadAsync(Guid leadId, CancellationToken cancellationToken)
@@ -44,6 +48,40 @@ public class LeadScoringService : ILeadScoringService
             return null;
         }
 
+        // Intentar obtener el score desde el microservicio de IA
+        LeadAIScoreResult? aiResult = null;
+        try
+        {
+            aiResult = await _aiService.PredictScoreAsync(leadId, cancellationToken);
+        }
+        catch
+        {
+            // Si falla, continuar con el método tradicional
+        }
+
+        if (aiResult != null)
+        {
+            lead.SetScore(aiResult.Score, aiResult.Priority, aiResult.ModelVersion);
+            await _leadRepository.SaveChangesAsync(cancellationToken);
+            await _leadAuditSnapshotRepository.AddAsync(
+                new LeadAuditSnapshot(
+                    lead.Id,
+                    "lead.score.updated.ai",
+                    "scoring-ai",
+                    JsonSerializer.Serialize(new { lead.Score, lead.Priority, lead.ScoringVersion, lead.ScoredAtUtc })),
+                cancellationToken);
+
+            return new LeadScoreResponse
+            {
+                LeadId = lead.Id,
+                Score = lead.Score,
+                Priority = lead.Priority,
+                ScoringVersion = lead.ScoringVersion,
+                ScoredAtUtc = lead.ScoredAtUtc
+            };
+        }
+
+        // Fallback: método tradicional
         var formula = await _formulaStore.GetCurrentAsync(_tenantContext.TenantId, cancellationToken);
         var (score, _) = EvaluateScore(lead.Email, lead.Phone, lead.Source, formula);
         var thresholds = await _thresholdStore.GetCurrentAsync(_tenantContext.TenantId, cancellationToken);
@@ -172,7 +210,7 @@ public class LeadScoringService : ILeadScoringService
             Score = lead.Score,
             Priority = lead.Priority,
             FormulaVersion = lead.ScoringVersion,
-            Contributions = contributions.Select(x => new ScoreContributionItem
+            Contributions = contributions.Select(x => new Api.Contracts.ScoreContributionItem
             {
                 Key = x.Key,
                 Description = x.Description,

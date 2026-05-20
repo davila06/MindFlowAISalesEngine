@@ -12,6 +12,7 @@ import { useRulesQuery, useToggleRuleMutation } from "@/hooks/queries/useRulesQu
 import { TableContainer } from "@/components/ui/TableContainer";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useI18n } from "@/i18n/I18nProvider";
+import { useToast } from "@/components/providers/ToastProvider";
 import { usePersistedState } from "@/hooks/usePersistedState";
 import { trackUxEvent } from "@/services/uxTelemetry";
 import type { Rule } from "@/types/rule";
@@ -23,6 +24,7 @@ export function RuleTable() {
   const [confirmingRule, setConfirmingRule] = useState<Rule | null>(null);
   const undoTimerRef = useRef<number | null>(null);
   const { t } = useI18n();
+  const { showToast } = useToast();
 
   useEffect(() => {
     return () => {
@@ -40,19 +42,18 @@ export function RuleTable() {
       if (rule.isActive) {
         await toggleMutation.mutateAsync({ ruleId: rule.id, nextActive: false });
         setPendingUndoRule(rule);
-
+        showToast({ message: t("rules.toastDeactivated"), type: "success" });
         if (undoTimerRef.current) {
           window.clearTimeout(undoTimerRef.current);
         }
-
         undoTimerRef.current = window.setTimeout(() => {
           setPendingUndoRule(null);
           undoTimerRef.current = null;
         }, 7000);
       } else {
         await toggleMutation.mutateAsync({ ruleId: rule.id, nextActive: true });
+        showToast({ message: t("rules.toastActivated"), type: "success" });
       }
-
       trackUxEvent({
         event: "user_action",
         screen: "rules",
@@ -65,6 +66,7 @@ export function RuleTable() {
         screen: "rules",
         detail: message
       });
+      showToast({ message: t("rules.toastError"), type: "error" });
     }
   }
 
@@ -85,6 +87,7 @@ export function RuleTable() {
         screen: "rules",
         detail: "undo_deactivate"
       });
+      showToast({ message: t("rules.toastUndo"), type: "success" });
     } catch (err) {
       const message = err instanceof Error ? err.message : t("common.error");
       trackUxEvent({
@@ -92,6 +95,7 @@ export function RuleTable() {
         screen: "rules",
         detail: message
       });
+      showToast({ message: t("rules.toastError"), type: "error" });
     }
   }
 
@@ -110,6 +114,7 @@ export function RuleTable() {
   return (
     <section className="panel grid">
       <PageHeader title={t("rules.title")} subtitle={t("rules.subtitle")} />
+      <p className="subtle-copy">{t("rules.microcopy")}</p>
 
       <div className="row row-between">
         <Field label={t("rules.filter")} htmlFor="rules-filter">
@@ -120,7 +125,7 @@ export function RuleTable() {
             placeholder={t("rules.filterPlaceholder")}
           />
         </Field>
-        <Button variant="ghost" onClick={() => void refetch()}>
+        <Button variant="ghost" onClick={() => { void refetch(); showToast({ message: t("rules.toastRefreshed"), type: "success" }); }}>
           {t("common.refresh")}
         </Button>
       </div>

@@ -19,7 +19,9 @@ export function trackUxEvent(payload: Omit<UxTelemetryPayload, "ts">) {
     ts: new Date().toISOString()
   };
 
-  console.info("[ux-telemetry]", eventPayload);
+  if (process.env.NEXT_PUBLIC_DEBUG_UX_TELEMETRY === "true") {
+    console.info(`[ux-telemetry] ${eventPayload.event}`, eventPayload);
+  }
 
   if (typeof navigator !== "undefined" && navigator.sendBeacon) {
     try {

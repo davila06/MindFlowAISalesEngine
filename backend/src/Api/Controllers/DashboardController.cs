@@ -63,4 +63,11 @@ public class DashboardController : ControllerBase
         var report = await _dashboardService.GetQaHealthReportAsync(windowDays, cancellationToken);
         return Ok(report);
     }
+
+    [HttpGet("operations-kpis")]
+    public async Task<IActionResult> GetOperationsKpis([FromServices] IOperationsKpiService opsKpiService, [FromQuery] int days = 7, CancellationToken cancellationToken = default)
+    {
+        var response = await opsKpiService.GetOperationsKpisAsync(days, cancellationToken);
+        return Ok(response);
+    }
 }

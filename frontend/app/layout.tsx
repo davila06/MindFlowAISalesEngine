@@ -1,10 +1,23 @@
 
 import type { Metadata } from "next";
+import { Fraunces, Manrope } from "next/font/google";
 import type { ReactNode } from "react";
 import "./globals.css";
 import { AppShell } from "@/components/layout/AppShell";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import { I18nProvider } from "@/i18n/I18nProvider";
+
+import { ToastProvider } from "@/components/providers/ToastProvider";
+
+const fontSans = Manrope({
+  subsets: ["latin"],
+  variable: "--font-sans"
+});
+
+const fontDisplay = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-display"
+});
 
 export const metadata: Metadata = {
   title: "MindFlow UI",
@@ -27,10 +40,12 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   const initialLocale = typeof navigator !== "undefined" ? getPreferredLocale() : "en";
   return (
     <html lang={initialLocale}>
-      <body>
+      <body className={`${fontSans.variable} ${fontDisplay.variable}`}>
         <QueryProvider>
           <I18nProvider initialLocale={initialLocale}>
-            <AppShell>{children}</AppShell>
+            <ToastProvider>
+              <AppShell>{children}</AppShell>
+            </ToastProvider>
           </I18nProvider>
         </QueryProvider>
       </body>

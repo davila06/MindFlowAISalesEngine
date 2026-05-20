@@ -143,7 +143,11 @@ public class EmailController : ControllerBase
             Status = item.Status,
             Succeeded = item.Succeeded,
             ErrorMessage = item.ErrorMessage,
-            SentAtUtc = item.SentAtUtc
+            SentAtUtc = item.SentAtUtc,
+            OpenCount = item.OpenCount,
+            ClickCount = item.ClickCount,
+            FirstOpenedAtUtc = item.FirstOpenedAtUtc,
+            FirstClickedAtUtc = item.FirstClickedAtUtc
         });
 
         return Ok(response);
@@ -287,6 +291,26 @@ public class EmailController : ControllerBase
     {
         await _emailDispatchService.RetryAsync(logId, cancellationToken);
         return Ok();
+    }
+
+    [HttpGet("tracking/metrics")]
+    public async Task<IActionResult> GetTrackingMetrics(
+        [FromQuery] DateTime? from,
+        [FromQuery] DateTime? to,
+        CancellationToken cancellationToken)
+    {
+        var metrics = await _emailLogRepository.GetMetricsByTemplateAsync(from, to, cancellationToken);
+        var response = metrics.Select(m => new EmailTrackingMetricsResponse
+        {
+            TemplateName = m.TemplateName,
+            TotalSent = m.TotalSent,
+            TotalOpened = m.TotalOpened,
+            TotalClicked = m.TotalClicked,
+            OpenRatePercent = m.TotalSent == 0 ? 0 : Math.Round((double)m.TotalOpened / m.TotalSent * 100, 1),
+            ClickRatePercent = m.TotalSent == 0 ? 0 : Math.Round((double)m.TotalClicked / m.TotalSent * 100, 1),
+            ClickToOpenRatePercent = m.TotalOpened == 0 ? 0 : Math.Round((double)m.TotalClicked / m.TotalOpened * 100, 1)
+        });
+        return Ok(response);
     }
 
     [HttpGet("kpis")]

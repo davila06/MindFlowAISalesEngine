@@ -1,3 +1,4 @@
+
 using Api.Application.Common.FeatureFlags;
 using Api.Application.Common.Interfaces;
 using Api.Application.Common.Security;
@@ -7,6 +8,7 @@ using Api.Application.Contacts;
 using Api.Application.AnalyticsAdvanced;
 using Api.Application.Observability;
 using Api.Infrastructure.Observability;
+using Api.Application.CustomFields;
 using Api.Application.Email;
 using Api.Application.Assignment;
 using Api.Application.Dashboard;
@@ -17,11 +19,14 @@ using Api.Application.Pipeline;
 using Api.Application.Proposals;
 using Api.Application.RulesEngine;
 using Api.Application.Scoring;
+using Api.Application.Sequences;
+using Api.Application.WhatsApp;
 using Api.Domain.Email;
 using Api.Domain.Pipeline;
 using Api.Infrastructure.Assignment;
 using Api.Infrastructure.Analytics;
 using Api.Infrastructure.AnalyticsAdvanced;
+using Api.Infrastructure.CustomFields;
 using Api.Infrastructure.DataGovernance;
 using Api.Infrastructure.Email;
 using Api.Infrastructure.Events;
@@ -33,8 +38,10 @@ using Api.Infrastructure.Proposals;
 using Api.Infrastructure.RulesEngine;
 using Api.Infrastructure.Scoring;
 using Api.Infrastructure.Security;
+using Api.Infrastructure.Sequences;
 using Api.Infrastructure.Serialization;
 using Api.Infrastructure.Tenancy;
+using Api.Infrastructure.WhatsApp;
 using Api.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +55,14 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Threading.RateLimiting;
 var builder = WebApplication.CreateBuilder(args);
+// Operations KPIs
+builder.Services.AddSingleton<Api.Application.Dashboard.IOperationsKpiService, Api.Application.Dashboard.InMemoryOperationsKpiService>();
+// Omnichannel module registration
+builder.Services.AddSingleton<Api.Application.Channels.IChannelMessageRepository, Api.Application.Channels.InMemoryChannelMessageRepository>();
+builder.Services.AddScoped<Api.Application.Channels.IChannelDispatcher, Api.Application.Channels.EmailChannelDispatcher>();
+// Workflows module registration
+builder.Services.AddSingleton<Api.Application.Workflows.IWorkflowDefinitionRepository, Api.Application.Workflows.InMemoryWorkflowDefinitionRepository>();
+builder.Services.AddScoped<Api.Application.Workflows.WorkflowDefinitionService>();
 builder.Services.Configure<SecurityRuntimeOptions>(builder.Configuration.GetSection("Security"));
 builder.Services.Configure<DataGovernanceOptions>(builder.Configuration.GetSection("DataGovernance"));
 var securityOptions = builder.Configuration.GetSection("Security").Get<SecurityRuntimeOptions>() ?? new SecurityRuntimeOptions();
@@ -128,6 +143,7 @@ builder.Services.AddDbContext<LeadsDbContext>(options =>
             options.UseSqlite(connectionString);
             break;
     }
+    options.ConfigureWarnings(w => w.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
 });
 builder.Services.AddScoped<ILeadRepository, LeadRepository>();
 builder.Services.AddScoped<ILeadAuditSnapshotRepository, LeadAuditSnapshotRepository>();
@@ -149,6 +165,9 @@ builder.Services.AddScoped<IEmailTemplateRepository, EmailTemplateRepository>();
 builder.Services.AddScoped<IEmailLogRepository, EmailLogRepository>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IEmailDispatchService, EmailDispatchService>();
+// Activity Timeline
+builder.Services.AddScoped<ILeadActivityRepository, LeadActivityRepository>();
+builder.Services.AddScoped<ILeadActivityService, LeadActivityService>();
 builder.Services.AddScoped<IFollowUpJobRepository, FollowUpJobRepository>();
 builder.Services.AddScoped<IFollowUpPolicyRepository, FollowUpPolicyRepository>();
 builder.Services.AddScoped<IFollowUpService, FollowUpService>();
@@ -196,6 +215,32 @@ if (!disableDataRetentionBackground)
 {
     builder.Services.AddHostedService<SensitiveDataRetentionService>();
 }
+builder.Services.AddScoped<ILeadScoringAIService>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var aiServiceUrl = config["AI:LeadScoringServiceUrl"] ?? "http://localhost:5200";
+    return new LeadScoringAIService(new HttpClient(), aiServiceUrl);
+});
+
+// Sequences
+builder.Services.AddScoped<ISequenceRepository, SequenceRepository>();
+builder.Services.AddScoped<ISequenceEnrollmentRepository, SequenceEnrollmentRepository>();
+builder.Services.AddScoped<ISequenceService, SequenceService>();
+builder.Services.AddScoped<ISequenceEngine, SequenceEngine>();
+builder.Services.AddHostedService<SequenceEngineBackgroundService>();
+
+// Lead Query (filter/sort by custom fields)
+builder.Services.AddScoped<ILeadQueryService, Api.Infrastructure.Leads.LeadQueryService>();
+
+// Custom Fields
+builder.Services.AddScoped<ICustomFieldRepository, CustomFieldRepository>();
+builder.Services.AddScoped<ICustomFieldService, CustomFieldService>();
+
+// WhatsApp
+builder.Services.AddScoped<IWhatsAppRepository, WhatsAppRepository>();
+builder.Services.AddHttpClient<IWhatsAppOutboundService, WhatsAppOutboundService>();
+builder.Services.AddScoped<WhatsAppService>();
+
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
@@ -204,7 +249,15 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<LeadsDbContext>();
-    dbContext.Database.Migrate();
+    if (app.Environment.IsDevelopment())
+    {
+        // In dev, always recreate the schema from the current model (fast, no migration gaps).
+        dbContext.Database.EnsureCreated();
+    }
+    else
+    {
+        dbContext.Database.Migrate();
+    }
 }
 
 app.UseMiddleware<SecurityHeadersMiddleware>();

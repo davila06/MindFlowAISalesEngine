@@ -30,6 +30,7 @@ public class LeadIntakeService : ILeadIntakeService
     private readonly ILeadScoringService _leadScoringService;
     private readonly IRuleEventListener _ruleEventListener;
     private readonly ILeadAuditSnapshotRepository _leadAuditSnapshotRepository;
+    private readonly ILeadActivityService _activityService;
     private readonly ILogger<LeadIntakeService> _logger;
 
     public LeadIntakeService(
@@ -43,6 +44,7 @@ public class LeadIntakeService : ILeadIntakeService
         ILeadAuditSnapshotRepository leadAuditSnapshotRepository,
         ITenantDataGovernanceStore tenantDataGovernanceStore,
         ITenantContext tenantContext,
+        ILeadActivityService activityService,
         ILogger<LeadIntakeService> logger,
         IOptions<DataGovernanceOptions> dataGovernanceOptions)
     {
@@ -56,6 +58,7 @@ public class LeadIntakeService : ILeadIntakeService
         _leadAuditSnapshotRepository = leadAuditSnapshotRepository;
         _tenantDataGovernanceStore = tenantDataGovernanceStore;
         _tenantContext = tenantContext;
+        _activityService = activityService;
         _logger = logger;
         _dataGovernanceOptions = dataGovernanceOptions.Value;
     }
@@ -140,6 +143,10 @@ public class LeadIntakeService : ILeadIntakeService
         await _followUpService.ScheduleAsync(lead.Id, lead.Email, cancellationToken);
         await _leadAssignmentService.AssignLeadAsync(lead.Id, cancellationToken);
         await _ruleEventListener.OnLeadCreatedAsync(lead.Id, cancellationToken);
+        await _activityService.RecordAsync(lead.Id, LeadActivity.ActivityTypes.LeadCreated,
+            title: "Lead created",
+            description: $"Source: {lead.Source} | Channel: {lead.Channel} | Campaign: {lead.Campaign}",
+            cancellationToken: cancellationToken);
         var scoredLead = await _leadScoringService.GetLeadScoreAsync(lead.Id, cancellationToken);
 
         return new LeadIntakeResponse

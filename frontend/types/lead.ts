@@ -20,3 +20,23 @@ export interface Opportunity {
   title: string;
   value: number;
 }
+
+export interface LeadActivity {
+  id: string;
+  leadId: string;
+  activityType: string;
+  title?: string;
+  description?: string;
+  relatedEntityId?: string;
+  relatedEntityType?: string;
+  actor: string;
+  occurredAtUtc: string;
+}
+
+export interface LeadActivitiesPage {
+  items: LeadActivity[];
+  page: number;
+  pageSize: number;
+  total: number;
+  hasMore: boolean;
+}

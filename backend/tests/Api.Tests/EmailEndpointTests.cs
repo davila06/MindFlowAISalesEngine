@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Api.Infrastructure.Persistence;
 using Api.Application.Email;
@@ -28,7 +29,9 @@ public class EmailTestFactory : WebApplicationFactory<Program>
                 services.Remove(descriptor);
 
             services.AddDbContext<LeadsDbContext>(options =>
-                options.UseSqlite($"Data Source={_dbPath}"));
+                options
+                    .UseSqlite($"Data Source={_dbPath}")
+                    .ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning)));
         });
     }
 
@@ -543,6 +546,127 @@ public class EmailEndpointTests
         Assert.Contains(kpi.ByChannel, x => x.Channel == "webhook");
     }
 
+    // ─── Tracking tests ──────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task EmailLog_HasTrackingTokenAfterIntake()
+    {
+        using var client = BuildClient();
+
+        await client.PostAsJsonAsync("/api/leads/intake", new
+        {
+            Email = $"tracking_{Guid.NewGuid():N}@test.com",
+            Phone = BuildUniquePhone(),
+            Source = "tracking-test"
+        });
+
+        var logs = await (await client.GetAsync("/api/email/logs"))
+            .Content.ReadFromJsonAsync<List<EmailLogResponse>>();
+        Assert.NotNull(logs);
+        var log = logs.FirstOrDefault(l => l.TemplateName == "lead.welcome");
+        Assert.NotNull(log);
+        Assert.NotEqual(Guid.Empty, log.TrackingToken);
+        Assert.False(log.IsOpened);
+        Assert.False(log.IsClicked);
+        Assert.Equal(0, log.OpenCount);
+        Assert.Equal(0, log.ClickCount);
+    }
+
+    [Fact]
+    public async Task TrackingPixel_RecordsOpen_AndReturnsGif()
+    {
+        using var client = BuildClient();
+
+        await client.PostAsJsonAsync("/api/leads/intake", new
+        {
+            Email = $"pixel_{Guid.NewGuid():N}@test.com",
+            Phone = BuildUniquePhone(),
+            Source = "pixel-test"
+        });
+
+        var logs = await (await client.GetAsync("/api/email/logs"))
+            .Content.ReadFromJsonAsync<List<EmailLogResponse>>();
+        Assert.NotNull(logs);
+        var log = logs.FirstOrDefault(l => l.TemplateName == "lead.welcome");
+        Assert.NotNull(log);
+
+        // Hit pixel endpoint
+        var pixelResponse = await client.GetAsync($"/api/tracking/pixel/{log.TrackingToken}.gif");
+        Assert.Equal(System.Net.HttpStatusCode.OK, pixelResponse.StatusCode);
+        Assert.Equal("image/gif", pixelResponse.Content.Headers.ContentType?.MediaType);
+
+        // Verify open recorded
+        var updatedLogs = await (await client.GetAsync("/api/email/logs"))
+            .Content.ReadFromJsonAsync<List<EmailLogResponse>>();
+        Assert.NotNull(updatedLogs);
+        var updated = updatedLogs.First(l => l.Id == log.Id);
+        Assert.True(updated.IsOpened);
+        Assert.Equal(1, updated.OpenCount);
+        Assert.NotNull(updated.FirstOpenedAtUtc);
+    }
+
+    [Fact]
+    public async Task TrackingClick_ValidUrl_RecordsClickAndRedirects()
+    {
+        using var client = new EmailTestFactory().CreateClient(
+            new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+
+        await client.PostAsJsonAsync("/api/leads/intake", new
+        {
+            Email = $"click_{Guid.NewGuid():N}@test.com",
+            Phone = BuildUniquePhone(),
+            Source = "click-test"
+        });
+
+        var logs = await (await client.GetAsync("/api/email/logs"))
+            .Content.ReadFromJsonAsync<List<EmailLogResponse>>();
+        Assert.NotNull(logs);
+        var log = logs.FirstOrDefault(l => l.TemplateName == "lead.welcome");
+        Assert.NotNull(log);
+
+        var destination = Uri.EscapeDataString("https://novamind.example.com/proposal/123");
+        var clickResponse = await client.GetAsync($"/api/tracking/click/{log.TrackingToken}?url={destination}");
+        Assert.Equal(System.Net.HttpStatusCode.Redirect, clickResponse.StatusCode);
+
+        // Verify click recorded
+        var updatedLogs = await (await client.GetAsync("/api/email/logs"))
+            .Content.ReadFromJsonAsync<List<EmailLogResponse>>();
+        Assert.NotNull(updatedLogs);
+        var updated = updatedLogs.First(l => l.Id == log.Id);
+        Assert.True(updated.IsClicked);
+        Assert.Equal(1, updated.ClickCount);
+        Assert.NotNull(updated.FirstClickedAtUtc);
+    }
+
+    [Fact]
+    public async Task TrackingClick_InvalidUrl_Returns400()
+    {
+        using var client = BuildClient();
+
+        var fakeToken = Guid.NewGuid();
+        var response = await client.GetAsync($"/api/tracking/click/{fakeToken}?url=javascript:alert(1)");
+        Assert.Equal(System.Net.HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task TrackingMetrics_ReturnsAggregatesPerTemplate()
+    {
+        using var client = BuildClient();
+
+        await client.PostAsJsonAsync("/api/leads/intake", new
+        {
+            Email = $"metrics_{Guid.NewGuid():N}@test.com",
+            Phone = BuildUniquePhone(),
+            Source = "metrics-test"
+        });
+
+        var response = await client.GetAsync("/api/email/tracking/metrics");
+        Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+
+        using var doc = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+        Assert.Equal(JsonValueKind.Array, doc.RootElement.ValueKind);
+    }
+
     // ─── Helpers ────────────────────────────────────────────────────────────
     private static string BuildUniquePhone()
     {
@@ -578,6 +702,14 @@ file sealed class EmailLogResponse
     public string? CorrelationId { get; init; }
     public string? ErrorMessage { get; init; }
     public DateTime SentAtUtc { get; init; }
+    // Tracking
+    public Guid TrackingToken { get; init; }
+    public int OpenCount { get; init; }
+    public int ClickCount { get; init; }
+    public DateTime? FirstOpenedAtUtc { get; init; }
+    public DateTime? FirstClickedAtUtc { get; init; }
+    public bool IsOpened { get; init; }
+    public bool IsClicked { get; init; }
 }
 
 file sealed class EmailKpiResponse
