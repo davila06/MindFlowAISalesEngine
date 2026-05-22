@@ -130,6 +130,7 @@ public class LeadsDbContext : DbContext
             entity.Property(x => x.Channel).IsRequired().HasMaxLength(100).HasDefaultValue("inbound");
             entity.Property(x => x.Campaign).IsRequired().HasMaxLength(120).HasDefaultValue("organic");
             entity.Property(x => x.Country).IsRequired().HasMaxLength(2).HasDefaultValue("xx");
+            entity.Property(x => x.ServiceInterest).HasMaxLength(200);
             entity.Property(x => x.Email).HasMaxLength(320);
             entity.Property(x => x.Phone).HasMaxLength(32);
             entity.Property(x => x.Score).IsRequired().HasDefaultValue(0);

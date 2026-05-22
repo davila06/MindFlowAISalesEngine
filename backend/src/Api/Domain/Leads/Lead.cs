@@ -9,6 +9,7 @@ public class Lead
     public string Channel { get; private set; }
     public string Campaign { get; private set; }
     public string Country { get; private set; }
+    public string? ServiceInterest { get; private set; }
     public int Score { get; private set; }
     public string Priority { get; private set; }
     public string ScoringVersion { get; private set; }
@@ -31,7 +32,8 @@ public class Lead
         string source,
         string? channel = null,
         string? campaign = null,
-        string? country = null)
+        string? country = null,
+        string? serviceInterest = null)
     {
         Id = Guid.NewGuid();
         Email = email;
@@ -40,6 +42,7 @@ public class Lead
         Channel = string.IsNullOrWhiteSpace(channel) ? "inbound" : channel;
         Campaign = string.IsNullOrWhiteSpace(campaign) ? "organic" : campaign;
         Country = string.IsNullOrWhiteSpace(country) ? "xx" : country;
+        ServiceInterest = string.IsNullOrWhiteSpace(serviceInterest) ? null : serviceInterest.Trim();
         Score = 0;
         Priority = "Low";
         ScoringVersion = "unscored";

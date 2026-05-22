@@ -108,7 +108,8 @@ public class LeadIntakeService : ILeadIntakeService
             });
         }
 
-        var lead = new Lead(normalizedEmail, normalizedPhone, source, channel, campaign, country);
+        var serviceInterest = string.IsNullOrWhiteSpace(request.ServiceInterest) ? null : request.ServiceInterest.Trim();
+        var lead = new Lead(normalizedEmail, normalizedPhone, source, channel, campaign, country, serviceInterest);
         await _leadRepository.AddAsync(lead, cancellationToken);
 
         var intakePayload = JsonSerializer.Serialize(new
@@ -117,6 +118,7 @@ public class LeadIntakeService : ILeadIntakeService
             lead.Channel,
             lead.Campaign,
             lead.Country,
+            lead.ServiceInterest,
             lead.Email,
             lead.Phone
         });
@@ -158,6 +160,7 @@ public class LeadIntakeService : ILeadIntakeService
             Channel = lead.Channel,
             Campaign = lead.Campaign,
             Country = lead.Country,
+            ServiceInterest = lead.ServiceInterest,
             Score = scoredLead?.Score ?? lead.Score,
             Priority = scoredLead?.Priority ?? lead.Priority,
             ScoringVersion = scoredLead?.ScoringVersion ?? lead.ScoringVersion,

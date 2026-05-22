@@ -690,6 +690,10 @@ namespace Api.Migrations
                         .HasColumnType("TEXT")
                         .HasDefaultValue("unscored");
 
+                    b.Property<string>("ServiceInterest")
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Source")
                         .IsRequired()
                         .HasMaxLength(100)
